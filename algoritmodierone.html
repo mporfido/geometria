@@ -1,0 +1,189 @@
+<!DOCTYPE=HTML><HTML>
+<HEAD>
+<title>Algoritmo di Erone</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+  <script type = "text/javascript" src = "js/ggbHelpFuncs.js"></script>
+</HEAD>
+<BODY>
+
+<div class="container-fluid p-2 bg-primary text-white text-center">
+  <h1>Algoritmo di Erone</h1>
+  <p>per l'approssimazione delle radici quadrate</p>
+</div>
+
+<div class="container mt-2">
+	<div class="row">
+  	<div class="p-2 bg-primary text-white rounded">
+	    <h2>Enunciato</h2>
+			<p>Per approssimare \(x=\sqrt a\) si costruiscono due successioni \(b_n\) e \(h_n\), a partire da un valore di partenza \(a_1\), in questa maniera: </p>
+			<p style="font-size:160%;">\(
+				\begin{cases}
+					h_n  & = & {a\over b_n} \\
+					b_{n+1} & = & {{b_n + h_n} \over 2}
+				\end{cases}
+			\)</p>
+	  </div>
+  </div>
+
+  <div class="row mt-2">
+  	<div class="p-2 bg-primary text-white rounded">
+	    <h2>Interpretazione geometrica</h2>
+			<p>Partiamo da un quadrato di area 2. Allora il lato di questo quadrato è il numero \(\sqrt 2\) che vogliamo approssimare.</p>
+			<p>Costruiremo una successione di rettangoli le cui basi \(b_n\) sono maggiori del lato del quadrato e le altezze sono minori \(h_n\), ma le cui aree avranno lo stesso valore di quella del quadrato.</p>
+			<p></p>
+	  </div>
+  </div>
+  
+
+
+  <div class="row">
+  	<div class="col pt-2">
+  		<div id="ggb-element"></div>
+  	</div>
+  	<div class="col pt-2">
+  		<div id="accordion">
+			  <div class="card">
+			    <div class="card-header">
+			      <a class="btn" data-bs-toggle="collapse" href="#collapseOne" onclick="fillRow(1)">
+			      	Prima approssimazione
+			      </a>
+			    </div>
+			    <div id="collapseOne" class="collapse" data-bs-parent="#accordion">
+			      <div class="card-body">
+			        <p>L'algoritmo parte con la scelta di una approssimazione <b>per eccesso</b> per la radice cercata, che può essere anche molto sbagliata. Per esempio partiamo con una base di lunghezza 5.</p>
+			        <p>Se la base è \(b_1 = 5\) e il rettangolo deve avere area \(a=2\), allora l'altezza deve essere \( h_1 = {a\over b_n} = {2 \over 5}\). Allora questa è una approssimazione <b>per difetto</b>.</p>
+			        <p>Calcoliamo infine la prossima base: sarà la media aritmetica tra la base e l'altezza attuali: \({b_n + h_n} \over 2\).</p>
+			      </div>
+			    </div>
+			  </div>
+
+			  <div class="card">
+			    <div class="card-header">
+			      <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseTwo" onclick="fillRow(2)">
+			        Miglioriamo l'approssimazione
+			      </a>
+			    </div>
+			    <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+			      <div class="card-body">
+			        <p>Prendiamo come nuova base \(b_2\) la media calcolata precedentemente: è una approssimazione per eccesso migliore di \(b_1\).</p>
+			        <p>\( h_2 = {a \over b_2} = {2 \over 2.7}\) è la nuova altezza, cioè nuova e migliore approssimazione per difetto di \(x\), come si intuisce dalla figura.</p>
+			        <p>Calcoliamo infine la media di base e altezza per il prossimo passo.</p>
+			      </div>
+			    </div>
+			  </div>
+
+			  <div class="card">
+			    <div class="card-header">
+			      <a class="collapsed btn" data-bs-toggle="collapse" href="#collapseThree" onclick="fillRow(5)">Ripetiamo il processo</a>
+			    </div>
+			    <div id="collapseThree" class="collapse" data-bs-parent="#accordion">
+			      <div class="card-body">
+			        <p>Continuado a compilare la tabella, notiamo che \(b_n\), le basi, è una successione <b>decrescente</b> che ci dà approssimazioni per eccesso sempre migliori per \(x\).</p>
+			        <p>\(h_n\), le altezze, è una sucessione <b>crescente</b> che ci dà approssimazioni per difetto sempre migliori per \(x\).</p>
+			        <p>In questa maniera, possiamo decidere quando abbiamo raggiunto una approssimazione abbastanza precisa, e fermarci. </p>
+			      </div>
+			    </div>
+			  </div>
+
+			</div> 
+
+  		<table class="table">
+			  <thead>
+			    <tr>
+			      <th style="width: 10%" scope="col">n</th>
+			      <th style="width: 30%" scope="col">\(b_n\)</th>
+			      <th style="width: 30%" scope="col">\(h_n = {r \over b_n}\)</th>
+			      <th style="width: 30%" scope="col">\( {b_n + h_n} \over 2 \)</th>
+			    </tr>
+			  </thead>
+			  <tbody>
+			    <tr id="row1">
+			      <th scope="row"></th>
+			      <td></td>
+			      <td></td>
+			      <td></td>
+			    </tr>
+			    <tr id="row2">
+			    	<th scope="row"></th>
+			      <td></td>
+			      <td></td>
+			      <td></td>
+			    </tr>
+			    <tr id="row3">
+			    	<th scope="row"></th>
+			      <td></td>
+			      <td></td>
+			      <td></td>
+			    </tr>
+			    <tr id="row4">
+			    	<th scope="row">
+			      <td></td>
+			      <td></td>
+			      <td></td>
+			    </tr>
+			    <tr id="row5">
+			    	<th scope="row">
+			      <td></td>
+			      <td></td>
+			      <td></td>
+			    </tr>
+			  </tbody>
+			</table>
+  	</div>
+	</div>
+
+	<div class="row mt-2">
+		<h3>Riferimenti:</h3>
+		<p>Non solo calcoli - Villani, Bernardi, Zoccante, Porcaro</p>
+	</div>
+
+
+<script>  
+  var params = {"appName": "geometry", 
+	  "width": 600, 
+	  "height": 400, 
+	  "showToolBar": false, 
+	  "showAlgebraInput": false, 
+	  "showMenuBar": false ,
+	  "material_id": "w6ab65tz"
+	};
+  var applet = new GGBApplet(params, true);
+  window.addEventListener("load", function() { 
+    applet.inject('ggb-element');
+  });
+
+  function fillRow(rowNum) {
+  	//svuota table
+  	for (i=1; i<=5; i++) {
+  		row = document.getElementById("row"+String(i));
+  		for (child of row.children) {
+  			child.innerHTML = "";
+  		};
+  	};
+
+  	var applet = document.ggbApplet;
+  	applet.setValue("a",rowNum-1);
+
+  	//riempi table
+  	for (i=1; i<=rowNum; i++) {
+  		var b = applet.getListValue("b_{n}",i);
+  		var h = applet.getListValue("h_{n}",i);
+
+  		row = document.getElementById("row"+String(i));
+	  	row.children[0].innerHTML = String(i);
+	  	row.children[1].innerHTML = String(b);
+	  	row.children[2].innerHTML = String(h);
+	  	row.children[3].innerHTML = String((b+h)/2);
+  	};  	
+  };
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</BODY>
+</HTML>

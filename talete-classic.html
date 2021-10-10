@@ -1,0 +1,113 @@
+<!DOCTYPE=HTML><HTML>
+<HEAD>
+<title>Teorema di Talete</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://www.geogebra.org/apps/deployggb.js"></script>
+</HEAD>
+<BODY>
+
+<div class="container-fluid p-2 bg-primary text-white text-center">
+  <h1>Teorema di Talete</h1>
+  <p>(Versione classica)</p>
+</div>
+
+<div class="container mt-2">
+  <div class="row">
+  	<div class="p-2 bg-primary text-white rounded">
+	    <h2>Enunciato</h2>
+			<p> In un fascio di rette parallele tagliate da due trasversali, a due segmenti di una trasversale corrispondono due segmenti a essi proporzionali sull'altra trasversale</p>
+			<p style="font-size:160%;">\( {AE \over EC} = {BD \over DC'}\)</p>
+	  </div>
+  </div>
+  
+
+
+  <div class="row">
+  	<div class="col pt-2">
+  		<div id="ggb-element"></div>
+  	</div>
+
+  	<div class="col pt-2">
+  		<div id="accordion">
+			  <div class="card">
+			    <div class="card-header">
+			      <a class="btn" data-bs-toggle="collapse" href="#collapseOne" onclick="reset();">
+			      	Partenza
+			      </a>
+			    </div>
+			  </div>
+		    <div id="collapseOne" class="collapse" data-bs-parent="#accordion">
+		      <div class="card-body">
+		      	<p>Cominciamo dalle tre rette parallele e dal triangolo ABC in figura. Per il Terorema di Talete (versione del triangolo), allora</p>
+		        <p style="font-size:160%;">\( {AE \over EC} = {BD \over DC}\)</p>
+		      </div>
+		    </div>
+
+			<div class="card">
+			    <div class="card-header">
+			      <a class="btn" data-bs-toggle="collapse" href="#collapseTwo" onclick="anim();setFase(2);">
+			      	Trasformazione
+			      </a>
+			    </div>
+			  </div>
+		    <div id="collapseTwo" class="collapse" data-bs-parent="#accordion">
+		      <div class="card-body">
+		        <p>Trasciniamo la retta del segmento AC parallelamente a se stessa. Le misure dei segmenti \(AE\) e \(EC\) non variano</p>
+		      </div>
+		    </div>
+			</div>
+
+		</div>
+
+  </div>
+</div>
+
+
+
+<script>  
+  var params = {"appName": "geometry", 
+	  "width": 600, 
+	  "height": 400, 
+	  "showToolBar": false, 
+	  "showAlgebraInput": false, 
+	  "showMenuBar": false ,
+	  "material_id": "q9aymsck"
+	};
+  var applet = new GGBApplet(params, true);
+  window.addEventListener("load", function() { 
+    applet.inject('ggb-element');
+  });
+	
+	function setValore(nome, valore) {
+		var applet = document.ggbApplet;
+		applet.setValue(nome, valore);
+	};
+
+	function setFase(fase) {
+		var applet = document.ggbApplet;
+		applet.setValue("fase", fase);
+	};
+
+	function anim() {
+		var applet = document.ggbApplet;
+		applet.stopAnimation();
+		applet.setAnimating("a", true);
+		applet.startAnimation();
+	}
+
+	function reset() {
+		var applet = document.ggbApplet;
+		applet.stopAnimation();
+		setFase(1);
+		setValore("a", 0);
+	}
+</script>
+
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+</BODY>
+</HTML>

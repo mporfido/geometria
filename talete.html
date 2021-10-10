@@ -26,11 +26,11 @@
 
 
   <div class="row">
-  	<div class="col pt-2">
+  	<div class="col-6 pt-2">
   		<div id="ggb-element"></div>
   	</div>
   	
-  	<div class="col pt-2">
+  	<div class="col-6 pt-2">
   		<div id="accordion">
 			  <div class="card">
 			    <div class="card-header">
@@ -40,7 +40,7 @@
 			    </div>
 			    <div id="collapseOne" class="collapse" data-bs-parent="#accordion">
 			      <div class="card-body">
-			        <p>Tracciamo una retta parallela ad AB, che incontra gli altri due lati nei punti E e D.
+			        <p>Tracciamo una retta parallela ad AB, che incontra gli altri due lati nei punti E e D.</p>
 			      </div>
 			    </div>
 			  </div>
@@ -122,22 +122,6 @@
     applet.inject('ggb-element');
   });
 
-  function getFunction(input) {
-		 var applet = document.ggbApplet;
-		 var inputVal = applet.getValue(input);
-	 document.getElementById("fase").innerHTML = "Fase: " + inputVal;
-	};
-
-	function next() {
-		var applet = document.ggbApplet;
-		var fase = applet.getValue("fase");
-		if (fase==4) {
-			applet.setValue("fase", 0);
-		} else {
-			applet.setValue("fase", fase+1);
-		}
-	};
-	
 	function setFase(fase) {
 		var applet = document.ggbApplet;
 		applet.setValue("fase", fase);
