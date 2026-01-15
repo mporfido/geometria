@@ -1,0 +1,1282 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Problema: Frazioni Successive - Classe 1M</title>
+
+  <!-- KaTeX CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+  <style>
+    /* CSS Reset e Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --color-primary: #4a90e2;
+      --color-sold: #e74c3c;
+      --color-remaining: #3498db;
+      --color-neutral: #ecf0f1;
+      --color-text: #2c3e50;
+      --color-success: #27ae60;
+      --color-accent: #f39c12;
+      --color-bg: #ffffff;
+      --color-border: #bdc3c7;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--color-text);
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--color-primary);
+      color: white;
+      padding: 8px;
+      text-decoration: none;
+      z-index: 100;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* Container principale */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--color-bg);
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+      overflow: hidden;
+    }
+
+    /* Header */
+    header {
+      background: var(--color-primary);
+      color: white;
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .header-controls {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-icon {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-icon:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+
+    .btn-icon:focus {
+      outline: 2px solid white;
+      outline-offset: 2px;
+    }
+
+    /* Main Content */
+    main {
+      padding: 40px 32px;
+      min-height: 500px;
+    }
+
+    #visualization-container {
+      margin-bottom: 40px;
+      text-align: center;
+    }
+
+    #oil-visualization {
+      max-width: 100%;
+      height: auto;
+      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
+    }
+
+    #explanation-container {
+      background: var(--color-neutral);
+      padding: 32px;
+      border-radius: 12px;
+      margin-top: 24px;
+    }
+
+    #step-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 16px;
+    }
+
+    #step-description {
+      font-size: 1.1rem;
+      margin-bottom: 20px;
+      color: var(--color-text);
+    }
+
+    #step-math {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid var(--color-primary);
+      margin: 20px 0;
+      font-size: 1.1rem;
+    }
+
+    #step-feedback {
+      background: rgba(39, 174, 96, 0.1);
+      border-left: 4px solid var(--color-success);
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-weight: 500;
+      color: var(--color-success);
+    }
+
+    .summary-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .summary-table th,
+    .summary-table td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid var(--color-neutral);
+    }
+
+    .summary-table th {
+      background: var(--color-primary);
+      color: white;
+      font-weight: 600;
+    }
+
+    .summary-table tr:last-child td {
+      border-bottom: none;
+      font-weight: 600;
+      background: rgba(74, 144, 226, 0.1);
+    }
+
+    /* Navigation */
+    nav {
+      background: var(--color-neutral);
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      border-top: 2px solid var(--color-border);
+    }
+
+    .nav-button {
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-button:hover:not(:disabled) {
+      background: #357abd;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(74, 144, 226, 0.3);
+    }
+
+    .nav-button:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .nav-button:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    #step-indicator {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-text);
+      padding: 8px 16px;
+      background: white;
+      border-radius: 20px;
+      border: 2px solid var(--color-primary);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+      position: relative;
+    }
+
+    .modal-content h2 {
+      color: var(--color-primary);
+      margin-bottom: 16px;
+    }
+
+    .modal-content p {
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .modal-content ul {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+
+    .modal-content li {
+      margin-bottom: 8px;
+    }
+
+    .btn-close-modal {
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-close-modal:hover {
+      background: #357abd;
+    }
+
+    /* Animazioni */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.6; }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease;
+    }
+
+    .highlight {
+      animation: pulse 1.5s ease-in-out;
+    }
+
+    /* SVG Styles */
+    .bar-section {
+      transition: all 0.5s ease;
+    }
+
+    .bar-label {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      header {
+        padding: 20px;
+      }
+
+      header h1 {
+        font-size: 1.35rem;
+      }
+
+      main {
+        padding: 24px 20px;
+      }
+
+      #explanation-container {
+        padding: 24px;
+      }
+
+      nav {
+        padding: 20px;
+      }
+
+      .nav-button {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+      }
+
+      #step-indicator {
+        font-size: 0.9rem;
+      }
+
+      .summary-table {
+        font-size: 0.9rem;
+      }
+
+      .summary-table th,
+      .summary-table td {
+        padding: 8px;
+      }
+    }
+
+    /* Utility */
+    .text-center {
+      text-align: center;
+    }
+
+    .mt-20 {
+      margin-top: 20px;
+    }
+
+    strong {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Salta al contenuto</a>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>🧮 Problema con Frazioni Successive</h1>
+      <div class="header-controls">
+        <button id="btn-help" class="btn-icon" aria-label="Aiuto" title="Aiuto">?</button>
+        <button id="btn-reset" class="btn-icon" aria-label="Ricomincia" title="Ricomincia">↻</button>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main id="main-content">
+      <!-- Visualizzazione SVG -->
+      <section id="visualization-container">
+        <svg id="oil-visualization" viewBox="0 0 800 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="svg-title svg-desc">
+          <title id="svg-title">Visualizzazione delle vendite di olio</title>
+          <desc id="svg-desc">Colonne verticali mostrano le frazioni di olio vendute e rimanenti ad ogni passaggio</desc>
+          <!-- Contenuto dinamico -->
+          <g id="bar-sections"></g>
+          <!-- Etichette dinamiche -->
+          <g id="bar-labels"></g>
+        </svg>
+      </section>
+
+      <!-- Pannello spiegazione -->
+      <section id="explanation-container" class="fade-in">
+        <h2 id="step-title" tabindex="-1"></h2>
+        <div id="step-description"></div>
+        <div id="step-math"></div>
+        <div id="step-feedback" style="display: none;"></div>
+        <div id="step-extra"></div>
+      </section>
+    </main>
+
+    <!-- Navigazione -->
+    <nav>
+      <button id="btn-prev" class="nav-button" aria-label="Vai allo step precedente">
+        ← Indietro
+      </button>
+      <span id="step-indicator">Step 0 / 7</span>
+      <button id="btn-next" class="nav-button" aria-label="Vai allo step successivo">
+        Avanti →
+      </button>
+    </nav>
+  </div>
+
+  <!-- Modal aiuto -->
+  <div id="help-modal" class="modal" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-content">
+      <h2 id="modal-title">Come usare questa app</h2>
+      <p>Questa applicazione interattiva ti guida passo-passo nella risoluzione di un problema con frazioni successive.</p>
+      <p><strong>Navigazione:</strong></p>
+      <ul>
+        <li>Usa i pulsanti <strong>"Avanti"</strong> e <strong>"Indietro"</strong> per navigare tra gli step</li>
+        <li>Oppure usa i tasti freccia della tastiera (← →)</li>
+        <li>Premi il tasto <strong>Home</strong> per tornare all'inizio</li>
+      </ul>
+      <p><strong>Cosa vedrai:</strong></p>
+      <ul>
+        <li>Una <strong>barra visiva</strong> che rappresenta la quantità di olio</li>
+        <li><strong>Spiegazioni</strong> dettagliate per ogni passaggio</li>
+        <li><strong>Formule matematiche</strong> che mostrano i calcoli</li>
+      </ul>
+      <p>Prenditi il tempo che ti serve per capire ogni step prima di andare avanti!</p>
+      <button class="btn-close-modal" id="btn-close-modal">Ho capito</button>
+    </div>
+  </div>
+
+  <!-- KaTeX JS -->
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <script>
+    // ===== CONFIGURAZIONE E DATI =====
+
+    const state = {
+      currentStep: 0,
+      totalSteps: 7
+    };
+
+    const problemData = {
+      totalLiters: 120,
+      finalRemaining: 16,
+      steps: [
+        {remaining: 1, sold: 0, remainingL: 120, soldL: 0},
+        {remaining: 4/5, sold: 1/5, remainingL: 96, soldL: 24},
+        {remaining: 2/5, sold: 3/5, remainingL: 48, soldL: 72},
+        {remaining: 2/15, sold: 13/15, remainingL: 16, soldL: 104}
+      ]
+    };
+
+    const steps = [
+      {
+        id: 0,
+        title: "Il Problema di Alessia",
+        description: `
+          <p style="font-size: 1.2rem; line-height: 1.8;">
+            Alessia vende prima $\\frac{1}{5}$ di una partita di olio,
+            poi $\\frac{1}{2}$ del resto, e successivamente i $\\frac{2}{3}$
+            della quantità rimasta dopo le prime due vendite.
+          </p>
+          <p style="font-size: 1.2rem; line-height: 1.8;">
+            Rimangono così da vendere <strong>16 litri</strong> di olio.
+          </p>
+          <p style="font-size: 1.3rem; font-weight: 600; color: #4a90e2; margin-top: 24px;">
+            ❓ Quanti litri sono stati venduti complessivamente?
+          </p>
+        `,
+        math: null,
+        feedback: null,
+        visualizationType: 'col0'
+      },
+      {
+        id: 1,
+        title: "Step 1: Prima Vendita - Togliamo 1/5",
+        description: `
+          <p>Alessia vende <strong>$\\frac{1}{5}$</strong> dell'olio totale.</p>
+          <p>❓ Quanto resta?</p>
+        `,
+        math: `
+          <p>Dividiamo l'olio in <strong>5 parti uguali</strong>.</p>
+          <p>Ne vendiamo 1 parte → <strong>restano 4 parti</strong></p>
+          <p style="margin-top: 12px;">Frazione rimasta:</p>
+          $$1 - \\frac{1}{5} = \\frac{4}{5}$$
+        `,
+        feedback: `✅ Dopo la prima vendita, resta <strong>$\\frac{4}{5}$</strong> del totale`,
+        visualizationType: 'col1'
+      },
+      {
+        id: 2,
+        title: "Step 2: Seconda Vendita - Togliamo metà del resto",
+        description: `
+          <p>Prendiamo il resto (i $\\frac{4}{5}$) e ne vendiamo <strong>la metà</strong>.</p>
+          <p>❓ Quanto resta ora?</p>
+        `,
+        math: `
+          <p>Se vendiamo <strong>metà</strong> dei $\\frac{4}{5}$, ci resta l'altra metà:</p>
+          $$\\frac{1}{2} \\text{ di } \\frac{4}{5} = \\frac{1}{2} \\times \\frac{4}{5} = \\frac{4}{10} = \\frac{2}{5}$$
+          <p style="margin-top: 12px;">Resto: <strong>$\\frac{2}{5}$</strong> del totale iniziale</p>
+        `,
+        feedback: `✅ Dopo la seconda vendita, resta <strong>$\\frac{2}{5}$</strong> del totale`,
+        visualizationType: 'col2'
+      },
+      {
+        id: 3,
+        title: "Step 3: Terza Vendita - Togliamo 2/3 del resto",
+        description: `
+          <p>Prendiamo il resto (i $\\frac{2}{5}$) e ne vendiamo <strong>$\\frac{2}{3}$</strong>.</p>
+          <p>❓ Quanto resta alla fine?</p>
+        `,
+        math: `
+          <p>Se vendiamo $\\frac{2}{3}$ dei $\\frac{2}{5}$, ci resta $\\frac{1}{3}$:</p>
+          $$\\frac{1}{3} \\text{ di } \\frac{2}{5} = \\frac{1}{3} \\times \\frac{2}{5} = \\frac{2}{15}$$
+          <p style="margin-top: 12px;">Resto finale: <strong>$\\frac{2}{15}$</strong> del totale iniziale</p>
+        `,
+        feedback: `✅ Alla fine di tutte le vendite, resta <strong>$\\frac{2}{15}$</strong> del totale`,
+        visualizationType: 'col3'
+      },
+      {
+        id: 4,
+        title: "Step 4: Informazione Chiave",
+        description: `
+          <p>Il problema ci dice che alla fine <strong>rimangono 16 litri</strong> di olio.</p>
+          <p>Questo significa che:</p>
+        `,
+        math: `
+          <p style="font-size: 1.2rem; background: #fff3cd; padding: 16px; border-radius: 8px; border-left: 4px solid #f39c12;">
+            <strong>$\\frac{2}{15}$ del totale = 16 litri</strong>
+          </p>
+        `,
+        feedback: `✅ I 16 litri corrispondono a <strong>$\\frac{2}{15}$</strong> del totale`,
+        visualizationType: 'col3-labeled'
+      },
+      {
+        id: 5,
+        title: "Step 5: Trovare il Totale",
+        description: `
+          <p>Ora calcoliamo quanti litri c'erano all'inizio!</p>
+          <p>❓ Se $\\frac{2}{15}$ del totale sono 16 litri, quanto vale il totale?</p>
+        `,
+        math: `
+          <p><strong>Ragionamento:</strong></p>
+          <p>Se $\\frac{2}{15}$ sono 16 litri, allora $\\frac{1}{15}$ è la metà:</p>
+          $$\\frac{1}{15} = 16 \\div 2 = 8 \\text{ litri}$$
+          <p style="margin-top: 12px;">Il totale è formato da 15 parti da 8 litri ciascuna:</p>
+          $$\\text{Totale} = 8 \\times 15 = 120 \\text{ litri}$$
+        `,
+        feedback: `✅ Il totale iniziale era di <strong>120 litri</strong> di olio!`,
+        visualizationType: 'col-full'
+      },
+      {
+        id: 6,
+        title: "Step 6: Calcolare il Venduto",
+        description: `
+          <p>Ora che sappiamo il totale, possiamo rispondere alla domanda!</p>
+          <p>❓ Quanti litri sono stati venduti complessivamente?</p>
+        `,
+        math: `
+          <p>Sottraiamo dal totale i litri rimasti:</p>
+          $$120 - 16 = 104 \\text{ litri}$$
+          <p style="margin-top: 16px; font-size: 1.3rem; color: #27ae60;">
+            <strong>💡 Risposta: Sono stati venduti 104 litri!</strong>
+          </p>
+        `,
+        feedback: `✅ <strong>Risposta finale: 104 litri venduti!</strong>`,
+        visualizationType: 'col-final'
+      },
+      {
+        id: 7,
+        title: "Step 7: Verifica",
+        description: `
+          <p>Verifichiamo che i conti tornino, calcolando i litri venduti ad ogni step:</p>
+        `,
+        math: null,
+        feedback: `🎉 <strong>Complimenti!</strong> Hai completato il problema. I calcoli sono corretti!`,
+        visualizationType: 'col-summary'
+      }
+    ];
+
+    // ===== FUNZIONI DI RENDERING SVG =====
+
+    function clearSVG() {
+      document.getElementById('bar-sections').innerHTML = '';
+      document.getElementById('bar-labels').innerHTML = '';
+    }
+
+    function createSVGElement(type, attrs) {
+      const el = document.createElementNS('http://www.w3.org/2000/svg', type);
+      for (let key in attrs) {
+        el.setAttribute(key, attrs[key]);
+      }
+      return el;
+    }
+
+    function renderVisualization(type) {
+      clearSVG();
+      const barContainer = document.getElementById('bar-sections');
+      const labelContainer = document.getElementById('bar-labels');
+
+      // Parametri per colonne verticali
+      const colWidth = 80;
+      const maxHeight = 180;
+      const colSpacing = 70;
+      const startX = 50;
+      const startY = 20;
+
+      switch(type) {
+        case 'col0':
+          // Colonna iniziale piena
+          const col0 = createSVGElement('rect', {
+            x: startX, y: startY, width: colWidth, height: maxHeight,
+            fill: '#3498db', stroke: '#2c3e50', 'stroke-width': '2',
+            class: 'bar-section', rx: '4'
+          });
+          barContainer.appendChild(col0);
+
+          const label0 = createSVGElement('text', {
+            x: startX + colWidth / 2, y: startY + maxHeight + 20,
+            'text-anchor': 'middle', fill: '#2c3e50', 'font-size': '14',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          label0.textContent = 'Olio totale';
+          labelContainer.appendChild(label0);
+          break;
+
+        case 'col1':
+          // Colonna 1: mostra venduto 1/5 e resto 4/5
+          const col1X = startX;
+          const soldHeight1 = maxHeight / 5;
+          const remainHeight1 = maxHeight * 4/5;
+
+          // Parte venduta (tratteggiata in alto)
+          const sold1 = createSVGElement('rect', {
+            x: col1X, y: startY, width: colWidth, height: soldHeight1,
+            fill: '#e74c3c', stroke: '#2c3e50', 'stroke-width': '2',
+            'stroke-dasharray': '5,5', opacity: '0.5', rx: '4'
+          });
+          barContainer.appendChild(sold1);
+
+          // Parte rimanente (piena in basso)
+          const remain1 = createSVGElement('rect', {
+            x: col1X, y: startY + soldHeight1, width: colWidth, height: remainHeight1,
+            fill: '#3498db', stroke: '#2c3e50', 'stroke-width': '2',
+            class: 'bar-section highlight', rx: '4'
+          });
+          barContainer.appendChild(remain1);
+
+          // Linee divisorie (5 parti)
+          for (let i = 1; i < 5; i++) {
+            const line = createSVGElement('line', {
+              x1: col1X, y1: startY + (maxHeight / 5) * i,
+              x2: col1X + colWidth, y2: startY + (maxHeight / 5) * i,
+              stroke: '#2c3e50', 'stroke-width': '1', 'stroke-dasharray': '3'
+            });
+            barContainer.appendChild(line);
+          }
+
+          // Etichette
+          const labelSold1 = createSVGElement('text', {
+            x: col1X + colWidth + 10, y: startY + soldHeight1 / 2,
+            'text-anchor': 'start', fill: '#e74c3c', 'font-size': '12',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          labelSold1.textContent = '1/5 venduto';
+          labelContainer.appendChild(labelSold1);
+
+          const labelRemain1 = createSVGElement('text', {
+            x: col1X + colWidth + 10, y: startY + soldHeight1 + remainHeight1 / 2,
+            'text-anchor': 'start', fill: '#3498db', 'font-size': '12',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          labelRemain1.textContent = '4/5 rimanenti';
+          labelContainer.appendChild(labelRemain1);
+          break;
+
+        case 'col2':
+          // Colonna 1 + Colonna 2 allineate
+          const col2_1X = startX;
+          const col2_1SoldH = maxHeight / 5;
+          const col2_1RemainH = maxHeight * 4/5;
+          const col2_1RemainY = startY + col2_1SoldH; // Y dove iniziano i 4/5
+
+          // COLONNA 1
+          const col2_1Sold = createSVGElement('rect', {
+            x: col2_1X, y: startY, width: colWidth, height: col2_1SoldH,
+            fill: '#e74c3c', stroke: '#2c3e50', 'stroke-width': '2',
+            'stroke-dasharray': '5,5', opacity: '0.5', rx: '4'
+          });
+          barContainer.appendChild(col2_1Sold);
+
+          const col2_1Remain = createSVGElement('rect', {
+            x: col2_1X, y: col2_1RemainY, width: colWidth, height: col2_1RemainH,
+            fill: '#3498db', stroke: '#2c3e50', 'stroke-width': '2', rx: '4'
+          });
+          barContainer.appendChild(col2_1Remain);
+
+          for (let i = 1; i < 5; i++) {
+            const line = createSVGElement('line', {
+              x1: col2_1X, y1: startY + (maxHeight / 5) * i,
+              x2: col2_1X + colWidth, y2: startY + (maxHeight / 5) * i,
+              stroke: '#2c3e50', 'stroke-width': '1', 'stroke-dasharray': '3'
+            });
+            barContainer.appendChild(line);
+          }
+
+          const col2_1LabelRemain = createSVGElement('text', {
+            x: col2_1X + colWidth + 10, y: col2_1RemainY + col2_1RemainH / 2,
+            'text-anchor': 'start', fill: '#3498db', 'font-size': '12',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          col2_1LabelRemain.textContent = '4/5';
+          labelContainer.appendChild(col2_1LabelRemain);
+
+          // COLONNA 2: i 4/5 divisi a metà, ALLINEATA in altezza con i 4/5 della colonna 1
+          const col2_2X = col2_1X + colWidth + colSpacing;
+          const col2_2TotalH = col2_1RemainH; // stessa altezza dei 4/5
+          const col2_2SoldH = col2_2TotalH / 2; // metà venduta
+          const col2_2RemainH = col2_2TotalH / 2; // metà rimanente
+
+          // Parte venduta (tratteggiata, metà superiore)
+          const col2_2Sold = createSVGElement('rect', {
+            x: col2_2X, y: col2_1RemainY, width: colWidth, height: col2_2SoldH,
+            fill: '#e74c3c', stroke: '#2c3e50', 'stroke-width': '2',
+            'stroke-dasharray': '5,5', opacity: '0.5', rx: '4'
+          });
+          barContainer.appendChild(col2_2Sold);
+
+          // Parte rimanente (piena, metà inferiore)
+          const col2_2Remain = createSVGElement('rect', {
+            x: col2_2X, y: col2_1RemainY + col2_2SoldH, width: colWidth, height: col2_2RemainH,
+            fill: '#3498db', stroke: '#2c3e50', 'stroke-width': '2',
+            class: 'bar-section highlight', rx: '4'
+          });
+          barContainer.appendChild(col2_2Remain);
+
+          // Linea divisoria centrale
+          const col2_2Line = createSVGElement('line', {
+            x1: col2_2X, y1: col2_1RemainY + col2_2SoldH,
+            x2: col2_2X + colWidth, y2: col2_1RemainY + col2_2SoldH,
+            stroke: '#2c3e50', 'stroke-width': '2', 'stroke-dasharray': '3'
+          });
+          barContainer.appendChild(col2_2Line);
+
+          const col2_2LabelSold = createSVGElement('text', {
+            x: col2_2X + colWidth + 10, y: col2_1RemainY + col2_2SoldH / 2,
+            'text-anchor': 'start', fill: '#e74c3c', 'font-size': '11',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          col2_2LabelSold.textContent = '1/2 venduto';
+          labelContainer.appendChild(col2_2LabelSold);
+
+          const col2_2LabelRemain = createSVGElement('text', {
+            x: col2_2X + colWidth + 10, y: col2_1RemainY + col2_2SoldH + col2_2RemainH / 2,
+            'text-anchor': 'start', fill: '#3498db', 'font-size': '11',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          col2_2LabelRemain.textContent = '1/2 rimanenti';
+          labelContainer.appendChild(col2_2LabelRemain);
+
+          // Freccia tra colonne
+          const arrow2 = createSVGElement('text', {
+            x: col2_1X + colWidth + colSpacing / 2, y: col2_1RemainY + col2_1RemainH / 2,
+            'text-anchor': 'middle', fill: '#2c3e50', 'font-size': '24'
+          });
+          arrow2.textContent = '→';
+          labelContainer.appendChild(arrow2);
+          break;
+
+        case 'col3':
+        case 'col3-labeled':
+          // Tre colonne allineate in altezza
+          const col3_1X = startX;
+          const col3_1SoldH = maxHeight / 5;
+          const col3_1RemainH = maxHeight * 4/5;
+          const col3_1RemainY = startY + col3_1SoldH;
+
+          // COLONNA 1
+          const col3_1Sold = createSVGElement('rect', {
+            x: col3_1X, y: startY, width: colWidth, height: col3_1SoldH,
+            fill: '#e74c3c', stroke: '#2c3e50', 'stroke-width': '2',
+            'stroke-dasharray': '5,5', opacity: '0.5', rx: '4'
+          });
+          barContainer.appendChild(col3_1Sold);
+
+          const col3_1Remain = createSVGElement('rect', {
+            x: col3_1X, y: col3_1RemainY, width: colWidth, height: col3_1RemainH,
+            fill: '#3498db', stroke: '#2c3e50', 'stroke-width': '2', rx: '4'
+          });
+          barContainer.appendChild(col3_1Remain);
+
+          for (let i = 1; i < 5; i++) {
+            const line1 = createSVGElement('line', {
+              x1: col3_1X, y1: startY + (maxHeight / 5) * i,
+              x2: col3_1X + colWidth, y2: startY + (maxHeight / 5) * i,
+              stroke: '#2c3e50', 'stroke-width': '1', 'stroke-dasharray': '3'
+            });
+            barContainer.appendChild(line1);
+          }
+
+          // COLONNA 2: allineata con i 4/5 della colonna 1
+          const col3_2X = col3_1X + colWidth + colSpacing;
+          const col3_2TotalH = col3_1RemainH;
+          const col3_2SoldH = col3_2TotalH / 2;
+          const col3_2RemainH = col3_2TotalH / 2;
+          const col3_2RemainY = col3_1RemainY + col3_2SoldH;
+
+          const col3_2Sold = createSVGElement('rect', {
+            x: col3_2X, y: col3_1RemainY, width: colWidth, height: col3_2SoldH,
+            fill: '#e74c3c', stroke: '#2c3e50', 'stroke-width': '2',
+            'stroke-dasharray': '5,5', opacity: '0.5', rx: '4'
+          });
+          barContainer.appendChild(col3_2Sold);
+
+          const col3_2Remain = createSVGElement('rect', {
+            x: col3_2X, y: col3_2RemainY, width: colWidth, height: col3_2RemainH,
+            fill: '#3498db', stroke: '#2c3e50', 'stroke-width': '2', rx: '4'
+          });
+          barContainer.appendChild(col3_2Remain);
+
+          const col3_2Line = createSVGElement('line', {
+            x1: col3_2X, y1: col3_2RemainY,
+            x2: col3_2X + colWidth, y2: col3_2RemainY,
+            stroke: '#2c3e50', 'stroke-width': '2', 'stroke-dasharray': '3'
+          });
+          barContainer.appendChild(col3_2Line);
+
+          // COLONNA 3: allineata con la metà rimanente della colonna 2 (i 2/5), divisa in 3 parti
+          const col3_3X = col3_2X + colWidth + colSpacing;
+          const col3_3TotalH = col3_2RemainH; // altezza dei 2/5
+          const col3_3SoldH = col3_3TotalH * 2/3; // 2/3 venduti
+          const col3_3RemainH = col3_3TotalH * 1/3; // 1/3 rimanente
+
+          // Parte venduta (tratteggiata, 2/3 superiori)
+          const col3_3Sold = createSVGElement('rect', {
+            x: col3_3X, y: col3_2RemainY, width: colWidth, height: col3_3SoldH,
+            fill: '#e74c3c', stroke: '#2c3e50', 'stroke-width': '2',
+            'stroke-dasharray': '5,5', opacity: '0.5', rx: '4'
+          });
+          barContainer.appendChild(col3_3Sold);
+
+          // Parte rimanente (piena, 1/3 inferiore)
+          const col3_3Remain = createSVGElement('rect', {
+            x: col3_3X, y: col3_2RemainY + col3_3SoldH, width: colWidth, height: col3_3RemainH,
+            fill: '#3498db', stroke: '#2c3e50', 'stroke-width': '2',
+            class: 'bar-section highlight', rx: '4'
+          });
+          barContainer.appendChild(col3_3Remain);
+
+          // Linee divisorie in 3 parti
+          for (let i = 1; i < 3; i++) {
+            const line3 = createSVGElement('line', {
+              x1: col3_3X, y1: col3_2RemainY + (col3_3TotalH / 3) * i,
+              x2: col3_3X + colWidth, y2: col3_2RemainY + (col3_3TotalH / 3) * i,
+              stroke: '#2c3e50', 'stroke-width': '1', 'stroke-dasharray': '3'
+            });
+            barContainer.appendChild(line3);
+          }
+
+          // Etichette
+          const col3_3LabelSold = createSVGElement('text', {
+            x: col3_3X + colWidth + 10, y: col3_2RemainY + col3_3SoldH / 2,
+            'text-anchor': 'start', fill: '#e74c3c', 'font-size': '11',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          col3_3LabelSold.textContent = '2/3 venduti';
+          labelContainer.appendChild(col3_3LabelSold);
+
+          const col3_3LabelText = type === 'col3-labeled' ? '1/3 = 16L' : '1/3 rimanenti';
+          const col3_3LabelRemain = createSVGElement('text', {
+            x: col3_3X + colWidth + 10, y: col3_2RemainY + col3_3SoldH + col3_3RemainH / 2,
+            'text-anchor': 'start', fill: '#3498db', 'font-size': '11',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          col3_3LabelRemain.textContent = col3_3LabelText;
+          labelContainer.appendChild(col3_3LabelRemain);
+
+          // Frecce
+          const arrow3_1 = createSVGElement('text', {
+            x: col3_1X + colWidth + colSpacing / 2, y: col3_1RemainY + col3_1RemainH / 2,
+            'text-anchor': 'middle', fill: '#2c3e50', 'font-size': '24'
+          });
+          arrow3_1.textContent = '→';
+          labelContainer.appendChild(arrow3_1);
+
+          const arrow3_2 = createSVGElement('text', {
+            x: col3_2X + colWidth + colSpacing / 2, y: col3_2RemainY + col3_2RemainH / 2,
+            'text-anchor': 'middle', fill: '#2c3e50', 'font-size': '24'
+          });
+          arrow3_2.textContent = '→';
+          labelContainer.appendChild(arrow3_2);
+          break;
+
+        case 'col-full':
+          // Colonna piena con etichetta "120 litri"
+          const colFullX = startX + 150;
+          const colFull = createSVGElement('rect', {
+            x: colFullX, y: startY, width: colWidth, height: maxHeight,
+            fill: '#3498db', stroke: '#2c3e50', 'stroke-width': '3',
+            class: 'bar-section', rx: '4'
+          });
+          barContainer.appendChild(colFull);
+
+          const labelFull = createSVGElement('text', {
+            x: colFullX + colWidth / 2, y: startY + maxHeight / 2,
+            'text-anchor': 'middle', fill: 'white', 'font-size': '22',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          labelFull.textContent = '120L';
+          barContainer.appendChild(labelFull);
+
+          const labelFullBottom = createSVGElement('text', {
+            x: colFullX + colWidth / 2, y: startY + maxHeight + 20,
+            'text-anchor': 'middle', fill: '#2c3e50', 'font-size': '16',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          labelFullBottom.textContent = 'Totale';
+          labelContainer.appendChild(labelFullBottom);
+          break;
+
+        case 'col-final':
+          // Colonna con 104L venduti (rosso) e 16L rimanenti (blu)
+          const colFinalX = startX + 150;
+          const soldFinalH = maxHeight * (104/120);
+          const remainFinalH = maxHeight * (16/120);
+
+          const soldFinal = createSVGElement('rect', {
+            x: colFinalX, y: startY, width: colWidth, height: soldFinalH,
+            fill: '#e74c3c', stroke: '#2c3e50', 'stroke-width': '2', rx: '4'
+          });
+          barContainer.appendChild(soldFinal);
+
+          const remainFinal = createSVGElement('rect', {
+            x: colFinalX, y: startY + soldFinalH, width: colWidth, height: remainFinalH,
+            fill: '#3498db', stroke: '#2c3e50', 'stroke-width': '2', rx: '4'
+          });
+          barContainer.appendChild(remainFinal);
+
+          const labelSoldFinal = createSVGElement('text', {
+            x: colFinalX + colWidth / 2, y: startY + soldFinalH / 2,
+            'text-anchor': 'middle', fill: 'white', 'font-size': '18',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          labelSoldFinal.textContent = '104L';
+          barContainer.appendChild(labelSoldFinal);
+
+          const labelRemainFinal = createSVGElement('text', {
+            x: colFinalX + colWidth / 2, y: startY + soldFinalH + remainFinalH / 2,
+            'text-anchor': 'middle', fill: 'white', 'font-size': '16',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          labelRemainFinal.textContent = '16L';
+          barContainer.appendChild(labelRemainFinal);
+
+          const labelVenduti = createSVGElement('text', {
+            x: colFinalX - 10, y: startY + soldFinalH / 2,
+            'text-anchor': 'end', fill: '#e74c3c', 'font-size': '14',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          labelVenduti.textContent = 'Venduti';
+          labelContainer.appendChild(labelVenduti);
+
+          const labelRimasti = createSVGElement('text', {
+            x: colFinalX - 10, y: startY + soldFinalH + remainFinalH / 2,
+            'text-anchor': 'end', fill: '#3498db', 'font-size': '14',
+            'font-weight': 'bold', class: 'bar-label'
+          });
+          labelRimasti.textContent = 'Rimasti';
+          labelContainer.appendChild(labelRimasti);
+          break;
+
+        case 'col-summary':
+          // 4 colonne affiancate che mostrano la progressione
+          const summarySteps = [
+            {label: 'Inizio', value: 120, color: '#3498db'},
+            {label: 'Dopo 1ª', value: 96, sold: 24, color: '#3498db'},
+            {label: 'Dopo 2ª', value: 48, sold: 48, color: '#3498db'},
+            {label: 'Dopo 3ª', value: 16, sold: 32, color: '#3498db'}
+          ];
+
+          const colSummaryWidth = 70;
+          const colSummarySpacing = 40;
+          summarySteps.forEach((step, i) => {
+            const colX = startX + i * (colSummaryWidth + colSummarySpacing);
+            const height = (step.value / 120) * maxHeight;
+
+            const rect = createSVGElement('rect', {
+              x: colX, y: startY + (maxHeight - height),
+              width: colSummaryWidth, height: height,
+              fill: step.color, stroke: '#2c3e50', 'stroke-width': '2',
+              class: 'bar-section', rx: '4'
+            });
+            barContainer.appendChild(rect);
+
+            // Valore in litri dentro la colonna
+            const valueText = createSVGElement('text', {
+              x: colX + colSummaryWidth / 2,
+              y: startY + (maxHeight - height) + height / 2,
+              'text-anchor': 'middle', fill: 'white', 'font-size': '16',
+              'font-weight': 'bold', class: 'bar-label'
+            });
+            valueText.textContent = step.value + 'L';
+            barContainer.appendChild(valueText);
+
+            // Label sotto
+            const labelText = createSVGElement('text', {
+              x: colX + colSummaryWidth / 2, y: startY + maxHeight + 20,
+              'text-anchor': 'middle', fill: '#2c3e50', 'font-size': '13',
+              'font-weight': 'bold', class: 'bar-label'
+            });
+            labelText.textContent = step.label;
+            labelContainer.appendChild(labelText);
+
+            // Venduto (se presente)
+            if (step.sold) {
+              const soldText = createSVGElement('text', {
+                x: colX + colSummaryWidth / 2, y: startY + maxHeight + 36,
+                'text-anchor': 'middle', fill: '#e74c3c', 'font-size': '12',
+                'font-weight': 'bold', class: 'bar-label'
+              });
+              soldText.textContent = '(venduti ' + step.sold + 'L)';
+              labelContainer.appendChild(soldText);
+            }
+          });
+          break;
+      }
+    }
+
+    // ===== FUNZIONI DI NAVIGAZIONE E RENDERING =====
+
+    function renderStep(stepIndex) {
+      state.currentStep = stepIndex;
+      const step = steps[stepIndex];
+
+      // Aggiorna titolo e descrizione
+      document.getElementById('step-title').innerHTML = step.title;
+      document.getElementById('step-description').innerHTML = step.description;
+      document.getElementById('step-math').innerHTML = step.math || '';
+
+      // Feedback
+      const feedbackEl = document.getElementById('step-feedback');
+      if (step.feedback) {
+        feedbackEl.innerHTML = step.feedback;
+        feedbackEl.style.display = 'block';
+      } else {
+        feedbackEl.style.display = 'none';
+      }
+
+      // Extra content per step 7 (tabella)
+      const extraEl = document.getElementById('step-extra');
+      if (stepIndex === 7) {
+        extraEl.innerHTML = `
+          <table class="summary-table">
+            <thead>
+              <tr>
+                <th>Vendita</th>
+                <th>Calcolo</th>
+                <th>Venduto</th>
+                <th>Rimanente</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Inizio</strong></td>
+                <td>-</td>
+                <td>0 litri</td>
+                <td>120 litri</td>
+              </tr>
+              <tr>
+                <td><strong>Prima vendita</strong></td>
+                <td>$\\frac{1}{5}$ di 120</td>
+                <td>24 litri</td>
+                <td>96 litri</td>
+              </tr>
+              <tr>
+                <td><strong>Seconda vendita</strong></td>
+                <td>$\\frac{1}{2}$ di 96</td>
+                <td>48 litri</td>
+                <td>48 litri</td>
+              </tr>
+              <tr>
+                <td><strong>Terza vendita</strong></td>
+                <td>$\\frac{2}{3}$ di 48</td>
+                <td>32 litri</td>
+                <td>16 litri</td>
+              </tr>
+              <tr>
+                <td colspan="2"><strong>TOTALE VENDUTO</strong></td>
+                <td colspan="2"><strong>104 litri</strong> ✓</td>
+              </tr>
+            </tbody>
+          </table>
+        `;
+      } else {
+        extraEl.innerHTML = '';
+      }
+
+      // Aggiorna indicatore
+      document.getElementById('step-indicator').textContent = `Step ${stepIndex} / ${state.totalSteps}`;
+
+      // Aggiorna pulsanti
+      document.getElementById('btn-prev').disabled = (stepIndex === 0);
+      document.getElementById('btn-next').disabled = (stepIndex === state.totalSteps);
+
+      // Render visualizzazione
+      renderVisualization(step.visualizationType);
+
+      // Render math con KaTeX
+      renderMathInElement(document.getElementById('explanation-container'), {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "$", right: "$", display: false}
+        ],
+        throwOnError: false
+      });
+
+      // Render math nella tabella se presente
+      if (stepIndex === 7) {
+        renderMathInElement(document.getElementById('step-extra'), {
+          delimiters: [
+            {left: "$$", right: "$$", display: true},
+            {left: "$", right: "$", display: false}
+          ],
+          throwOnError: false
+        });
+      }
+
+      // Focus accessibilità
+      document.getElementById('step-title').focus();
+
+      // Scroll to top
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    function navigate(direction) {
+      const newStep = state.currentStep + direction;
+      if (newStep >= 0 && newStep <= state.totalSteps) {
+        renderStep(newStep);
+      }
+    }
+
+    function reset() {
+      renderStep(0);
+    }
+
+    // ===== MODAL =====
+
+    function showModal() {
+      const modal = document.getElementById('help-modal');
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.getElementById('btn-close-modal').focus();
+    }
+
+    function hideModal() {
+      const modal = document.getElementById('help-modal');
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    // ===== EVENT LISTENERS =====
+
+    function setupEventListeners() {
+      // Navigazione
+      document.getElementById('btn-prev').addEventListener('click', () => navigate(-1));
+      document.getElementById('btn-next').addEventListener('click', () => navigate(1));
+      document.getElementById('btn-reset').addEventListener('click', reset);
+
+      // Modal
+      document.getElementById('btn-help').addEventListener('click', showModal);
+      document.getElementById('btn-close-modal').addEventListener('click', hideModal);
+
+      // Click fuori dal modal per chiudere
+      document.getElementById('help-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'help-modal') {
+          hideModal();
+        }
+      });
+
+      // Navigazione con tastiera
+      document.addEventListener('keydown', (e) => {
+        // Ignora se il modal è aperto
+        if (document.getElementById('help-modal').classList.contains('active')) {
+          if (e.key === 'Escape') {
+            hideModal();
+          }
+          return;
+        }
+
+        switch(e.key) {
+          case 'ArrowLeft':
+            navigate(-1);
+            break;
+          case 'ArrowRight':
+            navigate(1);
+            break;
+          case 'Home':
+            reset();
+            break;
+          case 'Escape':
+            hideModal();
+            break;
+        }
+      });
+    }
+
+    // ===== INIZIALIZZAZIONE =====
+
+    function init() {
+      renderStep(0);
+      setupEventListeners();
+    }
+
+    // Avvio al caricamento DOM
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>
