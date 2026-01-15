@@ -1,38 +1,345 @@
-<!DOCTYPE=HTML><HTML>
-<HEAD>
-<title>Geometria</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Matematica Interattiva - Repository Didattico</title>
+
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <style>
+    :root {
+      --color-primary: #2c3e50;
+      --color-secondary: #3498db;
+      --color-accent: #e74c3c;
+      --color-success: #27ae60;
+      --color-warning: #f39c12;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px 0;
+    }
+
+    .main-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-secondary) 100%);
+      color: white;
+      padding: 60px 40px;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      opacity: 0.95;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    .content-section {
+      padding: 50px 40px;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 12px;
+      border-left: 5px solid var(--color-secondary);
+      padding-left: 20px;
+    }
+
+    .section-description {
+      font-size: 1.1rem;
+      color: #555;
+      margin-bottom: 30px;
+      padding-left: 25px;
+    }
+
+    .card-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 24px;
+      margin-top: 30px;
+    }
+
+    .activity-card {
+      background: white;
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 24px;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .activity-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: var(--color-secondary);
+      transform: scaleY(0);
+      transition: transform 0.3s ease;
+    }
+
+    .activity-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      border-color: var(--color-secondary);
+    }
+
+    .activity-card:hover::before {
+      transform: scaleY(1);
+    }
+
+    .card-icon {
+      font-size: 2.5rem;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      margin-bottom: 12px;
+    }
+
+    .card-description {
+      font-size: 1rem;
+      color: #666;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .card-meta {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 16px;
+    }
+
+    .badge {
+      font-size: 0.85rem;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-weight: 500;
+    }
+
+    .badge-geometry {
+      background: #e3f2fd;
+      color: #1976d2;
+    }
+
+    .badge-algebra {
+      background: #f3e5f5;
+      color: #7b1fa2;
+    }
+
+    .badge-interactive {
+      background: #e8f5e9;
+      color: #388e3c;
+    }
+
+    .badge-problem {
+      background: #fff3e0;
+      color: #f57c00;
+    }
+
+    footer {
+      background: #f8f9fa;
+      padding: 30px 40px;
+      text-align: center;
+      color: #666;
+      border-top: 1px solid #e0e0e0;
+    }
+
+    footer a {
+      color: var(--color-secondary);
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    @media (max-width: 768px) {
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      .hero p {
+        font-size: 1rem;
+      }
+
+      .content-section {
+        padding: 30px 20px;
+      }
+
+      .card-container {
+        grid-template-columns: 1fr;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-container">
+    <!-- Hero Section -->
+    <header class="hero">
+      <h1>📐 Matematica Interattiva</h1>
+      <p>Esplora teoremi e problemi matematici attraverso dimostrazioni interattive e visualizzazioni dinamiche</p>
+    </header>
+
+    <!-- Geometria Section -->
+    <section class="content-section">
+      <h2 class="section-title">Geometria e Teoremi</h2>
+      <p class="section-description">Dimostrazioni interattive con GeoGebra dei più importanti teoremi geometrici</p>
+
+      <div class="card-container">
+        <!-- Talete -->
+        <a href="talete.html" class="activity-card">
+          <div class="card-icon">📏</div>
+          <h3 class="card-title">Teorema di Talete</h3>
+          <p class="card-description">
+            Versione triangolare: se in un triangolo tracci una parallela alla base, essa individua sugli altri due lati segmenti proporzionali.
+          </p>
+          <div class="card-meta">
+            <span class="badge badge-geometry">Geometria</span>
+            <span class="badge badge-interactive">GeoGebra</span>
+          </div>
+        </a>
+
+        <!-- Talete Classic -->
+        <a href="talete-classic.html" class="activity-card">
+          <div class="card-icon">📐</div>
+          <h3 class="card-title">Teorema di Talete (Classico)</h3>
+          <p class="card-description">
+            Versione classica: un fascio di rette parallele determina su due trasversali segmenti proporzionali.
+          </p>
+          <div class="card-meta">
+            <span class="badge badge-geometry">Geometria</span>
+            <span class="badge badge-interactive">GeoGebra</span>
+          </div>
+        </a>
+
+        <!-- Triangoli Simili -->
+        <a href="triangoli-simili.html" class="activity-card">
+          <div class="card-icon">△</div>
+          <h3 class="card-title">Triangoli Simili</h3>
+          <p class="card-description">
+            Studio dei criteri di similitudine dei triangoli e delle loro proprietà fondamentali.
+          </p>
+          <div class="card-meta">
+            <span class="badge badge-geometry">Geometria</span>
+            <span class="badge badge-interactive">GeoGebra</span>
+          </div>
+        </a>
+
+        <!-- Primo Teorema di Euclide -->
+        <a href="primoteoremadieuclide.html" class="activity-card">
+          <div class="card-icon">📊</div>
+          <h3 class="card-title">Primo Teorema di Euclide</h3>
+          <p class="card-description">
+            In un triangolo rettangolo, ogni cateto è medio proporzionale tra l'ipotenusa e la proiezione di quel cateto sull'ipotenusa.
+          </p>
+          <div class="card-meta">
+            <span class="badge badge-geometry">Geometria</span>
+            <span class="badge badge-interactive">GeoGebra</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Algoritmi Section -->
+    <section class="content-section" style="background: #f8f9fa;">
+      <h2 class="section-title">Algoritmi e Metodi Numerici</h2>
+      <p class="section-description">Visualizzazioni interattive di algoritmi matematici classici</p>
+
+      <div class="card-container">
+        <!-- Algoritmo di Erone -->
+        <a href="algoritmodierone.html" class="activity-card">
+          <div class="card-icon">🔢</div>
+          <h3 class="card-title">Algoritmo di Erone</h3>
+          <p class="card-description">
+            Metodo iterativo per l'approssimazione delle radici quadrate, con interpretazione geometrica e tabella interattiva.
+          </p>
+          <div class="card-meta">
+            <span class="badge badge-algebra">Algoritmi</span>
+            <span class="badge badge-interactive">GeoGebra</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Problemi e Studio di Funzioni Section -->
+    <section class="content-section">
+      <h2 class="section-title">Problemi e Studio di Funzioni</h2>
+      <p class="section-description">Attività interattive guidate per risolvere problemi e studiare funzioni passo dopo passo</p>
+
+      <div class="card-container">
+        <!-- Problema Frazioni -->
+        <a href="problema-frazioni-successive.html" class="activity-card">
+          <div class="card-icon">🧮</div>
+          <h3 class="card-title">Problema con Frazioni Successive</h3>
+          <p class="card-description">
+            Guida interattiva per risolvere un problema di frazioni successive: Alessia vende olio in tre vendite consecutive. Quanti litri sono stati venduti?
+          </p>
+          <div class="card-meta">
+            <span class="badge badge-problem">Problema</span>
+            <span class="badge badge-algebra">Frazioni</span>
+            <span class="badge badge-interactive">Visualizzazione SVG</span>
+          </div>
+        </a>
+
+        <!-- Studio Funzioni -->
+        <a href="studio-funzioni-polinomiali.html" class="activity-card">
+          <div class="card-icon">📈</div>
+          <h3 class="card-title">Studio di Zeri e Segno</h3>
+          <p class="card-description">
+            Impara a studiare zeri e segno di funzioni polinomiali (x² + x - 12 e x³ + x) con grafici interattivi e reminder sui prerequisiti.
+          </p>
+          <div class="card-meta">
+            <span class="badge badge-algebra">Funzioni</span>
+            <span class="badge badge-interactive">Grafici Canvas</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>Repository di matematica interattiva per studenti di scuola superiore</p>
+      <p style="margin-top: 8px; font-size: 0.9rem;">
+        Tutte le attività sono completamente gratuite e open source
+      </p>
+    </footer>
+  </div>
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
-</HEAD>
-<BODY>
-
-<div class="container-fluid p-2 bg-primary text-white text-center">
-  <h1>Repository di Geometria</h1>
-</div>
-
-<div class="container mt-2">
-  <div class="row">
-    <h1>Dimostrazioni dagli Elementi di Euclide</h1>
-    <h2>Libro I</h2>
-     <ul>
-      <li>I.1 Costruzione del triangolo equilatero di lato fissato</li>
-      <li>I.2 Dato un punto A e un segmento BC, costruire un punto L tale che il segmento AL sia uguale a BC.</li>
-      <li>I.3 Dati due segmenti AB, CD con CD minore di AB, costruire un punto P su AB tale che AP sia uguale a CD.</li>
-    </ul> 
-  </div>
-  <div class="row">
-    <h1>Altre pagine</h1>
-    <a href="/geometria/talete.html">Teorema di Talete</a>
-    <a href="/geometria/talete-classic.html">Teorema di Talete (classico)</a>
-    <a href="/geometria/primoteoremadieuclide.html">Primo Teorema di Euclide</a>
-    <a href="/geometria/algoritmodierone.html">Teorema di Talete</a>
-  </div>
-</div>
-  
-<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-
-</BODY>
-</HTML>
+</body>
+</html>

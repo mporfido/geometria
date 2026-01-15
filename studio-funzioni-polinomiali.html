@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Studio di Zeri e Segno - Funzioni Polinomiali</title>
+
+  <!-- KaTeX CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+  <style>
+    /* CSS Reset e Base */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --color-primary: #2c3e50;
+      --color-secondary: #3498db;
+      --color-positive: #27ae60;
+      --color-negative: #e74c3c;
+      --color-zero: #f39c12;
+      --color-neutral: #ecf0f1;
+      --color-text: #2c3e50;
+      --color-bg: #ffffff;
+      --color-border: #bdc3c7;
+      --color-reminder: #fff3cd;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      font-size: 18px;
+      line-height: 1.6;
+      color: var(--color-text);
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .skip-link {
+      position: absolute;
+      top: -40px;
+      left: 0;
+      background: var(--color-primary);
+      color: white;
+      padding: 8px;
+      text-decoration: none;
+      z-index: 100;
+    }
+
+    .skip-link:focus {
+      top: 0;
+    }
+
+    /* Container principale */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: var(--color-bg);
+      border-radius: 16px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+    }
+
+    /* Header */
+    header {
+      background: var(--color-primary);
+      color: white;
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    header h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0;
+    }
+
+    .header-controls {
+      display: flex;
+      gap: 12px;
+    }
+
+    .btn-icon {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-icon:hover {
+      background: rgba(255, 255, 255, 0.3);
+      transform: scale(1.1);
+    }
+
+    .btn-icon:focus {
+      outline: 2px solid white;
+      outline-offset: 2px;
+    }
+
+    /* Main Content */
+    main {
+      padding: 40px 32px;
+      min-height: 500px;
+    }
+
+    /* Canvas per i grafici */
+    #graph-container {
+      margin: 30px 0;
+      text-align: center;
+      background: #f8f9fa;
+      padding: 20px;
+      border-radius: 12px;
+      border: 2px solid var(--color-border);
+    }
+
+    #graph-canvas {
+      max-width: 100%;
+      border: 1px solid var(--color-border);
+      border-radius: 8px;
+      background: white;
+    }
+
+    /* Spiegazione */
+    #explanation-container {
+      background: var(--color-neutral);
+      padding: 32px;
+      border-radius: 12px;
+      margin-top: 24px;
+    }
+
+    #step-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--color-primary);
+      margin-bottom: 16px;
+    }
+
+    #step-description {
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+      color: var(--color-text);
+    }
+
+    #step-math {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 4px solid var(--color-secondary);
+      margin: 20px 0;
+      font-size: 1.05rem;
+    }
+
+    #step-feedback {
+      background: rgba(39, 174, 96, 0.1);
+      border-left: 4px solid var(--color-positive);
+      padding: 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-weight: 500;
+      color: var(--color-positive);
+    }
+
+    /* Box reminder */
+    .reminder-box {
+      background: var(--color-reminder);
+      border-left: 4px solid var(--color-zero);
+      padding: 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+      font-size: 0.95rem;
+    }
+
+    .reminder-box h4 {
+      margin: 0 0 8px 0;
+      color: var(--color-zero);
+      font-size: 1rem;
+    }
+
+    /* Tabella segno */
+    .sign-table {
+      margin: 20px 0;
+      overflow-x: auto;
+    }
+
+    .sign-table table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .sign-table th,
+    .sign-table td {
+      padding: 12px;
+      text-align: center;
+      border: 1px solid var(--color-border);
+    }
+
+    .sign-table th {
+      background: var(--color-primary);
+      color: white;
+      font-weight: 600;
+    }
+
+    .sign-positive {
+      background: rgba(39, 174, 96, 0.2);
+      color: var(--color-positive);
+      font-weight: bold;
+    }
+
+    .sign-negative {
+      background: rgba(231, 76, 60, 0.2);
+      color: var(--color-negative);
+      font-weight: bold;
+    }
+
+    .sign-zero {
+      background: rgba(243, 156, 18, 0.2);
+      color: var(--color-zero);
+      font-weight: bold;
+    }
+
+    /* Navigation */
+    nav {
+      background: var(--color-neutral);
+      padding: 24px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      border-top: 2px solid var(--color-border);
+    }
+
+    .nav-button {
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-button:hover:not(:disabled) {
+      background: #1a252f;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(44, 62, 80, 0.3);
+    }
+
+    .nav-button:disabled {
+      background: #95a5a6;
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    .nav-button:focus {
+      outline: 2px solid var(--color-primary);
+      outline-offset: 2px;
+    }
+
+    #step-indicator {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--color-text);
+      padding: 8px 16px;
+      background: white;
+      border-radius: 20px;
+      border: 2px solid var(--color-primary);
+    }
+
+    /* Modal */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 32px;
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: slideUp 0.3s ease;
+    }
+
+    .modal-content h2 {
+      color: var(--color-primary);
+      margin-bottom: 16px;
+    }
+
+    .modal-content p {
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    .modal-content ul {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+
+    .modal-content li {
+      margin-bottom: 8px;
+    }
+
+    .btn-close-modal {
+      background: var(--color-primary);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: all 0.3s ease;
+    }
+
+    .btn-close-modal:hover {
+      background: #1a252f;
+    }
+
+    /* Animazioni */
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 10px;
+      }
+
+      header {
+        padding: 20px;
+      }
+
+      header h1 {
+        font-size: 1.35rem;
+      }
+
+      main {
+        padding: 24px 20px;
+      }
+
+      #explanation-container {
+        padding: 24px;
+      }
+
+      nav {
+        padding: 20px;
+      }
+
+      .nav-button {
+        padding: 10px 16px;
+        font-size: 0.9rem;
+      }
+    }
+
+    /* Utility */
+    .text-center {
+      text-align: center;
+    }
+
+    strong {
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    .highlight {
+      background: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+      background-repeat: no-repeat;
+      background-size: 100% 40%;
+      background-position: 0 80%;
+      padding: 2px 4px;
+    }
+  </style>
+</head>
+<body>
+  <a href="#main-content" class="skip-link">Salta al contenuto</a>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>📊 Studio di Zeri e Segno</h1>
+      <div class="header-controls">
+        <button id="btn-help" class="btn-icon" aria-label="Aiuto" title="Aiuto">?</button>
+        <button id="btn-reset" class="btn-icon" aria-label="Ricomincia" title="Ricomincia">↻</button>
+      </div>
+    </header>
+
+    <!-- Main content -->
+    <main id="main-content">
+      <!-- Grafico -->
+      <section id="graph-container">
+        <canvas id="graph-canvas" width="700" height="400"></canvas>
+      </section>
+
+      <!-- Pannello spiegazione -->
+      <section id="explanation-container" class="fade-in">
+        <h2 id="step-title" tabindex="-1"></h2>
+        <div id="step-description"></div>
+        <div id="step-math"></div>
+        <div id="step-feedback" style="display: none;"></div>
+      </section>
+    </main>
+
+    <!-- Navigazione -->
+    <nav>
+      <button id="btn-prev" class="nav-button" aria-label="Vai allo step precedente">
+        ← Indietro
+      </button>
+      <span id="step-indicator">Step 0 / 15</span>
+      <button id="btn-next" class="nav-button" aria-label="Vai allo step successivo">
+        Avanti →
+      </button>
+    </nav>
+  </div>
+
+  <!-- Modal aiuto -->
+  <div id="help-modal" class="modal" role="dialog" aria-labelledby="modal-title" aria-hidden="true">
+    <div class="modal-content">
+      <h2 id="modal-title">Come usare questa app</h2>
+      <p>Questa applicazione ti guida passo-passo nello studio degli zeri e del segno di funzioni polinomiali.</p>
+      <p><strong>Navigazione:</strong></p>
+      <ul>
+        <li>Usa i pulsanti <strong>"Avanti"</strong> e <strong>"Indietro"</strong> per navigare tra gli step</li>
+        <li>Oppure usa i tasti freccia della tastiera (← →)</li>
+        <li>Premi il tasto <strong>Home</strong> per tornare all'inizio</li>
+      </ul>
+      <p><strong>Cosa imparerai:</strong></p>
+      <ul>
+        <li>Come trovare gli <strong>zeri</strong> di una funzione</li>
+        <li>Come studiare il <strong>segno</strong> di una funzione</li>
+        <li>Come leggere il grafico per capire quando la funzione è positiva o negativa</li>
+      </ul>
+      <p>Prenditi il tempo che ti serve per capire ogni step prima di andare avanti!</p>
+      <button class="btn-close-modal" id="btn-close-modal">Ho capito</button>
+    </div>
+  </div>
+
+  <!-- KaTeX JS -->
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <script>
+    // ===== CONFIGURAZIONE E DATI =====
+
+    const state = {
+      currentStep: 0,
+      totalSteps: 15
+    };
+
+    const steps = [
+      {
+        id: 0,
+        title: "Introduzione: Zeri e Segno",
+        description: `
+          <p>Lo <strong>studio di una funzione</strong> comprende diversi aspetti. Oggi ci concentreremo su due fondamentali:</p>
+          <ul style="margin: 16px 0; padding-left: 24px;">
+            <li><strong>Zeri della funzione</strong>: i valori di $x$ per cui $f(x) = 0$</li>
+            <li><strong>Segno della funzione</strong>: gli intervalli in cui $f(x) > 0$ (positiva) o $f(x) < 0$ (negativa)</li>
+          </ul>
+          <p>Studieremo due funzioni polinomiali:</p>
+          <ol style="margin: 16px 0; padding-left: 24px;">
+            <li>$f(x) = x^2 + x - 12$ (funzione quadratica)</li>
+            <li>$g(x) = x^3 + x$ (funzione cubica)</li>
+          </ol>
+        `,
+        math: null,
+        feedback: null,
+        graphType: 'none'
+      },
+
+      // FUNZIONE 1: x^2 + x - 12
+      {
+        id: 1,
+        title: "Funzione 1: f(x) = x² + x - 12",
+        description: `
+          <p>Iniziamo con la funzione quadratica:</p>
+          <p style="font-size: 1.3rem; text-align: center; margin: 20px 0;">$f(x) = x^2 + x - 12$</p>
+          <p>Il grafico di una funzione di secondo grado è una <strong>parabola</strong>.</p>
+          <p>Poiché il coefficiente di $x^2$ è positivo ($a = 1 > 0$), la parabola ha la <strong>concavità rivolta verso l'alto</strong> (a forma di U).</p>
+        `,
+        math: null,
+        feedback: `✅ Questa è una funzione quadratica. Il suo grafico è una parabola con concavità verso l'alto.`,
+        graphType: 'f_full'
+      },
+
+      {
+        id: 2,
+        title: "Trovare gli Zeri - Metodo 1: Formula Quadratica",
+        description: `
+          <p>Per trovare gli <strong>zeri</strong>, risolviamo l'equazione $f(x) = 0$:</p>
+          <p style="text-align: center; margin: 16px 0;">$x^2 + x - 12 = 0$</p>
+
+          <div class="reminder-box">
+            <h4>💡 Reminder: Formula Quadratica</h4>
+            <p>Per un'equazione $ax^2 + bx + c = 0$, le soluzioni sono:</p>
+            <p style="text-align: center;">$x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$</p>
+          </div>
+        `,
+        math: `
+          <p>Nel nostro caso: $a = 1$, $b = 1$, $c = -12$</p>
+          <p>Calcoliamo il discriminante:</p>
+          $$\\Delta = b^2 - 4ac = 1^2 - 4(1)(-12) = 1 + 48 = 49$$
+          <p>Poiché $\\Delta > 0$, ci sono <strong>due soluzioni reali distinte</strong>:</p>
+          $$x = \\frac{-1 \\pm \\sqrt{49}}{2} = \\frac{-1 \\pm 7}{2}$$
+          <p>Quindi:</p>
+          $$x_1 = \\frac{-1 + 7}{2} = \\frac{6}{2} = 3$$
+          $$x_2 = \\frac{-1 - 7}{2} = \\frac{-8}{2} = -4$$
+        `,
+        feedback: `✅ Gli zeri della funzione sono $x_1 = 3$ e $x_2 = -4$`,
+        graphType: 'f_zeros'
+      },
+
+      {
+        id: 3,
+        title: "Trovare gli Zeri - Metodo 2: Scomposizione",
+        description: `
+          <p>Possiamo anche <strong>scomporre</strong> il trinomio di secondo grado:</p>
+
+          <div class="reminder-box">
+            <h4>💡 Reminder: Scomposizione Trinomio</h4>
+            <p>Un trinomio $x^2 + bx + c$ si può scomporre come $(x - x_1)(x - x_2)$ dove $x_1$ e $x_2$ sono le radici.</p>
+            <p>Cerchiamo due numeri che moltiplicati danno $c$ e sommati danno $b$.</p>
+          </div>
+        `,
+        math: `
+          <p>Cerchiamo due numeri che:</p>
+          <ul style="padding-left: 24px;">
+            <li>Moltiplicati danno $-12$</li>
+            <li>Sommati danno $1$</li>
+          </ul>
+          <p>I numeri sono $4$ e $-3$ perché: $4 \\cdot (-3) = -12$ e $4 + (-3) = 1$</p>
+          <p>Quindi possiamo scrivere:</p>
+          $$x^2 + x - 12 = (x + 4)(x - 3)$$
+          <p>Per la <strong>legge di annullamento del prodotto</strong>, il prodotto è zero quando almeno uno dei fattori è zero:</p>
+          $$x + 4 = 0 \\quad \\text{oppure} \\quad x - 3 = 0$$
+          $$x = -4 \\quad \\text{oppure} \\quad x = 3$$
+        `,
+        feedback: `✅ La scomposizione conferma: gli zeri sono $x = -4$ e $x = 3$`,
+        graphType: 'f_zeros'
+      },
+
+      {
+        id: 4,
+        title: "Studio del Segno",
+        description: `
+          <p>Ora studiamo il <strong>segno</strong> della funzione, cioè quando $f(x) > 0$ (positiva) e quando $f(x) < 0$ (negativa).</p>
+
+          <div class="reminder-box">
+            <h4>💡 Reminder: Parabola e Segno</h4>
+            <p>Per una parabola con concavità verso l'alto:</p>
+            <ul style="padding-left: 24px;">
+              <li><strong>Esterna</strong> agli zeri: la funzione è <strong>positiva</strong></li>
+              <li><strong>Interna</strong> agli zeri: la funzione è <strong>negativa</strong></li>
+            </ul>
+          </div>
+        `,
+        math: `
+          <p>La nostra parabola ha concavità verso l'alto e zeri in $x = -4$ e $x = 3$.</p>
+          <p>Dividendo la retta reale in intervalli:</p>
+          <div class="sign-table">
+            <table>
+              <tr>
+                <th>Intervallo</th>
+                <th>$x < -4$</th>
+                <th>$x = -4$</th>
+                <th>$-4 < x < 3$</th>
+                <th>$x = 3$</th>
+                <th>$x > 3$</th>
+              </tr>
+              <tr>
+                <td><strong>Segno $f(x)$</strong></td>
+                <td class="sign-positive">+</td>
+                <td class="sign-zero">0</td>
+                <td class="sign-negative">−</td>
+                <td class="sign-zero">0</td>
+                <td class="sign-positive">+</td>
+              </tr>
+            </table>
+          </div>
+        `,
+        feedback: `✅ La funzione è <strong>positiva</strong> per $x < -4$ o $x > 3$, <strong>negativa</strong> per $-4 < x < 3$`,
+        graphType: 'f_sign'
+      },
+
+      {
+        id: 5,
+        title: "Riepilogo Funzione 1",
+        description: `
+          <p><strong>Funzione:</strong> $f(x) = x^2 + x - 12$</p>
+          <p><strong>Forma scomposta:</strong> $f(x) = (x + 4)(x - 3)$</p>
+          <p><strong>Zeri:</strong> $x = -4$ e $x = 3$</p>
+          <p><strong>Segno:</strong></p>
+          <ul style="padding-left: 24px; margin: 12px 0;">
+            <li>$f(x) > 0$ per $x < -4$ oppure $x > 3$</li>
+            <li>$f(x) = 0$ per $x = -4$ oppure $x = 3$</li>
+            <li>$f(x) < 0$ per $-4 < x < 3$</li>
+          </ul>
+        `,
+        math: null,
+        feedback: `🎉 Ottimo! Hai completato lo studio della prima funzione!`,
+        graphType: 'f_sign'
+      },
+
+      // FUNZIONE 2: x^3 + x
+      {
+        id: 6,
+        title: "Funzione 2: g(x) = x³ + x",
+        description: `
+          <p>Passiamo ora a una funzione di <strong>terzo grado</strong>:</p>
+          <p style="font-size: 1.3rem; text-align: center; margin: 20px 0;">$g(x) = x^3 + x$</p>
+          <p>Il grafico di una funzione di terzo grado ha una forma caratteristica a "S".</p>
+          <p>Osserva il grafico: la funzione attraversa l'asse $x$ (gli zeri) e cambia segno.</p>
+        `,
+        math: null,
+        feedback: `✅ Questa è una funzione cubica. Vediamo come studiarla!`,
+        graphType: 'g_full'
+      },
+
+      {
+        id: 7,
+        title: "Trovare gli Zeri - Raccoglimento a Fattor Comune",
+        description: `
+          <p>Per trovare gli zeri, risolviamo $g(x) = 0$:</p>
+          <p style="text-align: center; margin: 16px 0;">$x^3 + x = 0$</p>
+
+          <div class="reminder-box">
+            <h4>💡 Reminder: Raccoglimento Totale</h4>
+            <p>Quando tutti i termini hanno un fattore comune, lo si può "raccogliere":</p>
+            <p style="text-align: center;">$ax + ay = a(x + y)$</p>
+          </div>
+        `,
+        math: `
+          <p>Notiamo che entrambi i termini hanno $x$ come fattore comune:</p>
+          $$x^3 + x = x \\cdot x^2 + x \\cdot 1 = x(x^2 + 1)$$
+          <p>Quindi l'equazione diventa:</p>
+          $$x(x^2 + 1) = 0$$
+        `,
+        feedback: `✅ Abbiamo scomposto: $g(x) = x(x^2 + 1)$`,
+        graphType: 'g_full'
+      },
+
+      {
+        id: 8,
+        title: "Analisi dei Fattori",
+        description: `
+          <p>Abbiamo scomposto in: $g(x) = x(x^2 + 1)$</p>
+
+          <div class="reminder-box">
+            <h4>💡 Reminder: Legge di Annullamento del Prodotto</h4>
+            <p>Un prodotto è uguale a zero se e solo se <strong>almeno uno dei fattori è zero</strong>:</p>
+            <p style="text-align: center;">$A \\cdot B = 0 \\quad \\Leftrightarrow \\quad A = 0 \\ \\text{ oppure } \\ B = 0$</p>
+          </div>
+        `,
+        math: `
+          <p>Applichiamo la legge di annullamento del prodotto:</p>
+          $$x = 0 \\quad \\text{oppure} \\quad x^2 + 1 = 0$$
+
+          <p><strong>Primo fattore:</strong> $x = 0$ ✓</p>
+
+          <p><strong>Secondo fattore:</strong> $x^2 + 1 = 0$</p>
+          $$x^2 = -1$$
+          <p>Ma $x^2$ è sempre maggiore o uguale a zero per ogni $x$ reale!</p>
+          <p>Quindi <strong>non ci sono soluzioni reali</strong> per $x^2 = -1$.</p>
+        `,
+        feedback: `✅ L'unico zero reale della funzione è $x = 0$`,
+        graphType: 'g_zeros'
+      },
+
+      {
+        id: 9,
+        title: "Perché x² + 1 è Sempre Positivo?",
+        description: `
+          <p>Approfondiamo: perché $x^2 + 1 > 0$ per ogni $x$ reale?</p>
+        `,
+        math: `
+          <p>Consideriamo $x^2 + 1$:</p>
+          <ul style="padding-left: 24px; margin: 12px 0;">
+            <li>Il termine $x^2$ è sempre $\\geq 0$ (un quadrato è sempre non negativo)</li>
+            <li>Quindi $x^2 + 1 \\geq 0 + 1 = 1 > 0$</li>
+          </ul>
+          <p><strong>Conclusione:</strong> $x^2 + 1$ è sempre strettamente maggiore di zero, quindi non può mai essere uguale a zero.</p>
+          <p>Questo significa che il fattore $(x^2 + 1)$ è sempre <strong>positivo</strong>!</p>
+        `,
+        feedback: `✅ Il fattore $(x^2 + 1)$ è sempre positivo e non influenza gli zeri`,
+        graphType: 'g_zeros'
+      },
+
+      {
+        id: 10,
+        title: "Studio del Segno - Disequazione Prodotto",
+        description: `
+          <p>Per studiare il segno di $g(x) = x(x^2 + 1)$, usiamo il metodo della <strong>disequazione prodotto</strong>.</p>
+
+          <div class="reminder-box">
+            <h4>💡 Reminder: Segno di un Prodotto</h4>
+            <p>Il segno di un prodotto $A \\cdot B$ dipende dal segno dei fattori:</p>
+            <ul style="padding-left: 24px;">
+              <li>$(+) \\cdot (+) = (+)$</li>
+              <li>$(+) \\cdot (-) = (-)$</li>
+              <li>$(-) \\cdot (+) = (-)$</li>
+              <li>$(-) \\cdot (-) = (+)$</li>
+            </ul>
+          </div>
+        `,
+        math: `
+          <p>Analizziamo i due fattori:</p>
+          <p><strong>Primo fattore: $x$</strong></p>
+          <ul style="padding-left: 24px;">
+            <li>$x > 0$ per $x > 0$</li>
+            <li>$x = 0$ per $x = 0$</li>
+            <li>$x < 0$ per $x < 0$</li>
+          </ul>
+
+          <p><strong>Secondo fattore: $x^2 + 1$</strong></p>
+          <ul style="padding-left: 24px;">
+            <li>Sempre positivo! ($x^2 + 1 > 0$ per ogni $x$)</li>
+          </ul>
+        `,
+        feedback: `✅ Il segno di $g(x)$ dipende solo dal segno di $x$!`,
+        graphType: 'g_factors'
+      },
+
+      {
+        id: 11,
+        title: "Tabella dei Segni",
+        description: `
+          <p>Costruiamo la <strong>tabella dei segni</strong> per determinare il segno del prodotto:</p>
+        `,
+        math: `
+          <div class="sign-table">
+            <table>
+              <tr>
+                <th>Fattore</th>
+                <th>$x < 0$</th>
+                <th>$x = 0$</th>
+                <th>$x > 0$</th>
+              </tr>
+              <tr>
+                <td><strong>$x$</strong></td>
+                <td class="sign-negative">−</td>
+                <td class="sign-zero">0</td>
+                <td class="sign-positive">+</td>
+              </tr>
+              <tr>
+                <td><strong>$x^2 + 1$</strong></td>
+                <td class="sign-positive">+</td>
+                <td class="sign-positive">+</td>
+                <td class="sign-positive">+</td>
+              </tr>
+              <tr style="border-top: 3px solid #2c3e50;">
+                <td><strong>$g(x) = x(x^2+1)$</strong></td>
+                <td class="sign-negative">−</td>
+                <td class="sign-zero">0</td>
+                <td class="sign-positive">+</td>
+              </tr>
+            </table>
+          </div>
+          <p style="margin-top: 16px;">Il segno del prodotto è:</p>
+          <ul style="padding-left: 24px;">
+            <li>Negativo quando $x < 0$ (perché $(−) \\cdot (+) = (−)$)</li>
+            <li>Zero quando $x = 0$</li>
+            <li>Positivo quando $x > 0$ (perché $(+) \\cdot (+) = (+)$)</li>
+          </ul>
+        `,
+        feedback: `✅ La tabella dei segni ci mostra chiaramente quando la funzione è positiva o negativa!`,
+        graphType: 'g_sign'
+      },
+
+      {
+        id: 12,
+        title: "Verifica sul Grafico",
+        description: `
+          <p>Verifichiamo i risultati osservando il grafico della funzione $g(x) = x^3 + x$:</p>
+          <ul style="padding-left: 24px; margin: 12px 0;">
+            <li><strong class="sign-negative">Sotto l'asse x</strong> (negativa) per $x < 0$</li>
+            <li><strong class="sign-zero">Attraversa l'asse x</strong> (zero) in $x = 0$</li>
+            <li><strong class="sign-positive">Sopra l'asse x</strong> (positiva) per $x > 0$</li>
+          </ul>
+          <p>Il grafico conferma perfettamente i risultati ottenuti con lo studio del segno!</p>
+        `,
+        math: null,
+        feedback: `✅ Il grafico conferma: la funzione è negativa per $x < 0$, positiva per $x > 0$`,
+        graphType: 'g_sign'
+      },
+
+      {
+        id: 13,
+        title: "Riepilogo Funzione 2",
+        description: `
+          <p><strong>Funzione:</strong> $g(x) = x^3 + x$</p>
+          <p><strong>Forma scomposta:</strong> $g(x) = x(x^2 + 1)$</p>
+          <p><strong>Zeri:</strong> $x = 0$ (unico zero reale)</p>
+          <p><strong>Segno:</strong></p>
+          <ul style="padding-left: 24px; margin: 12px 0;">
+            <li>$g(x) < 0$ per $x < 0$</li>
+            <li>$g(x) = 0$ per $x = 0$</li>
+            <li>$g(x) > 0$ per $x > 0$</li>
+          </ul>
+          <p><strong>Nota importante:</strong> Il fattore $(x^2 + 1)$ è sempre positivo, quindi il segno di $g(x)$ dipende solo dal segno di $x$.</p>
+        `,
+        math: null,
+        feedback: `🎉 Eccellente! Hai completato lo studio della seconda funzione!`,
+        graphType: 'g_sign'
+      },
+
+      {
+        id: 14,
+        title: "Confronto Finale",
+        description: `
+          <p>Confrontiamo le due funzioni studiate:</p>
+
+          <h3 style="color: var(--color-secondary); margin-top: 24px;">Funzione Quadratica: $f(x) = x^2 + x - 12$</h3>
+          <ul style="padding-left: 24px; margin: 12px 0;">
+            <li><strong>Tipo:</strong> Parabola (grado 2)</li>
+            <li><strong>Zeri:</strong> Due zeri ($x = -4$ e $x = 3$)</li>
+            <li><strong>Metodi usati:</strong> Formula quadratica, scomposizione</li>
+            <li><strong>Segno:</strong> Cambia due volte (positivo, negativo, positivo)</li>
+          </ul>
+
+          <h3 style="color: var(--color-secondary); margin-top: 24px;">Funzione Cubica: $g(x) = x^3 + x$</h3>
+          <ul style="padding-left: 24px; margin: 12px 0;">
+            <li><strong>Tipo:</strong> Funzione di terzo grado</li>
+            <li><strong>Zeri:</strong> Un solo zero ($x = 0$)</li>
+            <li><strong>Metodi usati:</strong> Raccoglimento totale, analisi dei fattori</li>
+            <li><strong>Segno:</strong> Cambia una volta (negativo per $x<0$, positivo per $x>0$)</li>
+          </ul>
+        `,
+        math: null,
+        feedback: null,
+        graphType: 'both'
+      },
+
+      {
+        id: 15,
+        title: "Conclusioni e Metodi Appresi",
+        description: `
+          <p><strong>Congratulazioni!</strong> Hai completato lo studio di zeri e segno di due funzioni polinomiali.</p>
+
+          <h3 style="color: var(--color-secondary); margin-top: 24px;">📚 Cosa hai imparato:</h3>
+          <ul style="padding-left: 24px; margin: 12px 0; line-height: 1.8;">
+            <li>Come trovare gli <strong>zeri</strong> di una funzione polinomiale</li>
+            <li>Come studiare il <strong>segno</strong> usando il grafico e l'algebra</li>
+            <li>L'uso della <strong>formula quadratica</strong> per equazioni di secondo grado</li>
+            <li>La <strong>scomposizione</strong> di polinomi</li>
+            <li>Il <strong>raccoglimento a fattor comune</strong></li>
+            <li>La <strong>legge di annullamento del prodotto</strong></li>
+            <li>Lo studio del segno con la <strong>tabella dei segni</strong></li>
+            <li>Come riconoscere quando un fattore è <strong>sempre positivo</strong></li>
+          </ul>
+
+          <h3 style="color: var(--color-secondary); margin-top: 24px;">💡 Suggerimenti per il futuro:</h3>
+          <ul style="padding-left: 24px; margin: 12px 0; line-height: 1.8;">
+            <li>Esercitati con altri polinomi di secondo e terzo grado</li>
+            <li>Prova a studiare funzioni con zeri multipli</li>
+            <li>Collega sempre lo studio algebrico con l'osservazione del grafico</li>
+          </ul>
+        `,
+        math: null,
+        feedback: `🎉 <strong>Ottimo lavoro!</strong> Hai acquisito strumenti fondamentali per lo studio delle funzioni!`,
+        graphType: 'both'
+      }
+    ];
+
+    // ===== FUNZIONI PER IL GRAFICO =====
+
+    const canvas = document.getElementById('graph-canvas');
+    const ctx = canvas.getContext('2d');
+
+    // Configurazione canvas
+    const width = canvas.width;
+    const height = canvas.height;
+    const padding = 50;
+    const graphWidth = width - 2 * padding;
+    const graphHeight = height - 2 * padding;
+
+    // Range per x e y
+    const xMin = -6;
+    const xMax = 6;
+    const yMin = -15;
+    const yMax = 15;
+
+    // Funzioni matematiche
+    function f(x) {
+      return x * x + x - 12;
+    }
+
+    function g(x) {
+      return x * x * x + x;
+    }
+
+    // Conversione coordinate
+    function toCanvasX(x) {
+      return padding + ((x - xMin) / (xMax - xMin)) * graphWidth;
+    }
+
+    function toCanvasY(y) {
+      return padding + graphHeight - ((y - yMin) / (yMax - yMin)) * graphHeight;
+    }
+
+    // Disegna assi
+    function drawAxes() {
+      ctx.strokeStyle = '#2c3e50';
+      ctx.lineWidth = 2;
+
+      // Asse X
+      ctx.beginPath();
+      ctx.moveTo(toCanvasX(xMin), toCanvasY(0));
+      ctx.lineTo(toCanvasX(xMax), toCanvasY(0));
+      ctx.stroke();
+
+      // Asse Y
+      ctx.beginPath();
+      ctx.moveTo(toCanvasX(0), toCanvasY(yMin));
+      ctx.lineTo(toCanvasX(0), toCanvasY(yMax));
+      ctx.stroke();
+
+      // Etichette assi
+      ctx.fillStyle = '#2c3e50';
+      ctx.font = '14px Arial';
+      ctx.textAlign = 'center';
+
+      // Etichette X
+      for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+        if (x !== 0) {
+          ctx.fillText(x, toCanvasX(x), toCanvasY(0) + 20);
+          // Tacche
+          ctx.beginPath();
+          ctx.moveTo(toCanvasX(x), toCanvasY(0) - 5);
+          ctx.lineTo(toCanvasX(x), toCanvasY(0) + 5);
+          ctx.stroke();
+        }
+      }
+
+      // Etichette Y
+      ctx.textAlign = 'right';
+      for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y += 5) {
+        if (y !== 0) {
+          ctx.fillText(y, toCanvasX(0) - 10, toCanvasY(y) + 5);
+          // Tacche
+          ctx.beginPath();
+          ctx.moveTo(toCanvasX(0) - 5, toCanvasY(y));
+          ctx.lineTo(toCanvasX(0) + 5, toCanvasY(y));
+          ctx.stroke();
+        }
+      }
+
+      // Etichetta origine
+      ctx.textAlign = 'right';
+      ctx.fillText('0', toCanvasX(0) - 10, toCanvasY(0) + 20);
+    }
+
+    // Disegna griglia
+    function drawGrid() {
+      ctx.strokeStyle = '#e0e0e0';
+      ctx.lineWidth = 0.5;
+
+      // Linee verticali
+      for (let x = Math.ceil(xMin); x <= Math.floor(xMax); x++) {
+        ctx.beginPath();
+        ctx.moveTo(toCanvasX(x), toCanvasY(yMin));
+        ctx.lineTo(toCanvasX(x), toCanvasY(yMax));
+        ctx.stroke();
+      }
+
+      // Linee orizzontali
+      for (let y = Math.ceil(yMin); y <= Math.floor(yMax); y++) {
+        ctx.beginPath();
+        ctx.moveTo(toCanvasX(xMin), toCanvasY(y));
+        ctx.lineTo(toCanvasX(xMax), toCanvasY(y));
+        ctx.stroke();
+      }
+    }
+
+    // Disegna funzione
+    function drawFunction(func, color, lineWidth = 2) {
+      ctx.strokeStyle = color;
+      ctx.lineWidth = lineWidth;
+      ctx.beginPath();
+
+      let started = false;
+      for (let px = 0; px <= graphWidth; px++) {
+        const x = xMin + (px / graphWidth) * (xMax - xMin);
+        const y = func(x);
+
+        if (y >= yMin && y <= yMax) {
+          const canvasX = toCanvasX(x);
+          const canvasY = toCanvasY(y);
+
+          if (!started) {
+            ctx.moveTo(canvasX, canvasY);
+            started = true;
+          } else {
+            ctx.lineTo(canvasX, canvasY);
+          }
+        } else {
+          started = false;
+        }
+      }
+      ctx.stroke();
+    }
+
+    // Evidenzia zero
+    function drawZero(x, y, label) {
+      const canvasX = toCanvasX(x);
+      const canvasY = toCanvasY(y);
+
+      // Cerchio
+      ctx.fillStyle = '#f39c12';
+      ctx.beginPath();
+      ctx.arc(canvasX, canvasY, 6, 0, 2 * Math.PI);
+      ctx.fill();
+      ctx.strokeStyle = '#2c3e50';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Label
+      ctx.fillStyle = '#2c3e50';
+      ctx.font = 'bold 14px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText(label, canvasX, canvasY - 15);
+    }
+
+    // Evidenzia regioni di segno
+    function drawSignRegions(func, zeros, color) {
+      const step = 0.1;
+
+      for (let x = xMin; x <= xMax; x += step) {
+        const y = func(x);
+
+        // Salta gli zeri
+        let isZero = false;
+        for (let zero of zeros) {
+          if (Math.abs(x - zero) < step) {
+            isZero = true;
+            break;
+          }
+        }
+
+        if (!isZero && y >= yMin && y <= yMax) {
+          const canvasX = toCanvasX(x);
+          const canvasY = toCanvasY(y);
+
+          if (y > 0) {
+            ctx.fillStyle = 'rgba(39, 174, 96, 0.1)';
+          } else if (y < 0) {
+            ctx.fillStyle = 'rgba(231, 76, 60, 0.1)';
+          }
+
+          ctx.fillRect(canvasX - 2, toCanvasY(0), 4, canvasY - toCanvasY(0));
+        }
+      }
+    }
+
+    // Rendering principale
+    function renderGraph(type) {
+      // Pulisci canvas
+      ctx.clearRect(0, 0, width, height);
+
+      // Sfondo
+      ctx.fillStyle = '#ffffff';
+      ctx.fillRect(0, 0, width, height);
+
+      switch (type) {
+        case 'none':
+          ctx.fillStyle = '#2c3e50';
+          ctx.font = '20px Arial';
+          ctx.textAlign = 'center';
+          ctx.fillText('Iniziamo!', width / 2, height / 2);
+          break;
+
+        case 'f_full':
+          drawGrid();
+          drawAxes();
+          drawFunction(f, '#3498db', 3);
+
+          // Etichetta funzione
+          ctx.fillStyle = '#3498db';
+          ctx.font = 'bold 16px Arial';
+          ctx.textAlign = 'left';
+          ctx.fillText('f(x) = x² + x - 12', padding + 10, padding + 20);
+          break;
+
+        case 'f_zeros':
+          drawGrid();
+          drawAxes();
+          drawFunction(f, '#3498db', 3);
+          drawZero(-4, 0, 'x = -4');
+          drawZero(3, 0, 'x = 3');
+
+          ctx.fillStyle = '#3498db';
+          ctx.font = 'bold 16px Arial';
+          ctx.textAlign = 'left';
+          ctx.fillText('f(x) = x² + x - 12', padding + 10, padding + 20);
+          break;
+
+        case 'f_sign':
+          drawGrid();
+          drawAxes();
+          drawSignRegions(f, [-4, 3]);
+          drawFunction(f, '#3498db', 3);
+          drawZero(-4, 0, 'x = -4');
+          drawZero(3, 0, 'x = 3');
+
+          // Legenda
+          ctx.fillStyle = '#3498db';
+          ctx.font = 'bold 16px Arial';
+          ctx.textAlign = 'left';
+          ctx.fillText('f(x) = x² + x - 12', padding + 10, padding + 20);
+
+          ctx.font = '12px Arial';
+          ctx.fillStyle = '#27ae60';
+          ctx.fillText('■ f(x) > 0', padding + 10, height - padding + 30);
+          ctx.fillStyle = '#e74c3c';
+          ctx.fillText('■ f(x) < 0', padding + 100, height - padding + 30);
+          break;
+
+        case 'g_full':
+          drawGrid();
+          drawAxes();
+          drawFunction(g, '#9b59b6', 3);
+
+          ctx.fillStyle = '#9b59b6';
+          ctx.font = 'bold 16px Arial';
+          ctx.textAlign = 'left';
+          ctx.fillText('g(x) = x³ + x', padding + 10, padding + 20);
+          break;
+
+        case 'g_zeros':
+          drawGrid();
+          drawAxes();
+          drawFunction(g, '#9b59b6', 3);
+          drawZero(0, 0, 'x = 0');
+
+          ctx.fillStyle = '#9b59b6';
+          ctx.font = 'bold 16px Arial';
+          ctx.textAlign = 'left';
+          ctx.fillText('g(x) = x³ + x', padding + 10, padding + 20);
+          break;
+
+        case 'g_factors':
+          drawGrid();
+          drawAxes();
+          drawFunction(g, '#9b59b6', 3);
+          drawZero(0, 0, 'x = 0');
+
+          // Mostra che x^2+1 è sempre positivo
+          ctx.fillStyle = '#9b59b6';
+          ctx.font = 'bold 16px Arial';
+          ctx.textAlign = 'left';
+          ctx.fillText('g(x) = x(x² + 1)', padding + 10, padding + 20);
+
+          ctx.font = '12px Arial';
+          ctx.fillStyle = '#27ae60';
+          ctx.fillText('x² + 1 > 0 sempre', padding + 10, padding + 40);
+          break;
+
+        case 'g_sign':
+          drawGrid();
+          drawAxes();
+          drawSignRegions(g, [0]);
+          drawFunction(g, '#9b59b6', 3);
+          drawZero(0, 0, 'x = 0');
+
+          ctx.fillStyle = '#9b59b6';
+          ctx.font = 'bold 16px Arial';
+          ctx.textAlign = 'left';
+          ctx.fillText('g(x) = x³ + x', padding + 10, padding + 20);
+
+          ctx.font = '12px Arial';
+          ctx.fillStyle = '#27ae60';
+          ctx.fillText('■ g(x) > 0', padding + 10, height - padding + 30);
+          ctx.fillStyle = '#e74c3c';
+          ctx.fillText('■ g(x) < 0', padding + 100, height - padding + 30);
+          break;
+
+        case 'both':
+          drawGrid();
+          drawAxes();
+          drawFunction(f, '#3498db', 2);
+          drawFunction(g, '#9b59b6', 2);
+
+          // Zeri di f
+          ctx.fillStyle = '#3498db';
+          ctx.beginPath();
+          ctx.arc(toCanvasX(-4), toCanvasY(0), 5, 0, 2 * Math.PI);
+          ctx.fill();
+          ctx.beginPath();
+          ctx.arc(toCanvasX(3), toCanvasY(0), 5, 0, 2 * Math.PI);
+          ctx.fill();
+
+          // Zero di g
+          ctx.fillStyle = '#9b59b6';
+          ctx.beginPath();
+          ctx.arc(toCanvasX(0), toCanvasY(0), 5, 0, 2 * Math.PI);
+          ctx.fill();
+
+          // Legenda
+          ctx.font = 'bold 14px Arial';
+          ctx.textAlign = 'left';
+          ctx.fillStyle = '#3498db';
+          ctx.fillText('f(x) = x² + x - 12', padding + 10, padding + 20);
+          ctx.fillStyle = '#9b59b6';
+          ctx.fillText('g(x) = x³ + x', padding + 10, padding + 40);
+          break;
+      }
+    }
+
+    // ===== FUNZIONI DI NAVIGAZIONE =====
+
+    function renderStep(stepIndex) {
+      state.currentStep = stepIndex;
+      const step = steps[stepIndex];
+
+      // Aggiorna titolo e descrizione
+      document.getElementById('step-title').innerHTML = step.title;
+      document.getElementById('step-description').innerHTML = step.description;
+      document.getElementById('step-math').innerHTML = step.math || '';
+
+      // Feedback
+      const feedbackEl = document.getElementById('step-feedback');
+      if (step.feedback) {
+        feedbackEl.innerHTML = step.feedback;
+        feedbackEl.style.display = 'block';
+      } else {
+        feedbackEl.style.display = 'none';
+      }
+
+      // Indicatore
+      document.getElementById('step-indicator').textContent = `Step ${stepIndex} / ${state.totalSteps}`;
+
+      // Pulsanti
+      document.getElementById('btn-prev').disabled = (stepIndex === 0);
+      document.getElementById('btn-next').disabled = (stepIndex === state.totalSteps);
+
+      // Render grafico
+      renderGraph(step.graphType);
+
+      // Render math con KaTeX
+      renderMathInElement(document.getElementById('explanation-container'), {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "$", right: "$", display: false}
+        ],
+        throwOnError: false
+      });
+
+      // Focus accessibilità
+      document.getElementById('step-title').focus();
+
+      // Scroll to top
+      window.scrollTo({top: 0, behavior: 'smooth'});
+    }
+
+    function navigate(direction) {
+      const newStep = state.currentStep + direction;
+      if (newStep >= 0 && newStep <= state.totalSteps) {
+        renderStep(newStep);
+      }
+    }
+
+    function reset() {
+      renderStep(0);
+    }
+
+    // ===== MODAL =====
+
+    function showModal() {
+      const modal = document.getElementById('help-modal');
+      modal.classList.add('active');
+      modal.setAttribute('aria-hidden', 'false');
+      document.getElementById('btn-close-modal').focus();
+    }
+
+    function hideModal() {
+      const modal = document.getElementById('help-modal');
+      modal.classList.remove('active');
+      modal.setAttribute('aria-hidden', 'true');
+    }
+
+    // ===== EVENT LISTENERS =====
+
+    function setupEventListeners() {
+      // Navigazione
+      document.getElementById('btn-prev').addEventListener('click', () => navigate(-1));
+      document.getElementById('btn-next').addEventListener('click', () => navigate(1));
+      document.getElementById('btn-reset').addEventListener('click', reset);
+
+      // Modal
+      document.getElementById('btn-help').addEventListener('click', showModal);
+      document.getElementById('btn-close-modal').addEventListener('click', hideModal);
+
+      // Click fuori dal modal per chiudere
+      document.getElementById('help-modal').addEventListener('click', (e) => {
+        if (e.target.id === 'help-modal') {
+          hideModal();
+        }
+      });
+
+      // Navigazione con tastiera
+      document.addEventListener('keydown', (e) => {
+        if (document.getElementById('help-modal').classList.contains('active')) {
+          if (e.key === 'Escape') {
+            hideModal();
+          }
+          return;
+        }
+
+        switch(e.key) {
+          case 'ArrowLeft':
+            navigate(-1);
+            break;
+          case 'ArrowRight':
+            navigate(1);
+            break;
+          case 'Home':
+            reset();
+            break;
+          case 'Escape':
+            hideModal();
+            break;
+        }
+      });
+    }
+
+    // ===== INIZIALIZZAZIONE =====
+
+    function init() {
+      renderStep(0);
+      setupEventListeners();
+    }
+
+    // Avvio al caricamento DOM
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>
