@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logaritmi - Proprietà</title>
+
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .page-indicator {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .explanation {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .formula {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 15px 0;
+            border: 2px solid #ffc107;
+            color: #856404;
+        }
+
+        .example {
+            background: #d1ecf1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .example-title {
+            font-weight: bold;
+            color: #0c5460;
+            margin-bottom: 8px;
+        }
+
+        .question {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+
+        .question-text {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px 20px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        .feedback.wrong {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+
+        .property-box {
+            background: #e7f3ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #2196F3;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .nav-button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-button.next {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-button.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .score {
+            text-align: center;
+            font-size: 1.2em;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Logaritmi</h1>
+        <p class="subtitle">Ripasso interattivo per il recupero</p>
+        <div class="page-indicator">Pagina 2 di 4: Proprietà dei Logaritmi</div>
+
+        <div class="score">
+            <span id="score">Risposte corrette: 0 / 7</span>
+        </div>
+
+        <div class="section">
+            <h2>📐 Proprietà dei Logaritmi</h2>
+
+            <!-- Proprietà 1: Logaritmo di un prodotto -->
+            <h3>Proprietà 1: Logaritmo di un Prodotto</h3>
+
+            <div class="property-box">
+                <div class="formula">
+                    $\log_a(b \cdot c) = \log_a(b) + \log_a(c)$
+                </div>
+                <p style="text-align: center; margin-top: 10px;">
+                    Il logaritmo di un prodotto è uguale alla somma dei logaritmi
+                </p>
+            </div>
+
+            <div class="example">
+                <div class="example-title">Esempio:</div>
+                <p>$\log_2(8 \cdot 4) = \log_2(8) + \log_2(4)$</p>
+                <p>$\log_2(32) = 3 + 2 = 5$</p>
+                <p>Verifica: $2^5 = 32$ ✓</p>
+            </div>
+
+            <!-- Domande Proprietà 1 -->
+            <div class="question" data-question="5">
+                <div class="question-text">5. Quanto vale $\log_3(9 \cdot 3)$ usando la proprietà del prodotto?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">a) 2</div>
+                    <div class="option" data-correct="true">b) 3</div>
+                    <div class="option" data-correct="false">c) 5</div>
+                    <div class="option" data-correct="false">d) 6</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <div class="question" data-question="6">
+                <div class="question-text">6. Se $\log_5(x) = 2$ e $\log_5(y) = 3$, quanto vale $\log_5(x \cdot y)$?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">a) 6</div>
+                    <div class="option" data-correct="true">b) 5</div>
+                    <div class="option" data-correct="false">c) 2</div>
+                    <div class="option" data-correct="false">d) 3</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <!-- Proprietà 2: Logaritmo di un quoziente -->
+            <h3>Proprietà 2: Logaritmo di un Quoziente</h3>
+
+            <div class="property-box">
+                <div class="formula">
+                    $\log_a\left(\frac{b}{c}\right) = \log_a(b) - \log_a(c)$
+                </div>
+                <p style="text-align: center; margin-top: 10px;">
+                    Il logaritmo di un quoziente è uguale alla differenza dei logaritmi
+                </p>
+            </div>
+
+            <div class="example">
+                <div class="example-title">Esempio:</div>
+                <p>$\log_2\left(\frac{16}{4}\right) = \log_2(16) - \log_2(4)$</p>
+                <p>$\log_2(4) = 4 - 2 = 2$</p>
+                <p>Verifica: $2^2 = 4$ ✓</p>
+            </div>
+
+            <!-- Domande Proprietà 2 -->
+            <div class="question" data-question="7">
+                <div class="question-text">7. Quanto vale $\log_{10}\left(\frac{1000}{10}\right)$?</div>
+                <div class="options">
+                    <div class="option" data-correct="true">a) 2</div>
+                    <div class="option" data-correct="false">b) 3</div>
+                    <div class="option" data-correct="false">c) 100</div>
+                    <div class="option" data-correct="false">d) 10</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <div class="question" data-question="8">
+                <div class="question-text">8. Utilizzando le proprietà viste, se $\log_2(32) = 5$, quanto vale $\log_2\left(\frac{32 \cdot 2}{4}\right)$?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">a) 3</div>
+                    <div class="option" data-correct="true">b) 4</div>
+                    <div class="option" data-correct="false">c) 5</div>
+                    <div class="option" data-correct="false">d) 6</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <!-- Proprietà 3: Logaritmo di una potenza -->
+            <h3>Proprietà 3: Logaritmo di una Potenza</h3>
+
+            <div class="property-box">
+                <div class="formula">
+                    $\log_a(b^n) = n \cdot \log_a(b)$
+                </div>
+                <p style="text-align: center; margin-top: 10px;">
+                    Il logaritmo di una potenza è uguale all'esponente per il logaritmo della base
+                </p>
+            </div>
+
+            <div class="example">
+                <div class="example-title">Esempio:</div>
+                <p>$\log_2(8^2) = 2 \cdot \log_2(8)$</p>
+                <p>$\log_2(64) = 2 \cdot 3 = 6$</p>
+                <p>Verifica: $2^6 = 64$ ✓</p>
+            </div>
+
+            <!-- Domande Proprietà 3 -->
+            <div class="question" data-question="9">
+                <div class="question-text">9. Quanto vale $\log_3(9^2)$?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">a) 2</div>
+                    <div class="option" data-correct="false">b) 3</div>
+                    <div class="option" data-correct="true">c) 4</div>
+                    <div class="option" data-correct="false">d) 9</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <div class="question" data-question="10">
+                <div class="question-text">10. Se $\log_5(x) = 2$, quanto vale $\log_5(x^3)$?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">a) 2</div>
+                    <div class="option" data-correct="false">b) 3</div>
+                    <div class="option" data-correct="false">c) 5</div>
+                    <div class="option" data-correct="true">d) 6</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <!-- Domanda mista -->
+            <div class="question" data-question="11">
+                <div class="question-text">11. Utilizzando tutte le proprietà, semplifica: $\log_2\left(\frac{16 \cdot 4^2}{8}\right)$</div>
+                <div class="options">
+                    <div class="option" data-correct="true">a) 5</div>
+                    <div class="option" data-correct="false">b) 6</div>
+                    <div class="option" data-correct="false">c) 7</div>
+                    <div class="option" data-correct="false">d) 8</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="logaritmi-1-definizione.html" class="nav-button prev">
+                ← Indietro: Definizione
+            </a>
+            <a href="logaritmi-3-equazioni.html" class="nav-button next">
+                Avanti: Equazioni →
+            </a>
+        </div>
+    </div>
+
+    <!-- KaTeX JS -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+        let correctAnswers = 0;
+        const totalQuestions = 7;
+
+        document.querySelectorAll('.question').forEach(question => {
+            const options = question.querySelectorAll('.option');
+            const feedback = question.querySelector('.feedback');
+            const feedbackMessage = feedback.querySelector('.message');
+
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    if (this.classList.contains('disabled')) return;
+
+                    const isCorrect = this.dataset.correct === 'true';
+
+                    options.forEach(opt => {
+                        opt.classList.add('disabled');
+                        if (opt.dataset.correct === 'true') {
+                            opt.classList.add('correct');
+                        }
+                    });
+
+                    if (isCorrect) {
+                        correctAnswers++;
+                        this.classList.add('correct');
+                        feedback.classList.add('show', 'correct');
+
+                        const explanations = {
+                            '5': 'Esatto! $\\log_3(27) = \\log_3(9 \\cdot 3) = \\log_3(9) + \\log_3(3) = 2 + 1 = 3$',
+                            '6': 'Corretto! $\\log_5(x \\cdot y) = \\log_5(x) + \\log_5(y) = 2 + 3 = 5$',
+                            '7': 'Giusto! $\\log_{10}\\left(\\frac{1000}{10}\\right) = \\log_{10}(1000) - \\log_{10}(10) = 3 - 1 = 2$',
+                            '8': 'Esatto! $\\log_2\\left(\\frac{32 \\cdot 2}{4}\\right) = \\log_2(32) + \\log_2(2) - \\log_2(4) = 5 + 1 - 2 = 4$',
+                            '9': 'Perfetto! $\\log_3(9^2) = 2 \\cdot \\log_3(9) = 2 \\cdot 2 = 4$',
+                            '10': 'Corretto! $\\log_5(x^3) = 3 \\cdot \\log_5(x) = 3 \\cdot 2 = 6$',
+                            '11': 'Esatto! $\\log_2(16) + \\log_2(4^2) - \\log_2(8) = 4 + 2 \\cdot 2 - 3 = 4 + 4 - 3 = 5$. Verifica: $\\frac{16 \\cdot 16}{8} = \\frac{256}{8} = 32 = 2^5$'
+                        };
+
+                        feedbackMessage.innerHTML = '✓ ' + explanations[question.dataset.question];
+                        renderMathInElement(feedbackMessage, {
+                            delimiters: [
+                                {left: "$$", right: "$$", display: true},
+                                {left: "$", right: "$", display: false}
+                            ]
+                        });
+                    } else {
+                        this.classList.add('wrong');
+                        feedback.classList.add('show', 'wrong');
+
+                        const wrongExplanations = {
+                            '5': '✗ Usa la proprietà: $\\log_3(9 \\cdot 3) = \\log_3(9) + \\log_3(3) = 2 + 1$',
+                            '6': '✗ Ricorda la proprietà del prodotto: somma i logaritmi!',
+                            '7': '✗ Usa la proprietà del quoziente: sottrai i logaritmi',
+                            '8': '✗ Applica le proprietà: $\\log_2(32) + \\log_2(2) - \\log_2(4) = 5 + 1 - 2$',
+                            '9': '✗ Ricorda: $\\log_3(9^2) = 2 \\cdot \\log_3(9) = 2 \\cdot 2$',
+                            '10': '✗ Usa la proprietà della potenza: moltiplica!',
+                            '11': '✗ Scomponi passo passo usando tutte le proprietà'
+                        };
+
+                        feedbackMessage.innerHTML = wrongExplanations[question.dataset.question];
+                        renderMathInElement(feedbackMessage, {
+                            delimiters: [
+                                {left: "$$", right: "$$", display: true},
+                                {left: "$", right: "$", display: false}
+                            ]
+                        });
+                    }
+
+                    updateScore();
+                });
+            });
+        });
+
+        function updateScore() {
+            document.getElementById('score').textContent =
+                `Risposte corrette: ${correctAnswers} / ${totalQuestions}`;
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false}
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logaritmi - Equazioni</title>
+
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .page-indicator {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .explanation {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .formula {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 15px 0;
+            border: 2px solid #ffc107;
+            color: #856404;
+        }
+
+        .example {
+            background: #d1ecf1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .example-title {
+            font-weight: bold;
+            color: #0c5460;
+            margin-bottom: 8px;
+        }
+
+        .question {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+
+        .question-text {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px 20px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        .feedback.wrong {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+
+        .important {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .nav-button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-button.next {
+            background: #667eea;
+            color: white;
+        }
+
+        .nav-button.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .score {
+            text-align: center;
+            font-size: 1.2em;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Logaritmi</h1>
+        <p class="subtitle">Ripasso interattivo per il recupero</p>
+        <div class="page-indicator">Pagina 3 di 4: Equazioni Logaritmiche</div>
+
+        <div class="score">
+            <span id="score">Risposte corrette: 0 / 6</span>
+        </div>
+
+        <div class="section">
+            <h2>🔢 Equazioni Logaritmiche Semplici</h2>
+
+            <div class="explanation">
+                <p><strong>Come si risolvono le equazioni logaritmiche?</strong></p>
+                <p>Le equazioni logaritmiche più semplici hanno questa forma:</p>
+            </div>
+
+            <div class="formula">
+                $\log_a(x) = b$
+            </div>
+
+            <div class="explanation">
+                <p>Per risolverle, usiamo la definizione di logaritmo:</p>
+                <p style="margin-top: 10px; font-weight: bold;">Se $\log_a(x) = b$, allora $x = a^b$</p>
+            </div>
+
+            <div class="important">
+                <strong>⚠️ Metodo di risoluzione:</strong>
+                <ol style="margin-left: 20px; margin-top: 10px;">
+                    <li>Imposta le <strong>condizioni di esistenza (CE)</strong>: l'argomento del logaritmo deve essere $> 0$</li>
+                    <li>Risolvi l'equazione usando la definizione di logaritmo</li>
+                    <li><strong>Verifica che la soluzione rispetti la CE</strong></li>
+                </ol>
+            </div>
+
+            <div class="example">
+                <div class="example-title">Esempio 1:</div>
+                <p>Risolvi: $\log_2(x) = 5$</p>
+                <p><strong>Soluzione:</strong></p>
+                <p><strong>CE:</strong> $x > 0$</p>
+                <p>$x = 2^5 = 32$</p>
+                <p><strong>Verifica CE:</strong> $32 > 0$ ✓ (accettabile)</p>
+                <p><strong>Verifica equazione:</strong> $\log_2(32) = 5$ ✓</p>
+            </div>
+
+            <div class="example">
+                <div class="example-title">Esempio 2:</div>
+                <p>Risolvi: $\log_3(x) = 2$</p>
+                <p><strong>Soluzione:</strong></p>
+                <p><strong>CE:</strong> $x > 0$</p>
+                <p>$x = 3^2 = 9$</p>
+                <p><strong>Verifica CE:</strong> $9 > 0$ ✓ (accettabile)</p>
+            </div>
+
+            <div class="important">
+                <strong>📌 Ricorda sempre:</strong>
+                <ul style="margin-left: 20px; margin-top: 10px;">
+                    <li>L'argomento del logaritmo deve essere <strong>positivo</strong>: $\log_a(x)$ esiste solo se $x > 0$</li>
+                    <li>Anche se trovi una soluzione algebricamente corretta, devi <strong>verificare la CE</strong></li>
+                    <li>Se la soluzione non rispetta la CE, l'equazione <strong>non ha soluzione</strong></li>
+                </ul>
+            </div>
+
+            <!-- Domande Equazioni -->
+            <div class="question" data-question="12">
+                <div class="question-text">12. Risolvi l'equazione: $\log_{10}(x) = 3$</div>
+                <div class="options">
+                    <div class="option" data-correct="false">a) 30</div>
+                    <div class="option" data-correct="false">b) 100</div>
+                    <div class="option" data-correct="true">c) 1000</div>
+                    <div class="option" data-correct="false">d) 10000</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <div class="question" data-question="13">
+                <div class="question-text">13. Risolvi: $\log_5(x) = 2$</div>
+                <div class="options">
+                    <div class="option" data-correct="false">a) 10</div>
+                    <div class="option" data-correct="true">b) 25</div>
+                    <div class="option" data-correct="false">c) 5</div>
+                    <div class="option" data-correct="false">d) 7</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <h3>Equazioni con le proprietà dei logaritmi</h3>
+
+            <div class="example">
+                <div class="example-title">Esempio 3:</div>
+                <p>Risolvi: $\log_2(x) + \log_2(4) = 5$</p>
+                <p><strong>Soluzione:</strong></p>
+                <p><strong>CE:</strong> $x > 0$ (dal logaritmo $\log_2(x)$)</p>
+                <p>$\log_2(x \cdot 4) = 5$ (proprietà del prodotto)</p>
+                <p>$x \cdot 4 = 2^5 = 32$</p>
+                <p>$x = \frac{32}{4} = 8$</p>
+                <p><strong>Verifica CE:</strong> $8 > 0$ ✓ (accettabile)</p>
+            </div>
+
+            <div class="question" data-question="14">
+                <div class="question-text">14. Risolvi: $\log_3(x) + \log_3(3) = 3$</div>
+                <div class="options">
+                    <div class="option" data-correct="true">a) 9</div>
+                    <div class="option" data-correct="false">b) 27</div>
+                    <div class="option" data-correct="false">c) 3</div>
+                    <div class="option" data-correct="false">d) 6</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <div class="question" data-question="15">
+                <div class="question-text">15. Risolvi: $\log_2(x) - \log_2(4) = 2$</div>
+                <div class="options">
+                    <div class="option" data-correct="false">a) 4</div>
+                    <div class="option" data-correct="false">b) 8</div>
+                    <div class="option" data-correct="true">c) 16</div>
+                    <div class="option" data-correct="false">d) 32</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <div class="question" data-question="16">
+                <div class="question-text">16. Risolvi: $2 \cdot \log_5(x) = 4$</div>
+                <div class="options">
+                    <div class="option" data-correct="false">a) 5</div>
+                    <div class="option" data-correct="false">b) 10</div>
+                    <div class="option" data-correct="true">c) 25</div>
+                    <div class="option" data-correct="false">d) 125</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <div class="question" data-question="17">
+                <div class="question-text">17. Quale equazione ha come soluzione $x = 8$?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">a) $\log_2(x) = 2$</div>
+                    <div class="option" data-correct="true">b) $\log_2(x) = 3$</div>
+                    <div class="option" data-correct="false">c) $\log_3(x) = 2$</div>
+                    <div class="option" data-correct="false">d) $\log_8(x) = 1$</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="logaritmi-2-proprieta.html" class="nav-button prev">
+                ← Indietro: Proprietà
+            </a>
+            <a href="logaritmi-4-esercizi.html" class="nav-button next">
+                Avanti: Esercizi →
+            </a>
+        </div>
+    </div>
+
+    <!-- KaTeX JS -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+        let correctAnswers = 0;
+        const totalQuestions = 6;
+
+        document.querySelectorAll('.question').forEach(question => {
+            const options = question.querySelectorAll('.option');
+            const feedback = question.querySelector('.feedback');
+            const feedbackMessage = feedback.querySelector('.message');
+
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    if (this.classList.contains('disabled')) return;
+
+                    const isCorrect = this.dataset.correct === 'true';
+
+                    options.forEach(opt => {
+                        opt.classList.add('disabled');
+                        if (opt.dataset.correct === 'true') {
+                            opt.classList.add('correct');
+                        }
+                    });
+
+                    if (isCorrect) {
+                        correctAnswers++;
+                        this.classList.add('correct');
+                        feedback.classList.add('show', 'correct');
+
+                        const explanations = {
+                            '12': 'Corretto! CE: $x > 0$. Soluzione: $x = 10^3 = 1000$. Verifica CE: $1000 > 0$ ✓ (accettabile)',
+                            '13': 'Esatto! CE: $x > 0$. Soluzione: $x = 5^2 = 25$. Verifica CE: $25 > 0$ ✓ (accettabile)',
+                            '14': 'Perfetto! CE: $x > 0$. Applico proprietà: $\\log_3(x \\cdot 3) = 3$, quindi $x \\cdot 3 = 27$, $x = 9$. Verifica CE: $9 > 0$ ✓ (accettabile)',
+                            '15': 'Giusto! CE: $x > 0$. Applico proprietà: $\\log_2\\left(\\frac{x}{4}\\right) = 2$, quindi $\\frac{x}{4} = 4$, $x = 16$. Verifica CE: $16 > 0$ ✓ (accettabile)',
+                            '16': 'Esatto! CE: $x > 0$. Divido per 2: $\\log_5(x) = 2$, quindi $x = 5^2 = 25$. Verifica CE: $25 > 0$ ✓ (accettabile)',
+                            '17': 'Corretto! $2^3 = 8$, quindi $\\log_2(8) = 3$ è la risposta giusta'
+                        };
+
+                        feedbackMessage.innerHTML = '✓ ' + explanations[question.dataset.question];
+                        renderMathInElement(feedbackMessage, {
+                            delimiters: [
+                                {left: "$$", right: "$$", display: true},
+                                {left: "$", right: "$", display: false}
+                            ]
+                        });
+                    } else {
+                        this.classList.add('wrong');
+                        feedback.classList.add('show', 'wrong');
+
+                        const wrongExplanations = {
+                            '12': '✗ Ricorda: $x = 10^3$. Non dimenticare di verificare la CE!',
+                            '13': '✗ Ricorda: $x = 5^2$. Verifica sempre che la soluzione rispetti la CE ($x > 0$)',
+                            '14': '✗ Usa la proprietà del prodotto: $\\log_3(x \\cdot 3) = 3$. Ricorda la CE: $x > 0$',
+                            '15': '✗ Usa la proprietà del quoziente: $\\log_2\\left(\\frac{x}{4}\\right) = 2$. Verifica sempre la CE!',
+                            '16': '✗ Prima dividi per 2: $\\log_5(x) = 2$. Non dimenticare la CE: $x > 0$',
+                            '17': '✗ Verifica quale potenza di 2 dà 8'
+                        };
+
+                        feedbackMessage.innerHTML = wrongExplanations[question.dataset.question];
+                        renderMathInElement(feedbackMessage, {
+                            delimiters: [
+                                {left: "$$", right: "$$", display: true},
+                                {left: "$", right: "$", display: false}
+                            ]
+                        });
+                    }
+
+                    updateScore();
+                });
+            });
+        });
+
+        function updateScore() {
+            document.getElementById('score').textContent =
+                `Risposte corrette: ${correctAnswers} / ${totalQuestions}`;
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false}
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logaritmi - Definizione</title>
+
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .page-indicator {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        h3 {
+            color: #764ba2;
+            margin-top: 20px;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .explanation {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border: 2px solid #e0e0e0;
+        }
+
+        .formula {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.3em;
+            font-weight: bold;
+            margin: 15px 0;
+            border: 2px solid #ffc107;
+            color: #856404;
+        }
+
+        .example {
+            background: #d1ecf1;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+            border-left: 4px solid #17a2b8;
+        }
+
+        .example-title {
+            font-weight: bold;
+            color: #0c5460;
+            margin-bottom: 8px;
+        }
+
+        .question {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+
+        .question-text {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px 20px;
+            background: #f8f9fa;
+            border: 2px solid #dee2e6;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option:hover {
+            background: #e9ecef;
+            transform: translateX(5px);
+        }
+
+        .option.correct {
+            background: #d4edda;
+            border-color: #28a745;
+            color: #155724;
+        }
+
+        .option.wrong {
+            background: #f8d7da;
+            border-color: #dc3545;
+            color: #721c24;
+        }
+
+        .option.disabled {
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .feedback.show {
+            display: block;
+        }
+
+        .feedback.correct {
+            background: #d4edda;
+            color: #155724;
+            border: 2px solid #28a745;
+        }
+
+        .feedback.wrong {
+            background: #f8d7da;
+            color: #721c24;
+            border: 2px solid #dc3545;
+        }
+
+        .important {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 15px 0;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .nav-button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-button.next {
+            background: #667eea;
+            color: white;
+            margin-left: auto;
+        }
+
+        .nav-button.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .score {
+            text-align: center;
+            font-size: 1.2em;
+            padding: 15px;
+            background: #667eea;
+            color: white;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+
+            .nav-button.next {
+                margin-left: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Logaritmi</h1>
+        <p class="subtitle">Ripasso interattivo per il recupero</p>
+        <div class="page-indicator">Pagina 1 di 4: Definizione di Logaritmo</div>
+
+        <div class="score">
+            <span id="score">Risposte corrette: 0 / 4</span>
+        </div>
+
+        <div class="section">
+            <h2>🎯 Definizione di Logaritmo</h2>
+
+            <div class="explanation">
+                <p><strong>Cos'è un logaritmo?</strong></p>
+                <p>Il logaritmo è l'operazione inversa dell'elevamento a potenza.</p>
+                <p style="margin-top: 15px;">Quando scriviamo:</p>
+            </div>
+
+            <div class="formula">
+                $\log_a(b) = c$
+            </div>
+
+            <div class="explanation">
+                <p><strong>Significa:</strong> "A quale numero devo elevare <em>a</em> per ottenere <em>b</em>?"</p>
+                <p style="margin-top: 10px;">Oppure, in altre parole:</p>
+            </div>
+
+            <div class="formula">
+                $a^c = b$
+            </div>
+
+            <div class="important">
+                <strong>📌 Ricorda:</strong> Il logaritmo risponde alla domanda: "Qual è l'esponente?"
+            </div>
+
+            <h3>Esempi Semplici:</h3>
+
+            <div class="example">
+                <div class="example-title">Esempio 1:</div>
+                <p>$\log_2(8) = 3$</p>
+                <p><strong>Perché?</strong> Perché $2^3 = 8$</p>
+                <p>Domanda: "A quale numero devo elevare 2 per ottenere 8?" → Risposta: 3</p>
+            </div>
+
+            <div class="example">
+                <div class="example-title">Esempio 2:</div>
+                <p>$\log_{10}(100) = 2$</p>
+                <p><strong>Perché?</strong> Perché $10^2 = 100$</p>
+            </div>
+
+            <div class="example">
+                <div class="example-title">Esempio 3:</div>
+                <p>$\log_5(25) = 2$</p>
+                <p><strong>Perché?</strong> Perché $5^2 = 25$</p>
+            </div>
+
+            <h3>✏️ Verifica la tua comprensione:</h3>
+
+            <!-- Domanda 1 -->
+            <div class="question" data-question="1">
+                <div class="question-text">1. Quanto vale $\log_3(9)$?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">a) 3</div>
+                    <div class="option" data-correct="true">b) 2</div>
+                    <div class="option" data-correct="false">c) 9</div>
+                    <div class="option" data-correct="false">d) 27</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <!-- Domanda 2 -->
+            <div class="question" data-question="2">
+                <div class="question-text">2. Se $\log_a(16) = 4$, quanto vale $a$?</div>
+                <div class="options">
+                    <div class="option" data-correct="true">a) 2</div>
+                    <div class="option" data-correct="false">b) 4</div>
+                    <div class="option" data-correct="false">c) 8</div>
+                    <div class="option" data-correct="false">d) 16</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <!-- Domanda 3 -->
+            <div class="question" data-question="3">
+                <div class="question-text">3. Quanto vale $\log_{10}(1000)$?</div>
+                <div class="options">
+                    <div class="option" data-correct="false">a) 2</div>
+                    <div class="option" data-correct="true">b) 3</div>
+                    <div class="option" data-correct="false">c) 10</div>
+                    <div class="option" data-correct="false">d) 100</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+
+            <!-- Domanda 4 -->
+            <div class="question" data-question="4">
+                <div class="question-text">4. Quanto vale $\log_7(1)$?</div>
+                <div class="options">
+                    <div class="option" data-correct="true">a) 0</div>
+                    <div class="option" data-correct="false">b) 1</div>
+                    <div class="option" data-correct="false">c) 7</div>
+                    <div class="option" data-correct="false">d) Non si può calcolare</div>
+                </div>
+                <div class="feedback">
+                    <span class="message"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="navigation">
+            <a href="logaritmi-2-proprieta.html" class="nav-button next">
+                Avanti: Proprietà →
+            </a>
+        </div>
+    </div>
+
+    <!-- KaTeX JS -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+        let correctAnswers = 0;
+        const totalQuestions = 4;
+
+        // Gestione delle risposte
+        document.querySelectorAll('.question').forEach(question => {
+            const options = question.querySelectorAll('.option');
+            const feedback = question.querySelector('.feedback');
+            const feedbackMessage = feedback.querySelector('.message');
+
+            options.forEach(option => {
+                option.addEventListener('click', function() {
+                    if (this.classList.contains('disabled')) return;
+
+                    const isCorrect = this.dataset.correct === 'true';
+
+                    options.forEach(opt => {
+                        opt.classList.add('disabled');
+                        if (opt.dataset.correct === 'true') {
+                            opt.classList.add('correct');
+                        }
+                    });
+
+                    if (isCorrect) {
+                        correctAnswers++;
+                        this.classList.add('correct');
+                        feedback.classList.add('show', 'correct');
+
+                        const explanations = {
+                            '1': 'Esatto! $3^2 = 9$, quindi $\\log_3(9) = 2$',
+                            '2': 'Corretto! Se $a^4 = 16$, allora $a = 2$ (perché $2^4 = 16$)',
+                            '3': 'Perfetto! $10^3 = 1000$',
+                            '4': 'Giusto! Qualsiasi numero elevato a 0 fa 1, quindi $\\log_7(1) = 0$'
+                        };
+
+                        feedbackMessage.innerHTML = '✓ ' + explanations[question.dataset.question];
+                        renderMathInElement(feedbackMessage, {
+                            delimiters: [
+                                {left: "$$", right: "$$", display: true},
+                                {left: "$", right: "$", display: false}
+                            ]
+                        });
+                    } else {
+                        this.classList.add('wrong');
+                        feedback.classList.add('show', 'wrong');
+
+                        const wrongExplanations = {
+                            '1': '✗ Riprova: a quale numero devo elevare 3 per ottenere 9? $3^2 = 9$',
+                            '2': '✗ Non è corretto. Pensa: quale numero elevato alla 4 dà 16? $2^4 = 16$',
+                            '3': '✗ Sbagliato. Conta gli zeri: $10^3 = 1000$',
+                            '4': '✗ Ricorda: qualsiasi numero elevato a 0 dà 1'
+                        };
+
+                        feedbackMessage.innerHTML = wrongExplanations[question.dataset.question];
+                        renderMathInElement(feedbackMessage, {
+                            delimiters: [
+                                {left: "$$", right: "$$", display: true},
+                                {left: "$", right: "$", display: false}
+                            ]
+                        });
+                    }
+
+                    updateScore();
+                });
+            });
+        });
+
+        function updateScore() {
+            document.getElementById('score').textContent =
+                `Risposte corrette: ${correctAnswers} / ${totalQuestions}`;
+        }
+
+        // Renderizza LaTeX
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false}
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+</body>
+</html>

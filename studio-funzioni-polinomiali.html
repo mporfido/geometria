@@ -461,7 +461,7 @@
       <button id="btn-prev" class="nav-button" aria-label="Vai allo step precedente">
         ← Indietro
       </button>
-      <span id="step-indicator">Step 0 / 15</span>
+      <span id="step-indicator">Step 0 / 14</span>
       <button id="btn-next" class="nav-button" aria-label="Vai allo step successivo">
         Avanti →
       </button>
@@ -499,7 +499,7 @@
 
     const state = {
       currentStep: 0,
-      totalSteps: 15
+      totalSteps: 14
     };
 
     const steps = [
@@ -532,15 +532,16 @@
           <p style="font-size: 1.3rem; text-align: center; margin: 20px 0;">$f(x) = x^2 + x - 12$</p>
           <p>Il grafico di una funzione di secondo grado è una <strong>parabola</strong>.</p>
           <p>Poiché il coefficiente di $x^2$ è positivo ($a = 1 > 0$), la parabola ha la <strong>concavità rivolta verso l'alto</strong> (a forma di U).</p>
+          <p><strong>Ma non guardiamo ancora il grafico!</strong> In molti casi non sappiamo come sia fatto. Scopriamolo insieme studiando zeri e segno.</p>
         `,
         math: null,
-        feedback: `✅ Questa è una funzione quadratica. Il suo grafico è una parabola con concavità verso l'alto.`,
-        graphType: 'f_full'
+        feedback: `✅ Questa è una funzione quadratica. Studiamola senza vedere il grafico!`,
+        graphType: 'axes'
       },
 
       {
         id: 2,
-        title: "Trovare gli Zeri - Metodo 1: Formula Quadratica",
+        title: "Trovare gli Zeri - Formula Quadratica",
         description: `
           <p>Per trovare gli <strong>zeri</strong>, risolviamo l'equazione $f(x) = 0$:</p>
           <p style="text-align: center; margin: 16px 0;">$x^2 + x - 12 = 0$</p>
@@ -562,50 +563,29 @@
           $$x_2 = \\frac{-1 - 7}{2} = \\frac{-8}{2} = -4$$
         `,
         feedback: `✅ Gli zeri della funzione sono $x_1 = 3$ e $x_2 = -4$`,
-        graphType: 'f_zeros'
+        graphType: 'axes'
       },
 
       {
         id: 3,
-        title: "Trovare gli Zeri - Metodo 2: Scomposizione",
-        description: `
-          <p>Possiamo anche <strong>scomporre</strong> il trinomio di secondo grado:</p>
-
-          <div class="reminder-box">
-            <h4>💡 Reminder: Scomposizione Trinomio</h4>
-            <p>Un trinomio $x^2 + bx + c$ si può scomporre come $(x - x_1)(x - x_2)$ dove $x_1$ e $x_2$ sono le radici.</p>
-            <p>Cerchiamo due numeri che moltiplicati danno $c$ e sommati danno $b$.</p>
-          </div>
-        `,
-        math: `
-          <p>Cerchiamo due numeri che:</p>
-          <ul style="padding-left: 24px;">
-            <li>Moltiplicati danno $-12$</li>
-            <li>Sommati danno $1$</li>
-          </ul>
-          <p>I numeri sono $4$ e $-3$ perché: $4 \\cdot (-3) = -12$ e $4 + (-3) = 1$</p>
-          <p>Quindi possiamo scrivere:</p>
-          $$x^2 + x - 12 = (x + 4)(x - 3)$$
-          <p>Per la <strong>legge di annullamento del prodotto</strong>, il prodotto è zero quando almeno uno dei fattori è zero:</p>
-          $$x + 4 = 0 \\quad \\text{oppure} \\quad x - 3 = 0$$
-          $$x = -4 \\quad \\text{oppure} \\quad x = 3$$
-        `,
-        feedback: `✅ La scomposizione conferma: gli zeri sono $x = -4$ e $x = 3$`,
-        graphType: 'f_zeros'
-      },
-
-      {
-        id: 4,
         title: "Studio del Segno",
         description: `
           <p>Ora studiamo il <strong>segno</strong> della funzione, cioè quando $f(x) > 0$ (positiva) e quando $f(x) < 0$ (negativa).</p>
 
+          <p>Ricordiamo le informazioni che abbiamo:</p>
+          <ul style="padding-left: 24px; margin: 12px 0;">
+            <li>Coefficiente $a = 1 > 0$ → parabola con <strong>concavità verso l'alto</strong></li>
+            <li>Discriminante $\\Delta = 49 > 0$ → la parabola <strong>interseca l'asse $x$ in due punti</strong> (gli zeri trovati: $x = -4$ e $x = 3$)</li>
+          </ul>
+
+          <p>Ora osserviamo la parabola nel grafico:</p>
+
           <div class="reminder-box">
             <h4>💡 Reminder: Parabola e Segno</h4>
-            <p>Per una parabola con concavità verso l'alto:</p>
+            <p>Per una parabola con concavità verso l'alto ($a > 0$) e due zeri:</p>
             <ul style="padding-left: 24px;">
-              <li><strong>Esterna</strong> agli zeri: la funzione è <strong>positiva</strong></li>
-              <li><strong>Interna</strong> agli zeri: la funzione è <strong>negativa</strong></li>
+              <li><strong>Esterna</strong> agli zeri: la funzione è <strong>positiva</strong> (grafico sopra l'asse $x$)</li>
+              <li><strong>Interna</strong> agli zeri: la funzione è <strong>negativa</strong> (grafico sotto l'asse $x$)</li>
             </ul>
           </div>
         `,
@@ -634,45 +614,46 @@
           </div>
         `,
         feedback: `✅ La funzione è <strong>positiva</strong> per $x < -4$ o $x > 3$, <strong>negativa</strong> per $-4 < x < 3$`,
-        graphType: 'f_sign'
+        graphType: 'f_zeros'
       },
 
       {
-        id: 5,
-        title: "Riepilogo Funzione 1",
+        id: 4,
+        title: "Verifica con il Grafico Completo - Funzione 1",
         description: `
+          <p><strong>Ora finalmente guardiamo il grafico completo!</strong> Verifichiamo che le informazioni trovate con lo studio algebrico corrispondano al grafico della funzione.</p>
           <p><strong>Funzione:</strong> $f(x) = x^2 + x - 12$</p>
-          <p><strong>Forma scomposta:</strong> $f(x) = (x + 4)(x - 3)$</p>
-          <p><strong>Zeri:</strong> $x = -4$ e $x = 3$</p>
+          <p><strong>Zeri:</strong> $x = -4$ e $x = 3$ (dove il grafico attraversa l'asse $x$)</p>
           <p><strong>Segno:</strong></p>
           <ul style="padding-left: 24px; margin: 12px 0;">
-            <li>$f(x) > 0$ per $x < -4$ oppure $x > 3$</li>
-            <li>$f(x) = 0$ per $x = -4$ oppure $x = 3$</li>
-            <li>$f(x) < 0$ per $-4 < x < 3$</li>
+            <li>$f(x) > 0$ per $x < -4$ oppure $x > 3$ (grafico <strong>sopra</strong> l'asse $x$)</li>
+            <li>$f(x) = 0$ per $x = -4$ oppure $x = 3$ (grafico <strong>sull'</strong>asse $x$)</li>
+            <li>$f(x) < 0$ per $-4 < x < 3$ (grafico <strong>sotto</strong> l'asse $x$)</li>
           </ul>
+          <p>Osserva come il grafico conferma perfettamente i risultati ottenuti! Le regioni colorate mostrano chiaramente dove la funzione è positiva (verde) e negativa (rossa).</p>
         `,
         math: null,
-        feedback: `🎉 Ottimo! Hai completato lo studio della prima funzione!`,
+        feedback: `🎉 Ottimo! Il grafico conferma tutto ciò che abbiamo scoperto con lo studio algebrico!`,
         graphType: 'f_sign'
       },
 
       // FUNZIONE 2: x^3 + x
       {
-        id: 6,
+        id: 5,
         title: "Funzione 2: g(x) = x³ + x",
         description: `
           <p>Passiamo ora a una funzione di <strong>terzo grado</strong>:</p>
           <p style="font-size: 1.3rem; text-align: center; margin: 20px 0;">$g(x) = x^3 + x$</p>
-          <p>Il grafico di una funzione di terzo grado ha una forma caratteristica a "S".</p>
-          <p>Osserva il grafico: la funzione attraversa l'asse $x$ (gli zeri) e cambia segno.</p>
+          <p>Il grafico di una funzione di terzo grado ha tipicamente una forma caratteristica.</p>
+          <p><strong>Anche qui, non guardiamo subito il grafico!</strong> Scopriamo prima le proprietà della funzione attraverso lo studio algebrico.</p>
         `,
         math: null,
-        feedback: `✅ Questa è una funzione cubica. Vediamo come studiarla!`,
-        graphType: 'g_full'
+        feedback: `✅ Questa è una funzione cubica. Studiamola passo dopo passo!`,
+        graphType: 'axes'
       },
 
       {
-        id: 7,
+        id: 6,
         title: "Trovare gli Zeri - Raccoglimento a Fattor Comune",
         description: `
           <p>Per trovare gli zeri, risolviamo $g(x) = 0$:</p>
@@ -691,11 +672,11 @@
           $$x(x^2 + 1) = 0$$
         `,
         feedback: `✅ Abbiamo scomposto: $g(x) = x(x^2 + 1)$`,
-        graphType: 'g_full'
+        graphType: 'axes'
       },
 
       {
-        id: 8,
+        id: 7,
         title: "Analisi dei Fattori",
         description: `
           <p>Abbiamo scomposto in: $g(x) = x(x^2 + 1)$</p>
@@ -718,11 +699,11 @@
           <p>Quindi <strong>non ci sono soluzioni reali</strong> per $x^2 = -1$.</p>
         `,
         feedback: `✅ L'unico zero reale della funzione è $x = 0$`,
-        graphType: 'g_zeros'
+        graphType: 'axes'
       },
 
       {
-        id: 9,
+        id: 8,
         title: "Perché x² + 1 è Sempre Positivo?",
         description: `
           <p>Approfondiamo: perché $x^2 + 1 > 0$ per ogni $x$ reale?</p>
@@ -737,11 +718,11 @@
           <p>Questo significa che il fattore $(x^2 + 1)$ è sempre <strong>positivo</strong>!</p>
         `,
         feedback: `✅ Il fattore $(x^2 + 1)$ è sempre positivo e non influenza gli zeri`,
-        graphType: 'g_zeros'
+        graphType: 'axes'
       },
 
       {
-        id: 10,
+        id: 9,
         title: "Studio del Segno - Disequazione Prodotto",
         description: `
           <p>Per studiare il segno di $g(x) = x(x^2 + 1)$, usiamo il metodo della <strong>disequazione prodotto</strong>.</p>
@@ -772,11 +753,11 @@
           </ul>
         `,
         feedback: `✅ Il segno di $g(x)$ dipende solo dal segno di $x$!`,
-        graphType: 'g_factors'
+        graphType: 'axes'
       },
 
       {
-        id: 11,
+        id: 10,
         title: "Tabella dei Segni",
         description: `
           <p>Costruiamo la <strong>tabella dei segni</strong> per determinare il segno del prodotto:</p>
@@ -818,20 +799,21 @@
           </ul>
         `,
         feedback: `✅ La tabella dei segni ci mostra chiaramente quando la funzione è positiva o negativa!`,
-        graphType: 'g_sign'
+        graphType: 'axes'
       },
 
       {
-        id: 12,
+        id: 11,
         title: "Verifica sul Grafico",
         description: `
-          <p>Verifichiamo i risultati osservando il grafico della funzione $g(x) = x^3 + x$:</p>
+          <p><strong>Finalmente guardiamo il grafico!</strong> Verifichiamo che i risultati ottenuti con lo studio algebrico corrispondano al grafico della funzione $g(x) = x^3 + x$:</p>
           <ul style="padding-left: 24px; margin: 12px 0;">
-            <li><strong class="sign-negative">Sotto l'asse x</strong> (negativa) per $x < 0$</li>
-            <li><strong class="sign-zero">Attraversa l'asse x</strong> (zero) in $x = 0$</li>
-            <li><strong class="sign-positive">Sopra l'asse x</strong> (positiva) per $x > 0$</li>
+            <li><strong class="sign-negative">Sotto l'asse x</strong> (negativa) per $x < 0$ ✓</li>
+            <li><strong class="sign-zero">Attraversa l'asse x</strong> (zero) in $x = 0$ ✓</li>
+            <li><strong class="sign-positive">Sopra l'asse x</strong> (positiva) per $x > 0$ ✓</li>
           </ul>
           <p>Il grafico conferma perfettamente i risultati ottenuti con lo studio del segno!</p>
+          <p>Osserva la tipica forma a "S" delle funzioni cubiche.</p>
         `,
         math: null,
         feedback: `✅ Il grafico conferma: la funzione è negativa per $x < 0$, positiva per $x > 0$`,
@@ -839,7 +821,7 @@
       },
 
       {
-        id: 13,
+        id: 12,
         title: "Riepilogo Funzione 2",
         description: `
           <p><strong>Funzione:</strong> $g(x) = x^3 + x$</p>
@@ -859,7 +841,7 @@
       },
 
       {
-        id: 14,
+        id: 13,
         title: "Confronto Finale",
         description: `
           <p>Confrontiamo le due funzioni studiate:</p>
@@ -886,7 +868,7 @@
       },
 
       {
-        id: 15,
+        id: 14,
         title: "Conclusioni e Metodi Appresi",
         description: `
           <p><strong>Congratulazioni!</strong> Hai completato lo studio di zeri e segno di due funzioni polinomiali.</p>
@@ -1121,6 +1103,11 @@
           ctx.font = '20px Arial';
           ctx.textAlign = 'center';
           ctx.fillText('Iniziamo!', width / 2, height / 2);
+          break;
+
+        case 'axes':
+          drawGrid();
+          drawAxes();
           break;
 
         case 'f_full':

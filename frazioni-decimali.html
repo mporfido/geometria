@@ -1,0 +1,1623 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frazioni e Numeri Decimali - Matematica Interattiva</title>
+
+  <!-- KaTeX CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;600;700;900&family=Manrope:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* CSS Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      /* Color Palette - Mathematical Playground */
+      --coral: #FF6B6B;
+      --coral-light: #FF8E8E;
+      --coral-dark: #E85555;
+      --teal: #4ECDC4;
+      --teal-light: #7FE3DC;
+      --teal-dark: #3DBDB4;
+      --lemon: #FFE66D;
+      --lemon-light: #FFF199;
+      --deep-navy: #1A535C;
+      --deep-navy-light: #2A6B75;
+      --cream: #F7F7F2;
+      --white: #FFFFFF;
+      --gray: #95A3A6;
+      --error: #E85555;
+      --success: #4ECDC4;
+
+      /* Typography */
+      --font-display: 'Fraunces', serif;
+      --font-body: 'Manrope', sans-serif;
+      --font-mono: 'Space Mono', monospace;
+
+      /* Spacing */
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 40px;
+      --space-xl: 64px;
+
+      /* Border Radius */
+      --radius-sm: 12px;
+      --radius-md: 20px;
+      --radius-lg: 32px;
+      --radius-xl: 48px;
+
+      /* Shadows */
+      --shadow-sm: 0 4px 12px rgba(26, 83, 92, 0.08);
+      --shadow-md: 0 8px 24px rgba(26, 83, 92, 0.12);
+      --shadow-lg: 0 16px 40px rgba(26, 83, 92, 0.16);
+      --shadow-colored: 0 8px 24px rgba(255, 107, 107, 0.2);
+    }
+
+    body {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: 1.7;
+      color: var(--deep-navy);
+      background: var(--cream);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Geometric Background Pattern */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-image:
+        radial-gradient(circle at 20% 30%, rgba(78, 205, 196, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(255, 107, 107, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(255, 230, 109, 0.05) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Floating geometric shapes */
+    .geometric-shape {
+      position: fixed;
+      pointer-events: none;
+      opacity: 0.15;
+      z-index: 0;
+    }
+
+    .shape-1 {
+      top: 10%;
+      right: 5%;
+      width: 120px;
+      height: 120px;
+      border: 3px solid var(--coral);
+      border-radius: 50%;
+      animation: float 20s ease-in-out infinite;
+    }
+
+    .shape-2 {
+      bottom: 15%;
+      left: 8%;
+      width: 80px;
+      height: 80px;
+      background: var(--teal);
+      transform: rotate(45deg);
+      animation: float 15s ease-in-out infinite reverse;
+    }
+
+    .shape-3 {
+      top: 50%;
+      left: 2%;
+      width: 60px;
+      height: 60px;
+      border: 3px solid var(--lemon);
+      animation: float 18s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      50% { transform: translateY(-30px) rotate(10deg); }
+    }
+
+    /* Container */
+    .container {
+      max-width: 1100px;
+      margin: var(--space-lg) auto;
+      background: var(--white);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--coral) 0%, var(--coral-dark) 100%);
+      color: var(--white);
+      padding: var(--space-xl) var(--space-lg);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    header::before {
+      content: '÷';
+      position: absolute;
+      font-size: 200px;
+      font-family: var(--font-display);
+      font-weight: 900;
+      opacity: 0.1;
+      top: -40px;
+      left: 10%;
+      transform: rotate(-15deg);
+    }
+
+    header::after {
+      content: '×';
+      position: absolute;
+      font-size: 180px;
+      font-family: var(--font-display);
+      font-weight: 900;
+      opacity: 0.1;
+      bottom: -30px;
+      right: 15%;
+      transform: rotate(20deg);
+    }
+
+    header h1 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 900;
+      margin-bottom: var(--space-sm);
+      position: relative;
+      z-index: 1;
+      letter-spacing: -0.02em;
+    }
+
+    header p {
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      opacity: 0.95;
+      position: relative;
+      z-index: 1;
+      font-weight: 500;
+    }
+
+    /* Main Content */
+    main {
+      padding: var(--space-lg) var(--space-md);
+      min-height: 500px;
+    }
+
+    /* Progress Bar */
+    .progress-container {
+      position: sticky;
+      top: 0;
+      background: var(--white);
+      padding: var(--space-md) var(--space-md) 0;
+      margin: calc(-1 * var(--space-lg)) calc(-1 * var(--space-md)) var(--space-lg);
+      z-index: 10;
+      border-bottom: 3px solid var(--cream);
+    }
+
+    .progress-bar {
+      height: 8px;
+      background: var(--cream);
+      border-radius: 100px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--coral), var(--teal));
+      border-radius: 100px;
+      transition: width 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+      position: relative;
+    }
+
+    .progress-fill::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    /* Sections */
+    .section {
+      display: none;
+      animation: slideIn 0.6s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .section.active {
+      display: block;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.5rem);
+      font-weight: 700;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-lg);
+      position: relative;
+      display: inline-block;
+      line-height: 1.2;
+    }
+
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 60%;
+      height: 6px;
+      background: linear-gradient(90deg, var(--coral), var(--teal));
+      border-radius: 100px;
+    }
+
+    /* Content Boxes */
+    .content-box {
+      background: linear-gradient(135deg, var(--cream) 0%, rgba(247, 247, 242, 0.5) 100%);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin: var(--space-md) 0;
+      border: 2px solid rgba(26, 83, 92, 0.08);
+    }
+
+    .content-box p {
+      font-size: 1.05rem;
+      line-height: 1.8;
+    }
+
+    /* Example Boxes */
+    .example-box {
+      background: var(--white);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin: var(--space-md) 0;
+      border-left: 6px solid var(--teal);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+    }
+
+    .example-box:hover {
+      transform: translateX(4px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .example-box h3 {
+      font-family: var(--font-display);
+      font-size: 1.4rem;
+      color: var(--teal-dark);
+      margin-bottom: var(--space-sm);
+      font-weight: 700;
+    }
+
+    /* Reminder Box */
+    .reminder-box {
+      background: linear-gradient(135deg, var(--lemon-light) 0%, var(--lemon) 100%);
+      border-left: 6px solid var(--coral);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin: var(--space-md) 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .reminder-box h4 {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-xs);
+      font-weight: 700;
+    }
+
+    /* Quiz Questions */
+    .quiz-question {
+      background: var(--white);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin: var(--space-md) 0;
+      border: 3px solid var(--cream);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+    }
+
+    .quiz-question h4 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-sm);
+      font-weight: 600;
+    }
+
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-sm);
+      margin: var(--space-sm) 0;
+    }
+
+    .quiz-option {
+      background: var(--cream);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      border: 3px solid transparent;
+      transition: all 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+      font-weight: 500;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .quiz-option::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+      transition: left 0.5s;
+    }
+
+    .quiz-option:hover {
+      background: var(--teal-light);
+      border-color: var(--teal);
+      transform: translateX(8px);
+    }
+
+    .quiz-option:hover::before {
+      left: 100%;
+    }
+
+    .quiz-option.correct {
+      background: var(--teal);
+      color: var(--white);
+      border-color: var(--teal-dark);
+      animation: bounceIn 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+
+    .quiz-option.incorrect {
+      background: var(--coral);
+      color: var(--white);
+      border-color: var(--coral-dark);
+      animation: shake 0.5s;
+    }
+
+    @keyframes bounceIn {
+      0% { transform: scale(0.8); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+    }
+
+    .quiz-feedback {
+      display: none;
+      margin-top: var(--space-sm);
+      padding: var(--space-sm) var(--space-md);
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      animation: slideDown 0.4s ease;
+    }
+
+    @keyframes slideDown {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .quiz-feedback.show {
+      display: block;
+    }
+
+    .quiz-feedback.correct {
+      background: rgba(78, 205, 196, 0.2);
+      border-left: 6px solid var(--teal);
+      color: var(--teal-dark);
+    }
+
+    .quiz-feedback.incorrect {
+      background: rgba(255, 107, 107, 0.2);
+      border-left: 6px solid var(--coral);
+      color: var(--coral-dark);
+    }
+
+    /* Exercise */
+    .exercise {
+      background: var(--white);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin: var(--space-md) 0;
+      border: 3px solid var(--cream);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .exercise h4 {
+      font-family: var(--font-display);
+      font-size: 1.3rem;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-sm);
+      font-weight: 600;
+    }
+
+    .exercise-input {
+      display: flex;
+      align-items: center;
+      gap: var(--space-sm);
+      margin: var(--space-sm) 0;
+      flex-wrap: wrap;
+    }
+
+    .exercise-input input {
+      padding: 14px 20px;
+      border: 3px solid var(--cream);
+      border-radius: var(--radius-sm);
+      font-size: 1.1rem;
+      font-family: var(--font-mono);
+      width: 180px;
+      text-align: center;
+      transition: all 0.3s ease;
+      background: var(--white);
+      color: var(--deep-navy);
+      font-weight: 700;
+    }
+
+    .exercise-input input:focus {
+      outline: none;
+      border-color: var(--teal);
+      box-shadow: 0 0 0 4px rgba(78, 205, 196, 0.2);
+      transform: scale(1.02);
+    }
+
+    .exercise-input input.correct {
+      border-color: var(--teal);
+      background: rgba(78, 205, 196, 0.1);
+    }
+
+    .exercise-input input.incorrect {
+      border-color: var(--coral);
+      background: rgba(255, 107, 107, 0.1);
+      animation: shake 0.5s;
+    }
+
+    /* Buttons */
+    .btn {
+      background: linear-gradient(135deg, var(--teal) 0%, var(--teal-dark) 100%);
+      color: var(--white);
+      border: none;
+      padding: 12px 28px;
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+      box-shadow: var(--shadow-sm);
+      font-family: var(--font-body);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition: width 0.6s, height 0.6s;
+    }
+
+    .btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn:disabled {
+      background: var(--gray);
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-check {
+      background: linear-gradient(135deg, var(--coral) 0%, var(--coral-dark) 100%);
+    }
+
+    /* Formula Builder */
+    .formula-builder {
+      background: linear-gradient(135deg, rgba(78, 205, 196, 0.1) 0%, rgba(255, 230, 109, 0.1) 100%);
+      padding: var(--space-md);
+      border-radius: var(--radius-md);
+      margin: var(--space-md) 0;
+      border: 3px solid var(--teal);
+    }
+
+    .formula-builder h3 {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--deep-navy);
+      margin-bottom: var(--space-md);
+      font-weight: 700;
+    }
+
+    .formula-step {
+      margin: var(--space-sm) 0;
+      padding: var(--space-sm) var(--space-md);
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      border-left: 4px solid var(--coral);
+      font-weight: 500;
+    }
+
+    .formula-visual {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-sm);
+      margin: var(--space-md) 0;
+      font-size: 1.4rem;
+      flex-wrap: wrap;
+    }
+
+    .formula-part {
+      padding: 16px 24px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-family: var(--font-mono);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s ease;
+    }
+
+    .formula-part:hover {
+      transform: scale(1.05);
+    }
+
+    .numerator-part {
+      background: linear-gradient(135deg, var(--teal-light) 0%, var(--teal) 100%);
+      color: var(--white);
+      border: 3px solid var(--teal-dark);
+    }
+
+    .denominator-part {
+      background: linear-gradient(135deg, var(--lemon-light) 0%, var(--lemon) 100%);
+      color: var(--deep-navy);
+      border: 3px solid var(--coral);
+    }
+
+    /* Navigation */
+    nav {
+      background: var(--cream);
+      padding: var(--space-md);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: var(--space-sm);
+      flex-wrap: wrap;
+      border-top: 3px solid rgba(26, 83, 92, 0.1);
+      position: sticky;
+      bottom: 0;
+      z-index: 10;
+    }
+
+    .nav-button {
+      background: linear-gradient(135deg, var(--deep-navy) 0%, var(--deep-navy-light) 100%);
+      color: var(--white);
+      border: none;
+      padding: 14px 28px;
+      border-radius: var(--radius-sm);
+      font-size: 1rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+      display: flex;
+      align-items: center;
+      gap: var(--space-xs);
+      box-shadow: var(--shadow-sm);
+      font-family: var(--font-body);
+    }
+
+    .nav-button:hover:not(:disabled) {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .nav-button:disabled {
+      background: var(--gray);
+      cursor: not-allowed;
+      opacity: 0.5;
+    }
+
+    #section-indicator {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--deep-navy);
+      padding: 12px 24px;
+      background: var(--white);
+      border-radius: 100px;
+      border: 3px solid var(--deep-navy);
+      font-family: var(--font-mono);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Tables */
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: var(--space-md) 0;
+      background: var(--white);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
+    }
+
+    th, td {
+      padding: var(--space-sm) var(--space-md);
+      text-align: left;
+      border-bottom: 2px solid var(--cream);
+    }
+
+    th {
+      background: linear-gradient(135deg, var(--deep-navy) 0%, var(--deep-navy-light) 100%);
+      color: var(--white);
+      font-weight: 700;
+      font-family: var(--font-display);
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:nth-child(even) {
+      background: rgba(247, 247, 242, 0.5);
+    }
+
+    /* Lists */
+    ul, ol {
+      margin: var(--space-sm) 0;
+      padding-left: 32px;
+    }
+
+    li {
+      margin-bottom: var(--space-xs);
+      line-height: 1.8;
+    }
+
+    li::marker {
+      color: var(--coral);
+      font-weight: 700;
+    }
+
+    strong {
+      color: var(--deep-navy);
+      font-weight: 700;
+    }
+
+    .highlight {
+      background: linear-gradient(120deg, var(--lemon-light) 0%, var(--lemon) 100%);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      :root {
+        --space-lg: 24px;
+        --space-xl: 40px;
+      }
+
+      .container {
+        margin: var(--space-sm) var(--space-xs);
+        border-radius: var(--radius-md);
+      }
+
+      header {
+        padding: var(--space-lg) var(--space-md);
+      }
+
+      main {
+        padding: var(--space-md) var(--space-sm);
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .formula-visual {
+        font-size: 1.2rem;
+      }
+
+      .exercise-input {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .exercise-input input {
+        width: 100%;
+      }
+
+      nav {
+        gap: var(--space-xs);
+      }
+
+      .nav-button {
+        flex: 1;
+        justify-content: center;
+      }
+
+      #section-indicator {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar {
+      width: 12px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--cream);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(180deg, var(--coral), var(--teal));
+      border-radius: 100px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(180deg, var(--coral-dark), var(--teal-dark));
+    }
+
+    /* Math rendering improvements */
+    .katex {
+      font-size: 1.1em;
+    }
+
+    .katex-display {
+      margin: var(--space-md) 0;
+    }
+  </style>
+</head>
+<body>
+  <!-- Geometric shapes -->
+  <div class="geometric-shape shape-1"></div>
+  <div class="geometric-shape shape-2"></div>
+  <div class="geometric-shape shape-3"></div>
+
+  <div class="container">
+    <!-- Header -->
+    <header>
+      <h1>🔢 Frazioni e Numeri Decimali</h1>
+      <p>Impara a convertire tra frazioni e numeri decimali in modo interattivo</p>
+    </header>
+
+    <!-- Progress Bar -->
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" id="progress-fill" style="width: 12.5%"></div>
+      </div>
+    </div>
+
+    <!-- Main content -->
+    <main>
+      <!-- SEZIONE 1: Introduzione -->
+      <section id="section-1" class="section active">
+        <h2 class="section-title">Introduzione: Tipi di Numeri Decimali</h2>
+
+        <div class="content-box">
+          <p>Quando dividiamo il numeratore per il denominatore di una frazione, otteniamo un numero decimale. Esistono <strong>tre tipi</strong> di numeri decimali:</p>
+        </div>
+
+        <div class="example-box">
+          <h3>1. Decimale Finito</h3>
+          <p>Un numero decimale che ha un numero <strong>finito</strong> di cifre dopo la virgola.</p>
+          <p style="margin-top: 12px;"><strong>Esempio:</strong> $\frac{3}{4} = 0,75$ (solo due cifre dopo la virgola)</p>
+          <p><strong>Altri esempi:</strong> $0,5$ oppure $1,25$ oppure $3,125$</p>
+        </div>
+
+        <div class="example-box">
+          <h3>2. Decimale Periodico Semplice</h3>
+          <p>Un numero decimale in cui una o più cifre si <strong>ripetono all'infinito</strong> subito dopo la virgola.</p>
+          <p style="margin-top: 12px;"><strong>Esempio:</strong> $\frac{1}{3} = 0,\overline{3} = 0,333333...$</p>
+          <p>Il numero $3$ si ripete all'infinito. Scriviamo una lineetta sopra il <strong>periodo</strong> (la parte che si ripete).</p>
+          <p><strong>Altri esempi:</strong> $0,\overline{6} = 0,666...$ oppure $2,\overline{18} = 2,181818...$</p>
+        </div>
+
+        <div class="example-box">
+          <h3>3. Decimale Periodico Misto</h3>
+          <p>Un numero decimale con una parte che <strong>non si ripete</strong> (antiperiodo) seguita da una parte che <strong>si ripete</strong> (periodo).</p>
+          <p style="margin-top: 12px;"><strong>Esempio:</strong> $\frac{5}{6} = 0,8\overline{3} = 0,8333...$</p>
+          <p>L'<strong>antiperiodo</strong> è $8$ (non si ripete), il <strong>periodo</strong> è $3$ (si ripete all'infinito).</p>
+          <p><strong>Altri esempi:</strong> $1,1\overline{6} = 1,1666...$ oppure $0,58\overline{3} = 0,58333...$</p>
+        </div>
+
+        <div class="reminder-box">
+          <h4>💡 Nota Importante</h4>
+          <p>In Italia usiamo la <strong>virgola</strong> per separare la parte intera dalla parte decimale (es. $3,14$). In alcuni paesi si usa il punto (es. $3.14$). Noi useremo la virgola!</p>
+        </div>
+      </section>
+
+      <!-- SEZIONE 2: Quiz comprensione -->
+      <section id="section-2" class="section">
+        <h2 class="section-title">Verifica la Comprensione</h2>
+
+        <div class="content-box">
+          <p>Rispondi alle seguenti domande per verificare di aver capito i concetti!</p>
+        </div>
+
+        <!-- Quiz 1 -->
+        <div class="quiz-question">
+          <h4>Domanda 1: Che tipo di numero decimale è $0,75$?</h4>
+          <div class="quiz-options">
+            <div class="quiz-option" data-quiz="1" data-answer="a">A) Decimale finito</div>
+            <div class="quiz-option" data-quiz="1" data-answer="b">B) Decimale periodico semplice</div>
+            <div class="quiz-option" data-quiz="1" data-answer="c">C) Decimale periodico misto</div>
+          </div>
+          <div class="quiz-feedback" id="feedback-1"></div>
+        </div>
+
+        <!-- Quiz 2 -->
+        <div class="quiz-question">
+          <h4>Domanda 2: Nel numero $1,2\overline{7}$, qual è il periodo?</h4>
+          <div class="quiz-options">
+            <div class="quiz-option" data-quiz="2" data-answer="a">A) $1,2$</div>
+            <div class="quiz-option" data-quiz="2" data-answer="b">B) $2$</div>
+            <div class="quiz-option" data-quiz="2" data-answer="c">C) $7$</div>
+          </div>
+          <div class="quiz-feedback" id="feedback-2"></div>
+        </div>
+
+        <!-- Quiz 3 -->
+        <div class="quiz-question">
+          <h4>Domanda 3: Nel numero $0,58\overline{3}$, qual è l'antiperiodo?</h4>
+          <div class="quiz-options">
+            <div class="quiz-option" data-quiz="3" data-answer="a">A) $0$</div>
+            <div class="quiz-option" data-quiz="3" data-answer="b">B) $58$</div>
+            <div class="quiz-option" data-quiz="3" data-answer="c">C) $3$</div>
+          </div>
+          <div class="quiz-feedback" id="feedback-3"></div>
+        </div>
+
+        <!-- Quiz 4 -->
+        <div class="quiz-question">
+          <h4>Domanda 4: Che tipo di numero è $0,\overline{45} = 0,454545...$?</h4>
+          <div class="quiz-options">
+            <div class="quiz-option" data-quiz="4" data-answer="a">A) Decimale finito</div>
+            <div class="quiz-option" data-quiz="4" data-answer="b">B) Decimale periodico semplice</div>
+            <div class="quiz-option" data-quiz="4" data-answer="c">C) Decimale periodico misto</div>
+          </div>
+          <div class="quiz-feedback" id="feedback-4"></div>
+        </div>
+      </section>
+
+      <!-- SEZIONE 3: Frazione → Decimale -->
+      <section id="section-3" class="section">
+        <h2 class="section-title">Da Frazione a Numero Decimale</h2>
+
+        <div class="content-box">
+          <p>Per trasformare una frazione in un numero decimale, basta <strong>dividere il numeratore per il denominatore</strong>.</p>
+        </div>
+
+        <div class="example-box">
+          <h3>Esempio 1: $\frac{3}{4}$</h3>
+          <p>Dividiamo $3 \div 4$:</p>
+          <div style="margin: 20px 0; padding: 16px; background: var(--cream); border-radius: var(--radius-sm);">
+            <p style="font-family: var(--font-mono); line-height: 1.8;">
+              3,00 : 4 = 0,75<br>
+              -28&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(7×4=28)<br>
+              ---<br>
+              &nbsp;&nbsp;20<br>
+              &nbsp;-20&nbsp;&nbsp;&nbsp;&nbsp;(5×4=20)<br>
+              &nbsp;---<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;0&nbsp;&nbsp;&nbsp;&nbsp;(resto = 0, la divisione è finita!)
+            </p>
+          </div>
+          <p><strong>Risultato:</strong> $\frac{3}{4} = 0,75$ (decimale finito)</p>
+        </div>
+
+        <div class="example-box">
+          <h3>Esempio 2: $\frac{1}{3}$</h3>
+          <p>Dividiamo $1 \div 3$:</p>
+          <div style="margin: 20px 0; padding: 16px; background: var(--cream); border-radius: var(--radius-sm);">
+            <p style="font-family: var(--font-mono); line-height: 1.8;">
+              1,000... : 3 = 0,333...<br>
+              -9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(3×3=9)<br>
+              ---<br>
+              &nbsp;10<br>
+              &nbsp;-9&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(3×3=9)<br>
+              &nbsp;---<br>
+              &nbsp;&nbsp;10&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(il resto è sempre 1, il 3 si ripete!)<br>
+            </p>
+          </div>
+          <p><strong>Risultato:</strong> $\frac{1}{3} = 0,\overline{3}$ (decimale periodico semplice)</p>
+        </div>
+
+        <div class="example-box">
+          <h3>Esempio 3: $\frac{5}{6}$</h3>
+          <p>Dividiamo $5 \div 6$:</p>
+          <div style="margin: 20px 0; padding: 16px; background: var(--cream); border-radius: var(--radius-sm);">
+            <p style="font-family: var(--font-mono); line-height: 1.8;">
+              5,00... : 6 = 0,833...<br>
+              -48&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(8×6=48)<br>
+              ---<br>
+              &nbsp;&nbsp;20<br>
+              &nbsp;-18&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(3×6=18)<br>
+              &nbsp;---<br>
+              &nbsp;&nbsp;&nbsp;20&nbsp;&nbsp;&nbsp;&nbsp;(di nuovo resto 2, il 3 si ripete!)<br>
+            </p>
+          </div>
+          <p><strong>Risultato:</strong> $\frac{5}{6} = 0,8\overline{3}$ (decimale periodico misto)</p>
+        </div>
+
+        <div class="reminder-box">
+          <h4>💡 Suggerimento</h4>
+          <p>Se la divisione non finisce mai e ottieni sempre lo stesso resto, hai trovato un numero periodico!</p>
+        </div>
+      </section>
+
+      <!-- SEZIONE 4: Esercizi Frazione → Decimale -->
+      <section id="section-4" class="section">
+        <h2 class="section-title">Esercizi: Frazione → Decimale</h2>
+
+        <div class="content-box">
+          <p>Trasforma le seguenti frazioni in numeri decimali. Scrivi il risultato nella casella!</p>
+        </div>
+
+        <!-- Esercizio 1 -->
+        <div class="exercise">
+          <h4>Esercizio 1: Calcola $\frac{1}{2}$</h4>
+          <div class="exercise-input">
+            <span>Risultato:</span>
+            <input type="text" id="ex1-input" placeholder="Scrivi qui...">
+            <button class="btn btn-check" onclick="checkExercise(1, '0,5', 'ex1')">Verifica</button>
+          </div>
+          <div class="quiz-feedback" id="ex1-feedback"></div>
+        </div>
+
+        <!-- Esercizio 2 -->
+        <div class="exercise">
+          <h4>Esercizio 2: Calcola $\frac{2}{5}$</h4>
+          <div class="exercise-input">
+            <span>Risultato:</span>
+            <input type="text" id="ex2-input" placeholder="Scrivi qui...">
+            <button class="btn btn-check" onclick="checkExercise(2, '0,4', 'ex2')">Verifica</button>
+          </div>
+          <div class="quiz-feedback" id="ex2-feedback"></div>
+        </div>
+
+        <!-- Esercizio 3 -->
+        <div class="exercise">
+          <h4>Esercizio 3: Calcola $\frac{2}{3}$ (periodico!)</h4>
+          <p style="font-size: 0.9rem; color: var(--gray); margin-top: 8px;">Usa la notazione con la barra: 0,6 periodico si scrive come 0,(6)</p>
+          <div class="exercise-input">
+            <span>Risultato:</span>
+            <input type="text" id="ex3-input" placeholder="es. 0,(7)">
+            <button class="btn btn-check" onclick="checkExercise(3, '0,(6)', 'ex3')">Verifica</button>
+          </div>
+          <div class="quiz-feedback" id="ex3-feedback"></div>
+        </div>
+
+        <!-- Esercizio 4 -->
+        <div class="exercise">
+          <h4>Esercizio 4: Calcola $\frac{7}{8}$</h4>
+          <div class="exercise-input">
+            <span>Risultato:</span>
+            <input type="text" id="ex4-input" placeholder="Scrivi qui...">
+            <button class="btn btn-check" onclick="checkExercise(4, '0,875', 'ex4')">Verifica</button>
+          </div>
+          <div class="quiz-feedback" id="ex4-feedback"></div>
+        </div>
+      </section>
+
+      <!-- SEZIONE 5: Decimale → Frazione (Finito) -->
+      <section id="section-5" class="section">
+        <h2 class="section-title">Da Decimale Finito a Frazione</h2>
+
+        <div class="content-box">
+          <p>Trasformare un <strong>decimale finito</strong> in frazione è semplice! Segui questi passi:</p>
+        </div>
+
+        <div class="formula-builder">
+          <h3>Metodo per Decimali Finiti</h3>
+
+          <div class="formula-step">
+            <strong>Passo 1:</strong> Al <span class="highlight">numeratore</span> metti il numero senza virgola
+          </div>
+
+          <div class="formula-step">
+            <strong>Passo 2:</strong> Al <span class="highlight">denominatore</span> metti $1$ seguito da tanti zeri quante sono le cifre decimali
+          </div>
+
+          <div class="formula-step">
+            <strong>Passo 3:</strong> Semplifica la frazione (se possibile)
+          </div>
+        </div>
+
+        <div class="example-box">
+          <h3>Esempio: $0,75$</h3>
+
+          <p><strong>Passo 1:</strong> Il numero senza virgola è $75$</p>
+
+          <p style="margin-top: 12px;"><strong>Passo 2:</strong> Ci sono $2$ cifre dopo la virgola, quindi il denominatore è $1$ seguito da $2$ zeri = $100$</p>
+
+          <div class="formula-visual">
+            <div class="formula-part numerator-part">75</div>
+            <div style="font-size: 2rem;">/</div>
+            <div class="formula-part denominator-part">100</div>
+          </div>
+
+          <p><strong>Passo 3:</strong> Semplifichiamo dividendo numeratore e denominatore per $25$:</p>
+
+          <p style="text-align: center; margin: 20px 0;">
+            $$\frac{75}{100} = \frac{75 \div 25}{100 \div 25} = \frac{3}{4}$$
+          </p>
+
+          <p style="text-align: center; font-size: 1.2rem; color: var(--teal-dark); font-weight: 700;">
+            Risultato: $0,75 = \frac{3}{4}$
+          </p>
+        </div>
+
+        <div class="example-box">
+          <h3>Esempio: $1,25$</h3>
+
+          <p><strong>Passo 1:</strong> Il numero senza virgola è $125$</p>
+
+          <p style="margin-top: 12px;"><strong>Passo 2:</strong> Ci sono $2$ cifre dopo la virgola → denominatore = $100$</p>
+
+          <div class="formula-visual">
+            <div class="formula-part numerator-part">125</div>
+            <div style="font-size: 2rem;">/</div>
+            <div class="formula-part denominator-part">100</div>
+          </div>
+
+          <p><strong>Passo 3:</strong> Semplifichiamo dividendo per $25$:</p>
+
+          <p style="text-align: center; margin: 20px 0;">
+            $$\frac{125}{100} = \frac{125 \div 25}{100 \div 25} = \frac{5}{4}$$
+          </p>
+
+          <p style="text-align: center; font-size: 1.2rem; color: var(--teal-dark); font-weight: 700;">
+            Risultato: $1,25 = \frac{5}{4}$
+          </p>
+        </div>
+
+        <div class="reminder-box">
+          <h4>💡 Promemoria</h4>
+          <p><strong>Denominatori comuni:</strong></p>
+          <ul style="padding-left: 24px; margin-top: 8px;">
+            <li>1 cifra decimale → denominatore $10$</li>
+            <li>2 cifre decimali → denominatore $100$</li>
+            <li>3 cifre decimali → denominatore $1000$</li>
+            <li>E così via...</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- SEZIONE 6: Decimale → Frazione (Periodico Semplice) -->
+      <section id="section-6" class="section">
+        <h2 class="section-title">Da Decimale Periodico Semplice a Frazione</h2>
+
+        <div class="content-box">
+          <p>Per i <strong>decimali periodici semplici</strong> (es. $0,\overline{3}$), usiamo una formula speciale:</p>
+        </div>
+
+        <div class="formula-builder">
+          <h3>Metodo per Periodici Semplici</h3>
+
+          <div class="formula-step">
+            <strong>Al NUMERATORE:</strong> il periodo (la parte che si ripete)
+          </div>
+
+          <div class="formula-step">
+            <strong>Al DENOMINATORE:</strong> tanti $9$ quante sono le cifre del periodo
+          </div>
+        </div>
+
+        <div class="example-box">
+          <h3>Esempio 1: $0,\overline{3}$</h3>
+
+          <p><strong>Periodo:</strong> $3$ (una cifra che si ripete)</p>
+
+          <div class="formula-visual">
+            <span>NUMERATORE =</span>
+            <div class="formula-part numerator-part">3</div>
+            <span>(il periodo)</span>
+          </div>
+
+          <div class="formula-visual">
+            <span>DENOMINATORE =</span>
+            <div class="formula-part denominator-part">9</div>
+            <span>(un $9$ perché il periodo ha una cifra)</span>
+          </div>
+
+          <p style="text-align: center; margin: 20px 0; font-size: 1.3rem;">
+            $$0,\overline{3} = \frac{3}{9} = \frac{1}{3}$$
+          </p>
+
+          <p style="text-align: center; color: var(--teal-dark); font-weight: 700;">
+            (Semplificato dividendo per $3$)
+          </p>
+        </div>
+
+        <div class="example-box">
+          <h3>Esempio 2: $0,\overline{27}$</h3>
+
+          <p><strong>Periodo:</strong> $27$ (due cifre che si ripetono)</p>
+
+          <div class="formula-visual">
+            <span>NUMERATORE =</span>
+            <div class="formula-part numerator-part">27</div>
+            <span>(il periodo)</span>
+          </div>
+
+          <div class="formula-visual">
+            <span>DENOMINATORE =</span>
+            <div class="formula-part denominator-part">99</div>
+            <span>(due $9$ perché il periodo ha due cifre)</span>
+          </div>
+
+          <p style="text-align: center; margin: 20px 0; font-size: 1.3rem;">
+            $$0,\overline{27} = \frac{27}{99} = \frac{3}{11}$$
+          </p>
+
+          <p style="text-align: center; color: var(--teal-dark); font-weight: 700;">
+            (Semplificato dividendo per $9$)
+          </p>
+        </div>
+
+        <div class="example-box">
+          <h3>Esempio 3: $2,\overline{6}$</h3>
+
+          <p><strong>Attenzione!</strong> C'è una parte intera ($2$). Prima trasformiamo la parte decimale:</p>
+
+          <p style="margin: 16px 0;">$0,\overline{6} = \frac{6}{9} = \frac{2}{3}$</p>
+
+          <p>Poi aggiungiamo la parte intera:</p>
+
+          <p style="text-align: center; margin: 20px 0; font-size: 1.3rem;">
+            $$2,\overline{6} = 2 + \frac{2}{3} = \frac{6}{3} + \frac{2}{3} = \frac{8}{3}$$
+          </p>
+        </div>
+
+        <div class="reminder-box">
+          <h4>💡 Ricorda</h4>
+          <p><strong>Numero di cifre del periodo = Numero di $9$ al denominatore</strong></p>
+          <ul style="padding-left: 24px; margin-top: 8px;">
+            <li>1 cifra nel periodo → $9$ al denominatore</li>
+            <li>2 cifre nel periodo → $99$ al denominatore</li>
+            <li>3 cifre nel periodo → $999$ al denominatore</li>
+          </ul>
+        </div>
+      </section>
+
+      <!-- SEZIONE 7: Decimale → Frazione (Periodico Misto) -->
+      <section id="section-7" class="section">
+        <h2 class="section-title">Da Decimale Periodico Misto a Frazione</h2>
+
+        <div class="content-box">
+          <p>Per i <strong>decimali periodici misti</strong> (es. $0,8\overline{3}$), la formula è un po' più complessa ma segue una logica precisa:</p>
+        </div>
+
+        <div class="formula-builder">
+          <h3>Metodo per Periodici Misti</h3>
+
+          <div class="formula-step">
+            <strong>Al NUMERATORE:</strong><br>
+            (Tutto il numero senza virgola e senza lineetta) $-$ (Antiperiodo)
+          </div>
+
+          <div class="formula-step">
+            <strong>Al DENOMINATORE:</strong><br>
+            Tanti $9$ quante sono le cifre del periodo, seguiti da tanti $0$ quante sono le cifre dell'antiperiodo
+          </div>
+        </div>
+
+        <div class="example-box">
+          <h3>Esempio 1: $0,8\overline{3}$</h3>
+
+          <p><strong>Antiperiodo:</strong> $8$ (1 cifra)</p>
+          <p><strong>Periodo:</strong> $3$ (1 cifra)</p>
+
+          <div style="background: var(--cream); padding: 20px; border-radius: var(--radius-sm); margin: 20px 0;">
+            <p><strong>NUMERATORE:</strong></p>
+            <div class="formula-visual">
+              <div class="formula-part numerator-part">83</div>
+              <span style="font-size: 1.5rem;">−</span>
+              <div class="formula-part numerator-part">8</div>
+              <span>=</span>
+              <div class="formula-part" style="background: var(--coral-light); color: white; border-color: var(--coral-dark);">75</div>
+            </div>
+            <p style="margin-top: 8px; font-size: 0.95rem; color: var(--gray);">
+              ($83$ è il numero senza virgola, $8$ è l'antiperiodo)
+            </p>
+          </div>
+
+          <div style="background: var(--cream); padding: 20px; border-radius: var(--radius-sm); margin: 20px 0;">
+            <p><strong>DENOMINATORE:</strong></p>
+            <div class="formula-visual">
+              <div class="formula-part denominator-part">90</div>
+            </div>
+            <p style="margin-top: 8px; font-size: 0.95rem; color: var(--gray);">
+              (Un $9$ per il periodo + uno $0$ per l'antiperiodo)
+            </p>
+          </div>
+
+          <p style="text-align: center; margin: 20px 0; font-size: 1.3rem;">
+            $$0,8\overline{3} = \frac{75}{90} = \frac{5}{6}$$
+          </p>
+
+          <p style="text-align: center; color: var(--teal-dark); font-weight: 700;">
+            (Semplificato dividendo per $15$)
+          </p>
+        </div>
+
+        <div class="example-box">
+          <h3>Esempio 2: $1,41\overline{6}$</h3>
+
+          <p><strong>Antiperiodo:</strong> $41$ (2 cifre)</p>
+          <p><strong>Periodo:</strong> $6$ (1 cifra)</p>
+
+          <div style="background: var(--cream); padding: 20px; border-radius: var(--radius-sm); margin: 20px 0;">
+            <p><strong>NUMERATORE:</strong></p>
+            <div class="formula-visual">
+              <div class="formula-part numerator-part">1416</div>
+              <span style="font-size: 1.5rem;">−</span>
+              <div class="formula-part numerator-part">141</div>
+              <span>=</span>
+              <div class="formula-part" style="background: var(--coral-light); color: white; border-color: var(--coral-dark);">1275</div>
+            </div>
+            <p style="margin-top: 8px; font-size: 0.95rem; color: var(--gray);">
+              ($1416$ = numero senza virgola; $141$ = parte intera + antiperiodo)
+            </p>
+          </div>
+
+          <div style="background: var(--cream); padding: 20px; border-radius: var(--radius-sm); margin: 20px 0;">
+            <p><strong>DENOMINATORE:</strong></p>
+            <div class="formula-visual">
+              <div class="formula-part denominator-part">900</div>
+            </div>
+            <p style="margin-top: 8px; font-size: 0.95rem; color: var(--gray);">
+              (Un $9$ per il periodo + due $0$ per le due cifre dell'antiperiodo)
+            </p>
+          </div>
+
+          <p style="text-align: center; margin: 20px 0; font-size: 1.3rem;">
+            $$1,41\overline{6} = \frac{1275}{900} = \frac{17}{12}$$
+          </p>
+
+          <p style="text-align: center; color: var(--teal-dark); font-weight: 700;">
+            (Semplificato dividendo per $75$)
+          </p>
+        </div>
+
+        <div class="reminder-box">
+          <h4>💡 Schema Riassuntivo</h4>
+          <table style="margin-top: 12px;">
+            <tr>
+              <th>Elemento</th>
+              <th>Dove va</th>
+              <th>Come</th>
+            </tr>
+            <tr>
+              <td><strong>Periodo</strong></td>
+              <td>Denominatore</td>
+              <td>Diventa $9$, $99$, $999$...</td>
+            </tr>
+            <tr>
+              <td><strong>Antiperiodo</strong></td>
+              <td>Denominatore</td>
+              <td>Diventa $0$, $00$, $000$...</td>
+            </tr>
+            <tr>
+              <td><strong>Tutto - Antiperiodo</strong></td>
+              <td>Numeratore</td>
+              <td>La differenza</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- SEZIONE 8: Riepilogo -->
+      <section id="section-8" class="section">
+        <h2 class="section-title">Riepilogo Generale</h2>
+
+        <div class="content-box">
+          <h3 style="color: var(--deep-navy); margin-bottom: 16px; font-family: var(--font-display); font-size: 1.4rem;">Da Frazione a Decimale</h3>
+          <p style="font-size: 1.1rem; font-weight: 600;">
+            $$\text{Dividi il numeratore per il denominatore}$$
+          </p>
+        </div>
+
+        <div class="content-box">
+          <h3 style="color: var(--deep-navy); margin-bottom: 16px; font-family: var(--font-display); font-size: 1.4rem;">Da Decimale Finito a Frazione</h3>
+          <div class="formula-visual" style="justify-content: flex-start;">
+            <span>Numeratore:</span>
+            <div class="formula-part numerator-part">Numero senza virgola</div>
+          </div>
+          <div class="formula-visual" style="justify-content: flex-start; margin-top: 12px;">
+            <span>Denominatore:</span>
+            <div class="formula-part denominator-part">1 seguito da $n$ zeri</div>
+            <span>(dove $n$ = cifre decimali)</span>
+          </div>
+          <p style="margin-top: 12px;"><strong>Esempio:</strong> $0,75 = \frac{75}{100} = \frac{3}{4}$</p>
+        </div>
+
+        <div class="content-box">
+          <h3 style="color: var(--deep-navy); margin-bottom: 16px; font-family: var(--font-display); font-size: 1.4rem;">Da Periodico Semplice a Frazione</h3>
+          <div class="formula-visual" style="justify-content: flex-start;">
+            <span>Numeratore:</span>
+            <div class="formula-part numerator-part">Periodo</div>
+          </div>
+          <div class="formula-visual" style="justify-content: flex-start; margin-top: 12px;">
+            <span>Denominatore:</span>
+            <div class="formula-part denominator-part">Tanti $9$ quante cifre del periodo</div>
+          </div>
+          <p style="margin-top: 12px;"><strong>Esempio:</strong> $0,\overline{3} = \frac{3}{9} = \frac{1}{3}$</p>
+        </div>
+
+        <div class="content-box">
+          <h3 style="color: var(--deep-navy); margin-bottom: 16px; font-family: var(--font-display); font-size: 1.4rem;">Da Periodico Misto a Frazione</h3>
+          <div class="formula-visual" style="justify-content: flex-start;">
+            <span>Numeratore:</span>
+            <div class="formula-part numerator-part">(Tutto senza virgola) − (Antiperiodo)</div>
+          </div>
+          <div class="formula-visual" style="justify-content: flex-start; margin-top: 12px;">
+            <span>Denominatore:</span>
+            <div class="formula-part denominator-part">$9$...$9$ poi $0$...$0$</div>
+          </div>
+          <p style="margin-top: 8px; font-size: 0.95rem; color: var(--gray);">
+            (Tanti $9$ quante cifre del periodo, seguiti da tanti $0$ quante cifre dell'antiperiodo)
+          </p>
+          <p style="margin-top: 12px;"><strong>Esempio:</strong> $0,8\overline{3} = \frac{83-8}{90} = \frac{75}{90} = \frac{5}{6}$</p>
+        </div>
+
+        <div class="reminder-box">
+          <h4>🎯 Suggerimento Finale</h4>
+          <p>Ricorda sempre di <strong>semplificare</strong> la frazione finale dividendo numeratore e denominatore per il loro massimo comun divisore!</p>
+        </div>
+
+        <div style="background: linear-gradient(135deg, rgba(78, 205, 196, 0.2) 0%, rgba(255, 230, 109, 0.2) 100%); padding: var(--space-lg); border-radius: var(--radius-md); text-align: center; margin-top: var(--space-lg); border: 3px solid var(--teal);">
+          <h3 style="color: var(--teal-dark); font-size: 2rem; font-family: var(--font-display); margin-bottom: var(--space-sm);">
+            🎉 Congratulazioni!
+          </h3>
+          <p style="font-size: 1.2rem; font-weight: 600; color: var(--deep-navy);">
+            Ora sai come convertire qualsiasi numero tra frazione e decimale!
+          </p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Navigazione -->
+    <nav>
+      <button id="btn-prev" class="nav-button" onclick="navigate(-1)">
+        ← Indietro
+      </button>
+      <span id="section-indicator">Sezione 1 / 8</span>
+      <button id="btn-next" class="nav-button" onclick="navigate(1)">
+        Avanti →
+      </button>
+    </nav>
+  </div>
+
+  <!-- KaTeX JS -->
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+  <script>
+    // ===== STATE =====
+    let currentSection = 1;
+    const totalSections = 8;
+
+    // Risposte corrette per i quiz
+    const quizAnswers = {
+      1: 'a',  // Decimale finito
+      2: 'c',  // Periodo è 7
+      3: 'b',  // Antiperiodo è 58
+      4: 'b'   // Periodico semplice
+    };
+
+    const quizExplanations = {
+      1: {
+        correct: '✅ Corretto! $0,75$ ha solo due cifre dopo la virgola, quindi è un decimale finito.',
+        incorrect: '❌ Non è corretto. $0,75$ ha solo due cifre dopo la virgola e non ha parti che si ripetono. È un decimale finito!'
+      },
+      2: {
+        correct: '✅ Esatto! Nel numero $1,2\\overline{7}$, la lineetta è sopra il $7$, quindi il periodo è $7$.',
+        incorrect: '❌ Sbagliato. Il periodo è la parte che si ripete, ovvero quella sotto la lineetta. In $1,2\\overline{7}$, il periodo è $7$!'
+      },
+      3: {
+        correct: '✅ Perfetto! L\'antiperiodo è la parte decimale che NON si ripete. In $0,58\\overline{3}$, l\'antiperiodo è $58$.',
+        incorrect: '❌ Non è corretto. L\'antiperiodo è la parte che viene dopo la virgola ma PRIMA del periodo. In $0,58\\overline{3}$ è $58$!'
+      },
+      4: {
+        correct: '✅ Giusto! $0,\\overline{45}$ è un periodico semplice perché il periodo inizia subito dopo la virgola.',
+        incorrect: '❌ Sbagliato. $0,454545...$ ha una parte che si ripete ($45$) subito dopo la virgola, quindi è un periodico semplice!'
+      }
+    };
+
+    // ===== NAVIGATION =====
+    function navigate(direction) {
+      const newSection = currentSection + direction;
+      if (newSection >= 1 && newSection <= totalSections) {
+        // Nascondi sezione corrente
+        document.getElementById(`section-${currentSection}`).classList.remove('active');
+
+        // Mostra nuova sezione
+        currentSection = newSection;
+        document.getElementById(`section-${currentSection}`).classList.add('active');
+
+        // Aggiorna UI
+        updateNavigation();
+        updateProgressBar();
+
+        // Render math
+        renderMath();
+
+        // Scroll to top
+        window.scrollTo({top: 0, behavior: 'smooth'});
+      }
+    }
+
+    function updateNavigation() {
+      document.getElementById('section-indicator').textContent = `Sezione ${currentSection} / ${totalSections}`;
+      document.getElementById('btn-prev').disabled = (currentSection === 1);
+      document.getElementById('btn-next').disabled = (currentSection === totalSections);
+    }
+
+    function updateProgressBar() {
+      const progress = (currentSection / totalSections) * 100;
+      document.getElementById('progress-fill').style.width = progress + '%';
+    }
+
+    function renderMath() {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: "$$", right: "$$", display: true},
+          {left: "$", right: "$", display: false},
+          {left: "\\(", right: "\\)", display: false},
+          {left: "\\[", right: "\\]", display: true}
+        ],
+        throwOnError: false
+      });
+    }
+
+    // ===== QUIZ =====
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('quiz-option')) {
+        const quizId = e.target.getAttribute('data-quiz');
+        const answer = e.target.getAttribute('data-answer');
+        const correctAnswer = quizAnswers[quizId];
+
+        // Rimuovi selezioni precedenti
+        const options = document.querySelectorAll(`[data-quiz="${quizId}"]`);
+        options.forEach(opt => {
+          opt.classList.remove('selected', 'correct', 'incorrect');
+        });
+
+        // Mostra feedback
+        const feedback = document.getElementById(`feedback-${quizId}`);
+
+        if (answer === correctAnswer) {
+          e.target.classList.add('correct');
+          feedback.className = 'quiz-feedback show correct';
+          feedback.innerHTML = quizExplanations[quizId].correct;
+        } else {
+          e.target.classList.add('incorrect');
+          // Mostra anche la risposta corretta
+          options.forEach(opt => {
+            if (opt.getAttribute('data-answer') === correctAnswer) {
+              opt.classList.add('correct');
+            }
+          });
+          feedback.className = 'quiz-feedback show incorrect';
+          feedback.innerHTML = quizExplanations[quizId].incorrect;
+        }
+
+        renderMath();
+      }
+    });
+
+    // ===== EXERCISES =====
+    function checkExercise(num, correctAnswer, id) {
+      const input = document.getElementById(`${id}-input`);
+      const feedback = document.getElementById(`${id}-feedback`);
+      const userAnswer = input.value.trim().replace(/\s/g, '');
+
+      // Normalizza l'input (accetta sia virgola che punto, con o senza spazi)
+      const normalizedUser = userAnswer.replace('.', ',');
+      const normalizedCorrect = correctAnswer.replace('.', ',');
+
+      if (normalizedUser === normalizedCorrect) {
+        feedback.className = 'quiz-feedback show correct';
+        feedback.innerHTML = '✅ Corretto! Ottimo lavoro!';
+        input.className = 'correct';
+      } else {
+        feedback.className = 'quiz-feedback show incorrect';
+        feedback.innerHTML = `❌ Non è corretto. La risposta giusta è <strong>${correctAnswer}</strong>. Riprova la divisione!`;
+        input.className = 'incorrect';
+      }
+
+      renderMath();
+    }
+
+    // ===== KEYBOARD NAVIGATION =====
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'ArrowLeft') {
+        navigate(-1);
+      } else if (e.key === 'ArrowRight') {
+        navigate(1);
+      }
+    });
+
+    // ===== INITIALIZATION =====
+    function init() {
+      updateNavigation();
+      updateProgressBar();
+      renderMath();
+    }
+
+    // Avvio
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+  </script>
+</body>
+</html>

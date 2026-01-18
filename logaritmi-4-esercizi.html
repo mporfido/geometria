@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logaritmi - Esercizi per Casa</title>
+
+    <!-- KaTeX CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 20px;
+            font-style: italic;
+        }
+
+        .page-indicator {
+            text-align: center;
+            color: #667eea;
+            font-weight: bold;
+            margin-bottom: 20px;
+            font-size: 1.1em;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 10px;
+            border-left: 5px solid #667eea;
+        }
+
+        .section.intermediate {
+            border-left-color: #ffc107;
+        }
+
+        .section.advanced {
+            border-left-color: #dc3545;
+        }
+
+        h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+        }
+
+        h2.intermediate {
+            color: #ffc107;
+        }
+
+        h2.advanced {
+            color: #dc3545;
+        }
+
+        .level-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            margin-left: 10px;
+        }
+
+        .level-badge.base {
+            background: #28a745;
+            color: white;
+        }
+
+        .level-badge.intermediate {
+            background: #ffc107;
+            color: #333;
+        }
+
+        .level-badge.advanced {
+            background: #dc3545;
+            color: white;
+        }
+
+        .exercise {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border: 2px solid #667eea;
+        }
+
+        .exercise-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .exercise-number {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.2em;
+        }
+
+        .exercise-text {
+            font-size: 1.1em;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        .hint {
+            background: #e7f3ff;
+            padding: 12px;
+            border-radius: 8px;
+            border-left: 4px solid #2196F3;
+            margin-top: 15px;
+            display: none;
+        }
+
+        .hint.show {
+            display: block;
+        }
+
+        .hint-title {
+            font-weight: bold;
+            color: #0c5460;
+            margin-bottom: 8px;
+        }
+
+        .show-hint-btn {
+            padding: 8px 15px;
+            background: #2196F3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s;
+        }
+
+        .show-hint-btn:hover {
+            background: #1976D2;
+        }
+
+        .answer-space {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px dashed #dee2e6;
+            margin-top: 15px;
+            min-height: 60px;
+            font-style: italic;
+            color: #666;
+        }
+
+        .important {
+            background: #fff3cd;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            gap: 20px;
+        }
+
+        .nav-button {
+            padding: 15px 30px;
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .nav-button.prev {
+            background: #6c757d;
+            color: white;
+        }
+
+        .nav-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+
+            h1 {
+                font-size: 1.8em;
+            }
+
+            h2 {
+                font-size: 1.4em;
+            }
+
+            .exercise-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .navigation {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📊 Logaritmi</h1>
+        <p class="subtitle">Esercizi per casa - Ripasso completo</p>
+        <div class="page-indicator">Pagina 4 di 4: Esercizi da Svolgere</div>
+
+        <div class="important">
+            <strong>📝 Istruzioni:</strong>
+            <p style="margin-top: 10px;">Svolgi questi esercizi sul quaderno mostrando tutti i passaggi. Per gli esercizi più difficili, puoi cliccare sul pulsante per vedere un suggerimento. Ricorda sempre di verificare le condizioni di esistenza nelle equazioni!</p>
+        </div>
+
+        <!-- SEZIONE BASE -->
+        <div class="section">
+            <h2>📗 Livello Base<span class="level-badge base">Facile</span></h2>
+            <p style="margin-bottom: 20px;">Esercizi simili a quelli visti durante la lezione</p>
+
+            <!-- Esercizio 1 -->
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-number">Esercizio 1</span>
+                    <span class="level-badge base">Base</span>
+                </div>
+                <div class="exercise-text">
+                    Calcola i seguenti logaritmi:
+                    <p style="margin-top: 10px;">a) $\log_4(16)$ &nbsp;&nbsp;&nbsp; b) $\log_3(27)$ &nbsp;&nbsp;&nbsp; c) $\log_2(64)$</p>
+                </div>
+                <div class="answer-space">
+                    Spazio per la soluzione sul quaderno
+                </div>
+            </div>
+
+            <!-- Esercizio 2 -->
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-number">Esercizio 2</span>
+                    <span class="level-badge base">Base</span>
+                </div>
+                <div class="exercise-text">
+                    Applica le proprietà dei logaritmi per semplificare:
+                    <p style="margin-top: 10px;">$\log_5(125) + \log_5(5) - \log_5(25)$</p>
+                </div>
+                <div class="answer-space">
+                    Spazio per la soluzione sul quaderno
+                </div>
+            </div>
+
+            <!-- Esercizio 3 -->
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-number">Esercizio 3</span>
+                    <span class="level-badge base">Base</span>
+                </div>
+                <div class="exercise-text">
+                    Risolvi le seguenti equazioni logaritmiche (ricorda di verificare la CE):
+                    <p style="margin-top: 10px;">a) $\log_4(x) = 3$ &nbsp;&nbsp;&nbsp; b) $\log_7(x) = 2$</p>
+                </div>
+                <div class="answer-space">
+                    Spazio per la soluzione sul quaderno
+                </div>
+            </div>
+
+            <!-- Esercizio 4 -->
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-number">Esercizio 4</span>
+                    <span class="level-badge base">Base</span>
+                </div>
+                <div class="exercise-text">
+                    Calcola:
+                    <p style="margin-top: 10px;">$\log_2(8^3)$</p>
+                </div>
+                <div class="answer-space">
+                    Spazio per la soluzione sul quaderno
+                </div>
+            </div>
+        </div>
+
+        <!-- SEZIONE INTERMEDIA -->
+        <div class="section intermediate">
+            <h2 class="intermediate">📙 Livello Intermedio<span class="level-badge intermediate">Medio</span></h2>
+            <p style="margin-bottom: 20px;">Esercizi che combinano più proprietà</p>
+
+            <!-- Esercizio 5 -->
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-number">Esercizio 5</span>
+                    <span class="level-badge intermediate">Intermedio</span>
+                </div>
+                <div class="exercise-text">
+                    Semplifica l'espressione usando tutte le proprietà:
+                    <p style="margin-top: 10px;">$\log_3(81) + 2\log_3(9) - \log_3(27)$</p>
+                </div>
+                <button class="show-hint-btn" onclick="toggleHint(5)">💡 Mostra suggerimento</button>
+                <div class="hint" id="hint-5">
+                    <div class="hint-title">Suggerimento:</div>
+                    <p>Prima calcola ogni logaritmo singolarmente ricordando le potenze di 3: $81 = 3^4$, $9 = 3^2$, $27 = 3^3$</p>
+                </div>
+                <div class="answer-space">
+                    Spazio per la soluzione sul quaderno
+                </div>
+            </div>
+
+            <!-- Esercizio 6 -->
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-number">Esercizio 6</span>
+                    <span class="level-badge intermediate">Intermedio</span>
+                </div>
+                <div class="exercise-text">
+                    Risolvi l'equazione:
+                    <p style="margin-top: 10px;">$\log_2(x) + \log_2(x-7) = 3$</p>
+                </div>
+                <button class="show-hint-btn" onclick="toggleHint(6)">💡 Mostra suggerimento</button>
+                <div class="hint" id="hint-6">
+                    <div class="hint-title">Suggerimento:</div>
+                    <p><strong>CE:</strong> $x > 0$ e $x - 7 > 0$, quindi $x > 7$</p>
+                    <p>Usa la proprietà del prodotto per trasformare in $\log_2(x(x-7)) = 3$. Otterrai un'equazione di secondo grado che dovrai risolvere con la formula quadratica o scomposizione.</p>
+                </div>
+                <div class="answer-space">
+                    Spazio per la soluzione sul quaderno
+                </div>
+            </div>
+
+            <!-- Esercizio 7 -->
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-number">Esercizio 7</span>
+                    <span class="level-badge intermediate">Intermedio</span>
+                </div>
+                <div class="exercise-text">
+                    Calcola:
+                    <p style="margin-top: 10px;">$\log_5\left(\frac{125 \cdot 25^2}{5^3}\right)$</p>
+                </div>
+                <button class="show-hint-btn" onclick="toggleHint(7)">💡 Mostra suggerimento</button>
+                <div class="hint" id="hint-7">
+                    <div class="hint-title">Suggerimento:</div>
+                    <p>Applica le proprietà nell'ordine: prima la proprietà del quoziente, poi quella del prodotto, infine quella della potenza. Ricorda che $125 = 5^3$ e $25 = 5^2$</p>
+                </div>
+                <div class="answer-space">
+                    Spazio per la soluzione sul quaderno
+                </div>
+            </div>
+        </div>
+
+        <!-- SEZIONE AVANZATA -->
+        <div class="section advanced">
+            <h2 class="advanced">📕 Livello Avanzato<span class="level-badge advanced">Difficile</span></h2>
+            <p style="margin-bottom: 20px;">Esercizi più complessi con lettere ed equazioni avanzate</p>
+
+            <!-- Esercizio 8 -->
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-number">Esercizio 8</span>
+                    <span class="level-badge advanced">Avanzato</span>
+                </div>
+                <div class="exercise-text">
+                    Semplifica l'espressione letterale (con $a, b > 0$):
+                    <p style="margin-top: 10px;">$\log_a(b^3) - 2\log_a(b) + \log_a\left(\frac{1}{b}\right)$</p>
+                </div>
+                <button class="show-hint-btn" onclick="toggleHint(8)">💡 Mostra suggerimento</button>
+                <div class="hint" id="hint-8">
+                    <div class="hint-title">Suggerimento:</div>
+                    <p>Applica la proprietà della potenza a $\log_a(b^3)$ e a $2\log_a(b)$ (che puoi scrivere come $\log_a(b^2)$).</p>
+                    <p>Ricorda che $\frac{1}{b} = b^{-1}$, quindi $\log_a\left(\frac{1}{b}\right) = \log_a(b^{-1}) = -\log_a(b)$</p>
+                    <p>Alla fine dovrai sommare/sottrarre tutti i coefficienti di $\log_a(b)$</p>
+                </div>
+                <div class="answer-space">
+                    Spazio per la soluzione sul quaderno
+                </div>
+            </div>
+
+            <!-- Esercizio 9 -->
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-number">Esercizio 9</span>
+                    <span class="level-badge advanced">Avanzato</span>
+                </div>
+                <div class="exercise-text">
+                    Risolvi l'equazione logaritmica:
+                    <p style="margin-top: 10px;">$\log_3(x+2) + \log_3(x-2) = 2$</p>
+                </div>
+                <button class="show-hint-btn" onclick="toggleHint(9)">💡 Mostra suggerimento</button>
+                <div class="hint" id="hint-9">
+                    <div class="hint-title">Suggerimento:</div>
+                    <p><strong>CE:</strong> $x + 2 > 0$ e $x - 2 > 0$, quindi $x > 2$</p>
+                    <p>Usa la proprietà del prodotto per ottenere $\log_3((x+2)(x-2)) = 2$</p>
+                    <p>Ricorda la differenza di quadrati: $(x+2)(x-2) = x^2 - 4$</p>
+                    <p>Quindi: $x^2 - 4 = 3^2 = 9$, da cui $x^2 = 13$</p>
+                    <p>Risolvi l'equazione e verifica quale soluzione rispetta la CE!</p>
+                </div>
+                <div class="answer-space">
+                    Spazio per la soluzione sul quaderno
+                </div>
+            </div>
+
+            <!-- Esercizio 10 -->
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-number">Esercizio 10</span>
+                    <span class="level-badge advanced">Avanzato</span>
+                </div>
+                <div class="exercise-text">
+                    Risolvi il sistema misto:
+                    <p style="margin-top: 10px;">
+                        $\begin{cases} \log_2(x) + \log_2(y) = 5 \\ x \cdot y = 32 \end{cases}$
+                    </p>
+                </div>
+                <button class="show-hint-btn" onclick="toggleHint(10)">💡 Mostra suggerimento</button>
+                <div class="hint" id="hint-10">
+                    <div class="hint-title">Suggerimento:</div>
+                    <p><strong>CE:</strong> $x > 0$ e $y > 0$</p>
+                    <p>Dalla prima equazione, usa la proprietà del prodotto: $\log_2(x \cdot y) = 5$, quindi $x \cdot y = 2^5 = 32$</p>
+                    <p>Ma la seconda equazione dice già che $x \cdot y = 32$! Questo significa che il sistema è <strong>indeterminato</strong>: ci sono infinite soluzioni.</p>
+                    <p>Puoi esprimer le soluzioni in funzione di un parametro: se $x = t$ (con $t > 0$), allora $y = \frac{32}{t}$</p>
+                </div>
+                <div class="answer-space">
+                    Spazio per la soluzione sul quaderno
+                </div>
+            </div>
+
+            <!-- Esercizio 11 -->
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-number">Esercizio 11</span>
+                    <span class="level-badge advanced">Avanzato</span>
+                </div>
+                <div class="exercise-text">
+                    Semplifica (con $a, b, c > 0$):
+                    <p style="margin-top: 10px;">$\log_a(b^2c) - \log_a(bc^2) + 2\log_a(c)$</p>
+                </div>
+                <button class="show-hint-btn" onclick="toggleHint(11)">💡 Mostra suggerimento</button>
+                <div class="hint" id="hint-11">
+                    <div class="hint-title">Suggerimento:</div>
+                    <p>Espandi i logaritmi di prodotti usando la proprietà: $\log_a(b^2c) = \log_a(b^2) + \log_a(c) = 2\log_a(b) + \log_a(c)$</p>
+                    <p>Fai lo stesso per $\log_a(bc^2)$</p>
+                    <p>Poi semplifica raccogliendo i termini con $\log_a(b)$ e $\log_a(c)$</p>
+                </div>
+                <div class="answer-space">
+                    Spazio per la soluzione sul quaderno
+                </div>
+            </div>
+
+            <!-- Esercizio 12 -->
+            <div class="exercise">
+                <div class="exercise-header">
+                    <span class="exercise-number">Esercizio 12</span>
+                    <span class="level-badge advanced">Avanzato</span>
+                </div>
+                <div class="exercise-text">
+                    Risolvi l'equazione:
+                    <p style="margin-top: 10px;">$\log_2(x^2 - 3x) = 3$</p>
+                </div>
+                <button class="show-hint-btn" onclick="toggleHint(12)">💡 Mostra suggerimento</button>
+                <div class="hint" id="hint-12">
+                    <div class="hint-title">Suggerimento:</div>
+                    <p><strong>CE:</strong> $x^2 - 3x > 0$. Per trovare quando questa condizione è verificata, devi scomporre: $x(x - 3) > 0$</p>
+                    <p>Usando il metodo dei segni (o della parabola), trovi che $x < 0$ oppure $x > 3$</p>
+                    <p>Dalla definizione: $x^2 - 3x = 2^3 = 8$</p>
+                    <p>Quindi: $x^2 - 3x - 8 = 0$. Usa la formula quadratica: $x = \frac{3 \pm \sqrt{9 + 32}}{2} = \frac{3 \pm \sqrt{41}}{2}$</p>
+                    <p>Verifica quali soluzioni rispettano la CE!</p>
+                </div>
+                <div class="answer-space">
+                    Spazio per la soluzione sul quaderno
+                </div>
+            </div>
+        </div>
+
+        <div class="important">
+            <strong>✅ Ricorda di controllare:</strong>
+            <ul style="margin-left: 20px; margin-top: 10px;">
+                <li>Le condizioni di esistenza prima di risolvere le equazioni</li>
+                <li>Che le soluzioni trovate rispettino le CE</li>
+                <li>Tutti i passaggi algebrici</li>
+                <li>Le verifiche finali sostituendo le soluzioni nell'equazione originale</li>
+            </ul>
+        </div>
+
+        <div class="navigation">
+            <a href="logaritmi-3-equazioni.html" class="nav-button prev">
+                ← Indietro: Equazioni
+            </a>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 20px; background: #f8f9fa; border-radius: 10px;">
+            <h2 style="color: #667eea;">🎉 Ottimo lavoro!</h2>
+            <p>Hai completato tutto il percorso sui logaritmi.</p>
+            <p style="margin-top: 10px;">Continua a esercitarti per migliorare sempre di più!</p>
+        </div>
+    </div>
+
+    <!-- KaTeX JS -->
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/auto-render.min.js"></script>
+
+    <script>
+        function toggleHint(exerciseNum) {
+            const hint = document.getElementById('hint-' + exerciseNum);
+            hint.classList.toggle('show');
+
+            const btn = hint.previousElementSibling;
+            if (hint.classList.contains('show')) {
+                btn.textContent = '🔼 Nascondi suggerimento';
+                btn.style.background = '#6c757d';
+            } else {
+                btn.textContent = '💡 Mostra suggerimento';
+                btn.style.background = '#2196F3';
+            }
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            renderMathInElement(document.body, {
+                delimiters: [
+                    {left: "$$", right: "$$", display: true},
+                    {left: "$", right: "$", display: false},
+                    {left: "\\begin{cases}", right: "\\end{cases}", display: true}
+                ],
+                throwOnError: false
+            });
+        });
+    </script>
+</body>
+</html>
